@@ -1,0 +1,355 @@
+% SFD pour le projet VirtualWars du S2
+
+
+% Package utilisé --------------------------
+\documentclass[12pt,a4paper]{article}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage{float}
+
+
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+%-------------------------------------------
+
+%Page titre --------------------------------
+\title{VirtualWars \\Spécification fonctionelle détaillé}
+%\subtitle{Spécification Fonctionnelle Détaillée} % Apparament subtitle n'existe pas
+\author{Nicolas Mauger\thanks{Merci à M.Auguste pour ses conseils précieux}
+\\DUT informatique de Lille, semestre 2}
+\date{\today \\V1.30}
+%--------------------------------------------
+
+\begin{document}
+%Page titre --------
+\maketitle \newpage
+%-------------------
+
+%Sommaire ----------
+\tableofcontents \newpage
+%-------------------
+
+\begin{abstract}
+Dans le cadre du deuxième semestre, nous réalisons un jeu de stratégie dans lequel des robots s'affrontent sur un plateau.
+\end{abstract}
+
+\begin{quotation}
+Ce SFD est rédigé en \LaTeX\ avec l'aide des recommandations 830 et 1233a de l'IEEE. Pour plus d'information \href{http://www.math.uaa.alaska.edu/~afkjm/cs401/IEEE83.pdf}{lien vers la documentation  officiel}.
+\end{quotation}
+
+\part{Introduction}
+		\section{Objectif}
+Pour éviter les morts inutiles, l'ONU a décidé de créer une application informatique pour remplacer les affrontements réels. L'idée est de développer un environnement virtuel qui permet à deux pays de s'affronter par l'intermédiaire de robots sans engager de troupes sur le terrain.
+		\section{Définitions, acronymes et abréviations}
+			\noindent
+			Tireur: robot léger, capable de tirer à une courte distance. \\
+			Piégeur: robot léger, capable de poser des mines. \\
+			Char: robot lourd, capable de tirer à une distance plus grande que le tireur. \\
+			I.H.M: Interactions homme-machine. Moyens et outils pour contrôler le programme.	\\
+			\indent
+		\section{Présentation du système}
+			Les pays s'affrontent en faisant combattre des robots sur un plateau.
+Le jeu se déroule en tour par tour. Au départ les robots se trouvent dans leurs bases respectives.
+A chaque tour de jeu, chaques équipes choisissent un de ses robots pour réaliser une action (déplacement ou attaque).
+Au cours de la partie chaques équipes doivent conserver au moins un robot hors de sa base.
+Il existe 3 catégories de robots: tireur, piégeur et char. Et chaque joueur choisit quels robots constituent son
+équipe, cela fait partie de sa stratégie pour remporter la victoire.
+La partie se termine dès qu'une des deux équipes ne possède plus de robot vivant.
+
+
+\newpage				
+\part{Version texte}
+	\section{Description générale}
+		Dans cette première étape, l'équipe est constituée d'un robot de chaque type, au fur et à mesure de leur
+définition. Le contrôle des robots est purement manuel (menu texte), les robots seront dotés d'un "cerveau" mettant
+en œuvre une stratégie au jalon 2. L'objet de ce premier jalon est d'introduire un par un les différents éléments du jeu.
+
+		\section{Modes et états}
+		Dans la version texte l'écran d'accueil, le paramétrage de la partie, son déroulement, les messages d'erreur, et l'écran de fin de partie sont affichés en texte dans la sortie standard (le terminal de l'utilisateur).
+		\subsection{Maquettes}
+			\subsubsection{L'écran d'accueil}
+					%tableau--------
+					\hspace{-3cm}
+					\begin{tabular}{|p{2.5cm}|p{1.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{3.5cm}|} %16cm
+						\hline
+							Libellé & Type & Taille maximum & Est critique & Valeur par défault & Commentaire \\
+						\hline \hline
+							Message d'accueil & Text & une ligne & oui & Bienvenue dans Virtual Wars & C'est le message d'accueil du jeu \\
+							\hline
+							Question règles & Text & NA & oui & Voulez-vous consulter les règles? (o-n)& On rappelle ici les règles du jeu pour les débutants \\
+							\hline
+					\end{tabular}
+					\captionof{table}{Information présente sur l'écran d'accueil}
+					\label{Information présente sur l'écran d'accueil}
+					%---------------
+				
+		\subsubsection{L'écran de paramétrage}
+				%tableau--------
+				\hspace{-3cm}
+				\begin{tabular}{|p{2.5cm}|p{1.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{3.5cm}|} %16cm
+					\hline
+						Libellé & Type & Taille maximum & Est critique & Valeur par défault & Commentaire \\
+					\hline \hline
+						Hauteur du plateau & Text & une ligne & oui & 15 & le plateau est obligatoirement rectangulaire \\
+						\hline
+						Largeur du plateau & Text & une ligne & oui & 10 & 15 et 10 sont en valeur par défaut car données en exemple \\
+						\hline
+						Nombre d'obsacle & Text & une ligne & oui & 7 & 7 est la valeur par défaut car donnée en exemple \\
+						\hline
+						Validation & Text & une ligne & oui & Le paramétrage  de la partie est fini. Appuyer sur une touche pour commencer & Confirmation des paramètres choisis et lancement de la partie\\
+					\hline
+				\end{tabular}
+				\captionof{table}{Informations présentes sur l'écran de paramétrage}
+				\label{Informations présentes sur l'écran de paramétrage}
+				%---------------
+			
+			\subsubsection{L'écran de jeu}
+			%tableau--------
+				\hspace{-3cm}
+				\begin{tabular}{|p{2.5cm}|p{1.5cm}|p{3cm}|p{2.2cm}|p{3.3cm}|p{3.5cm}|} %16cm
+					\hline
+						Libellé & Type & Taille maximum & Est critique & Valeur par défault & Commentaire \\
+					\hline \hline
+						Plateau de jeu & Text & Selon les valeurs choisi par l'utilisateur & oui & NA & Le plateau sera représenté en ASCII art \\
+						\hline
+						Sélection du robot & Text & une ligne & oui & Quel robot voulez-vous jouer? (t,p ou c) & NA \\
+						\hline
+						Sélection de l'action & Text & une ligne & oui & Voulez-vous tirer ou vous déplacer? (t ou d) &  NA \\
+						\hline
+						Sélection de la direction & Text & une ligne & oui & Dans quelles directions voulez-vous aller? (1-8) & NA\\
+					\hline
+				\end{tabular}
+				\captionof{table}{Informations présentes sur l'écran de jeu}
+				\label{Informations présentes sur l'écran de jeu}
+				%---------------
+			
+			\subsubsection{L'écran de fin de partie}
+				%tableau--------
+					\hspace{-3cm}
+					\begin{tabular}{|p{2.5cm}|p{1.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{3.5cm}|} %16cm
+						\hline
+						Libellé & Type & Taille maximum & Est critique & Valeur par défault & Commentaire \\
+						\hline \hline
+						Message de fin & Text & une ligne & oui & Game Over & C'est le message de fin \\
+						\hline
+						Rejouer & Text & une ligne & oui & Voulez-vous refaire une partie? (o-n)& Permet à l'utilisateur de refaire une partie sans relancer le programme. \\
+						\hline
+					\end{tabular}
+					\captionof{table}{Informations présentes sur l'écran d'accueil}
+					\label{Informations présentes sur l'écran d'accueil}
+					%---------------
+			
+		\section{Principales capacités}
+		\subsection{Action possible}
+			\subsubsection{Ecran d'accueil}
+				%tableau--------
+					\hspace{-3cm}
+					\begin{tabular}{|p{3cm}|p{2.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{2cm}|} %16cm
+						\hline
+						Action & Type & Résultat & Ecran de retour & Condition d'affichage & Règle de gestion \\
+						\hline \hline
+						Consultation des règles & Entrée standard & Affiche les règles AND poursuit le jeu & *lien vers les règles* & Lancement du programme &  Voir règle de gestion \ref{R1} et Erreur associé \ref{E1} \\
+						\hline
+					\end{tabular}
+					\captionof{table}{Action possible sur l'écran d'accueil}
+					\label{Action possible sur l'écran d'accueil}
+					%---------------
+					
+				\subsubsection{Ecran de paramétrage}
+					%tableau--------
+						\hspace{-3cm}
+						\begin{tabular}{|p{3cm}|p{2.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{2cm}|} %16cm
+							\hline
+							Action                        & Type                            				       & Résultat              	& Ecran de retour   		& Condition d'affichage 			& Règle de gestion \\
+							\hline \hline
+							Rentrer la hauteur du tableau & Entrée standard $$\mathbb{N} \in \left\{5;50\right\}$$  & Enregistre la hauteur 	& Question largeur  		& Arrive sur l'écran de paramétrage	& Voir règle de gestion	\ref{R2} et Erreur associé \ref{E2}\\
+							\hline
+							Rentrer la largeur du tableau & Entrée standard $$\mathbb{N} \in \left\{5;50\right\}$$  & Enregistre la largeur 	& Question obstacle 		& Répond à la question hauteur      & Voir règle de gestion \ref{R2} et Erreur associé \ref{E2}\\
+							\hline
+							Rentrer le nombre d'obstacles  & Entrée standard $$\mathbb{N} \in \left\{0;\frac{h*l}{2}\right\}$$  & Enregistre les obstacles  & Confirmation des paramètre& Répond à la question largeur & Voir règle de gestion \ref{R2} et Erreur associé \ref{E2}		\\
+							\hline
+							Confirmer vos choix 		  & Entrée standard (n'importe quelle touche)			   & Lance la partie		& Ecan de jeu				& Répond à la question obstacles	& Voir règle de gestion \ref{R1}	et Erreur associé \ref{E1}			\\
+							\hline
+						\end{tabular}
+						\captionof{table}{Action possible sur l'écran de paramétrage}
+						\label{Action possible sur l'écran de paramétrage}
+						%---------------
+					\subsubsection{Ecran de jeu}
+					%tableau--------
+						\hspace{-3cm}
+						\begin{tabular}{|p{3cm}|p{2.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{2cm}|} %16cm
+							\hline
+							Action 					& Type 							& Résultat              		& Ecran de retour   		& Condition d'affichage & Règle de gestion \\
+							\hline \hline
+							Choix du robot			& Entrée standard (c OR p OR t) & Enregitre le robot choisi		& Choix de l'action 		& Début du tour de jeu 	& Voir règle de gestion \ref{R1} et Erreur associé\ref{E1}			\\
+							\hline
+							Choix de l'action 		& Entrée standard (t XOR d) 		& Enregistre l'action choisie 	& Choix de la direction 	& A choisi son robot	& Voir règle de gestion \ref{R1}  et Erreur associé \ref{E1}			\\
+							\hline
+							Choix de la direction 	& Entrée standard $$\mathbb{N} \in \left\{1;8\right\}$$ & Enregistre la direction choisie & Plateau de jeu	& A choisi l'action	&  Voir règle de gestion et Erreur associée \ref{E2} 		\\
+						\hline
+						\end{tabular}
+						\captionof{table}{Action possible sur l'écran de jeu}
+						\label{Action possible sur l'écran de jeu}
+						%---------------
+					\subsubsection{Ecran de fin de partie}
+				%tableau--------
+					\hspace{-3cm}
+					\begin{tabular}{|p{3cm}|p{2.5cm}|p{3cm}|p{2.5cm}|p{3cm}|p{2cm}|} %16cm
+						\hline
+						Action 			  & Type 					 &	Résultat 			 				 	  & Ecran de retour 		   & Condition d'affichage & Règle de gestion \\
+						\hline \hline
+						Choix recommencer & Entrée standard (o XOR n) & Recommence la partie ou ferme le programme & Ecran de parametrage  NA & Un des joueurs a perdu tout ces robots	& Voir règle de gestion \ref{R1} et Erreur associé \ref{E1} \\
+						\hline
+					\end{tabular}
+					\captionof{table}{Action possible sur l'écran de fin de partie}
+					\label{Action possible sur l'écran de fin de partie}
+					%---------------
+			
+	\section{Règles de Gestion}
+
+\begin{figure}[H]
+	   \caption{
+	    	\label{R1} %Entrer un caractère
+	    	L'utilisateur doit entrer un caractère valide: un seul caractère parmi ceux proposés.
+	   }
+\end{figure}
+
+\begin{figure}[H]
+	   \caption{
+	    	\label{R2} %Enter un entier
+	    	L'utilisateur doit entrer un entier valide: un seul entier compris dans l'intervalle indiqué dans la question.
+	    }
+	\end{figure}
+
+	\section{Messages d'erreurs}
+
+\begin{figure}[H]
+	   \caption{
+	    	\label{E1} %Entrer un caractère
+	    	Affichage dans la sortie standard du message : Caractère incompatible! Veuillez entrer un caractère indiqué ou appuyer sur entrer. \\
+	    	Code technique associé: Erreur 001.
+		   }
+	\end{figure}
+
+	 \begin{figure}[H]
+	   \caption{
+	    	\label{E2} %Enter un entier
+	    	Affichage dans la sortie standard du message : Valeur incompatible! Veuillez entrer un entier compris dans l'intervalle indiqué ou appuyer sur entrer. \\
+	    	Code technique associé: Erreur 002.
+	    }
+	\end{figure}
+
+	\section{Scénario d'exploitation}
+	\\
+		%Organigramme d'execution----------
+		\begin{tikzpicture}
+			\usetikzlibrary{shapes, arrows}
+			% style des nœuds
+			\tikzstyle{debutfin}=[ellipse,draw,text=red] %debut/fin
+			\tikzstyle{instruct}=[rectangle,draw,fill=green!50] %Intruction
+			\tikzstyle{test}=[diamond, aspect=2.5,thick, draw=blue,fill=yellow!50,text=blue]
+			\tikzstyle{es}=[rectangle,draw,rounded corners=4pt,fill=blue!25] %entrée/sortie
+			% style des flèches
+			\tikzstyle{suite}=[->,>=stealth’,thick,rounded corners=4pt]
+			% placement des nœuds
+			\node[debutfin] (debut) at (0,3) {Début}; %debut
+			\node[instruct] (exe) at (0,2) {Lancement du programme};
+			\node[es] (welcome) at (0,1) {Ecran d'accueil}; 
+			\node[test] (testRead) at (0,-1) {Lire la documentation ?};
+			\node[es] (read) at (-7,-1) {Ouverture de la documention};
+			\node[instruct] (config) at (0,-4) {Paramétrage de la partie};
+			\node[es] (print) at (0,-5) {Affichage du plateau};
+			\node[instruct] (play) at (0,-6.25) {Tour de jeu (choix/déplacement/action)};
+			\node[test] (endGame) at (0,-8) {Partie finie?};
+			\node[es] (gameOver) at (0,-10.25) {Ecran de fin};
+			\node[test] (replay) at (0,-12) {Rejouer?};
+			\node[debutfin] (fin) at (0,-14) {Fin};
+			% Placement des flèches 
+			\draw[->] (debut) -- (exe);
+			\draw[->] (exe) -- (welcome);
+			\draw[->] (welcome) -- (testRead);
+			\draw[suite] (testRead) -- (read) node[midway,fill=white]{oui};
+			\draw[suite] (testRead) -- (config) node[midway,fill=white]{non};
+			\draw[->] (config) -- (print);
+			\draw[->] (print) -- (play);
+			\draw[->] (play) -- (endGame);
+			\draw[suite] (endGame) -- (-5,-8) -- (-5,-5) -- (print) node[midway,fill=white]{non};
+			\draw[suite] (endGame)--(gameOver) node[midway,fill=white]{oui};
+			\draw[->] (gameOver) -- (replay);
+			\draw[suite] (replay) -- (fin) node[midway,fill=white]{non}; 
+			\draw[suite] (replay) -- (-6,-12) -- (-6,-4) -- (config) node[midway,fill=white]{oui};
+			\draw[->] (read) -- (-7,-14) -- (fin);
+		\end{tikzpicture}
+		%---------------------------------
+	
+	\section{Performance}
+		Pour le jalon 1, nous nous ne péoccuperons pas des performances de l'application qui seront, dans le pire des cas, négligeables du fait de l'absence d'élément graphique.
+	\section{Contraintes imposées sur l'implémentation}
+		Toutes les contraintes que nous nous sommes imposées sur implémentations sont fournies dans le document des normes techniques ci-joint.
+	\section{Les interfaces}
+		L'interface pour le jalon 1 sera un environnement textuel dont les échanges se feront au travers du terminal aussi bien pour l'entrée que pour la sortie.
+	\subsection{Caractéristiques des utilisateurs}
+		L'utilisateur peut être tout public à condition qu'il ait lu les règles du jeu au préalable.
+	
+% Jalon 2 --------------------
+%\newpage
+%\part{Version graphique}
+%	\section{Description générale}
+%		\section{Modes et états}
+%			\subsection{Maquettes}
+%		\section{Principales capacités}
+%		\section{Principales conditions}
+%		\section{Principales contraintes}		
+%		\section{Caractéristiques des utilisateurs}
+%		\section{Scénario d'exploitation}
+%		\section{Performances}
+%		\section{Contraintes imposées sur l'implantation}
+%		\section{Les interfaces}
+%------------------------------
+
+% Exemple code Java -------------------------------
+%\lstset{language = Java}
+%	\begin{lstlisting}
+%	import java.util.*;
+
+%	class Test{
+%		public static void main(String[] args){
+%			System.out.println("Hello World!");
+%		}
+%	}
+%	\end{lstlisting}
+%--------------------------------------------------
+
+\newpage 
+\makeindex
+\listofffigures
+\listoftables
+\end{document}
