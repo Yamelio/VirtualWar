@@ -1,0 +1,248 @@
+\documentclass{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[top=3cm, bottom=2cm, left=5cm, right=4cm]{geometry}
+
+
+
+\lstset{
+language = Java,
+numbers=left,
+numbersep=7pt,
+backgroundcolor=\color{white},
+frame=single,
+}
+
+
+
+\title{Normes techniques}
+\author{Aurélien \bsc{Svevi}}
+\date{14 mars 2015}
+\begin{document}
+\maketitle
+
+\tableofcontents
+\newpage
+
+\addcontentsline{toc}{part}{Normes de nommages}
+\part*{Normes de nommages}
+\section{Nommage des class et interfaces}
+
+Les noms des class et interfaces doivent respecter les conventions suivantes:
+
+\begin{enumerate}
+
+\item Première lettre en majuscule
+\item Première lettre de chaque mot en majuscule
+\item Donner des noms simples et descriptifs
+\item Éviter les acronymes
+\item N'utiliser que les caractères [a-z] et [A-Z] et [0-9]
+
+\end{enumerate}
+
+\section{Nommage des variables}
+
+Les noms des variables doivent respecter les conventions suivantes:
+
+\begin{enumerate}
+
+\item Première lettre en minuscule
+\item Première lettre de chaque mot en majuscule
+\item Donner des noms simples et descriptifs
+\item N'utiliser que les caractères [a-z] et [A-Z] et [0-9]
+\item Variables d'une seule lettre (pour un usage local):\begin{itemize}
+	\item int : i, j, k, m, et n 
+	\item char : c, d, et e 
+	\item boolean : b
+	\end{itemize}
+
+\end{enumerate}
+
+\section{Nommage des constantes}
+
+Les noms des constantes doivent respecter les conventions suivantes:
+
+\begin{enumerate}
+
+\item Tout en majuscule
+\item Séparer les mots par des underscore : '\_'
+\item Donner des noms simples et descriptifs
+\item N'utiliser que les lettres [A-Z], [0-9] et '\_'
+
+\end{enumerate}
+
+\section{Nommage des méthodes}
+
+Les noms des méthodes doivent respecter les conventions suivantes: 
+
+\begin{enumerate}
+\item Le nom doit contenir un verbe
+\item Première lettre en minuscule
+\item Première lettre de chaque mot en majuscule
+\item N'utiliser que les caractères [a-z] et [A-Z] et [0-9]
+\end{enumerate}
+
+
+\newpage
+\addcontentsline{toc}{part}{Normes des fichiers}
+\part*{Normes des fichiers}
+\setcounter{section}{0}
+\section{En-tête des fichiers}
+
+Chaque fichier devra débuter par un commentaire contenant:
+
+\begin{enumerate}
+\item Le nom du développeur
+\item La date de création du fichier
+\item Une description rapide si nécessaire
+\end{enumerate}
+
+
+
+
+\section{Contenu des fichiers}
+
+
+Un fichier ne devra pas contenir plus de 1500 lignes de codes.
+\\
+\\
+Un fichier ne devra contenir qu'une seule class et le nom du fichier devra être de la forme "MaClasse.java".
+\\
+\\
+Chaque ligne ne devra contenir qu'un seul traitement : Pas de ';' au milieu de la ligne sauf dans le cas des boucles for.
+
+\begin{lstlisting}
+res = 4 + 3;
+i++;
+\end{lstlisting}
+
+\addcontentsline{toc}{part}{Normes de variables}
+\part*{Normes des variables}
+
+Chaque variable doit être définit sur une ligne
+\begin{lstlisting}
+String nom;
+String prenom;
+int age;
+\end{lstlisting}
+
+Toutes les variables utilisés dans un bloc doivent être définit au début de ce bloc (sauf les index de boucle)
+\\
+\\
+Éviter de donner les mêmes noms à plusieurs variables définit dans des blocs différents (sauf variables locales).
+
+
+\addcontentsline{toc}{part}{Normes de méthodes}
+\part*{Normes des méthodes}
+
+Une méthode ne devra pas prendre plus de 7 paramètres
+\\
+\\
+Une méthode ne doit pas contenir plus de 150 lignes
+
+\newpage
+\addcontentsline{toc}{part}{Normes des instructions}
+\part*{Normes des Instructions}
+\setcounter{section}{0}
+\section{L'instruction if}
+L'instruction if devra se présenter sous cette forme:
+
+\begin{lstlisting}
+if (condition) {
+	traitements;
+} else if (condition) {
+	traitements;
+} else {
+	traitements;
+}
+\end{lstlisting}
+
+Elle devra obligatoirement contenir les accolades '\{' et '\}' même s'il n'y a qu'une seule ligne de traitement.
+
+
+\section{L'instruction for}
+L'instruction for devra se présenter sous cette forme:
+
+\begin{lstlisting}
+for (initialisation; condition; traitement) {
+	traitements;
+}
+\end{lstlisting}
+
+On peut également utiliser cette instruction sous la forme for each:
+
+\begin{lstlisting}
+for(Element e : List l){
+	traitement;
+}
+\end{lstlisting}
+
+
+
+\section{L'instruction switch}
+L'instruction switch devra se présenter sous cette forme:
+
+\begin{lstlisting}
+switch (condition) {
+case casA:
+	traitements;
+	break;
+case casB:
+	traitements;
+	break;
+case casC:
+	traitements;
+	break;
+default:
+	traitements;
+	break;
+}
+
+\end{lstlisting}
+
+\newpage
+\addcontentsline{toc}{part}{Exemple de code}
+\part*{Exemple de code}
+
+\begin{lstlisting}
+class MaSuperClass{
+
+	private String nom;
+	private int age;
+	private final int ANNEE = 2015;
+
+
+	public MaSuperClass(String nom, int age){
+		this.nom = nom;
+		this.prenom = prenom;
+		this.age = age;
+	}
+
+
+	public int calculerAnneeNaissance(){
+		return ANNEE-age;
+	}
+
+
+	public void afficherTrancheAge(){
+		if(age < 18){
+			System.out.println("Trop petit");
+		} else if (age >= 18 && age <= 30) {
+			System.out.println("Bienvenue");
+		} else {
+			System.out.println("Trop vieux");
+		}
+
+	}
+
+}
+
+\end{lstlisting}
+
+
+\end{document}
