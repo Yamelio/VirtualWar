@@ -3,5 +3,6 @@ Libertés sur les règles ?
 
 1er tour : Robot obligatoire déjà sorti ou à sortir ?
 Peut-on se suicider en se déplaçant ou en tirant ?
+Que se passe-t-il si le seul robot d'une équipe sur le terrain meurt et qu'il y en a dans la base ?
 
 Déplacements.
