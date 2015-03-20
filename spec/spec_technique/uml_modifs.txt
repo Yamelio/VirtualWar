@@ -2,9 +2,19 @@
     Case --> trouver auvtre chose (confusion switch/case)
 
 revoir déplacement (utiliser enum?)
+déplacement et attaque : changer les paramètres (appelé à partir d'un robot, pas besoin de le prendre en paramètre (pas de new Deplacement))
 
 constantes public static
 
 robot --> classe abstraite
 
 plateau --> méthodes création chemin
+
+majuscules aux classes
+
+
+
+Flèche normale ( --> ) : contient un         \ attribut
+Flèche losange ( --<>) : contient plusieurs  / implicite
+Flèche pleine ( --|>) : extends              
+Flèche discontinue ( - - ->) : implements
