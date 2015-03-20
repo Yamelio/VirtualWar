@@ -1,0 +1,10 @@
+/!\ Char --> Tank
+    Case --> trouver auvtre chose (confusion switch/case)
+
+revoir déplacement (utiliser enum?)
+
+constantes public static
+
+robot --> classe abstraite
+
+plateau --> méthodes création chemin
