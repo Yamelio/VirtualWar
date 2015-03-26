@@ -18,7 +18,7 @@ public class Main {
          * 		
          */
 	public int cacahuete(String lol){
-		
+		return 42;
 	}
 	
 	/**
