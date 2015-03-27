@@ -35,5 +35,5 @@ public class Deplacement {
 	
 	public Position getCible(){return this.cible;}
 	
-	public void setCible(Position cible2){this.cible = cible2;} //si la cible initiale ne convient pas
+	public void setCible(Position cible2){} //si la cible initiale ne convient pas
 }
