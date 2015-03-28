@@ -5,8 +5,6 @@ import virtualwars.entity.Robot;
 /**
  * Cette classe gère le contenu d'une case du plateau.
  * 
- * @author duquenna
- * 
  */
 public abstract class Cellule {
 
