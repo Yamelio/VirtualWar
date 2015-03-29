@@ -10,8 +10,6 @@ import virtualwars.entity.Robot;
 import virtualwars.entity.Tireur;
 import virtualwars.entity.actions.Attaque;
 import virtualwars.entity.actions.Deplacement;
-import virtualwars.ia.GraphePlateau;
-import virtualwars.ia.SommetPlateau;
 
 public class Plateau {
 
