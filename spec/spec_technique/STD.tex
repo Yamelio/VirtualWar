@@ -85,7 +85,7 @@ List<case> chemin;
 case c = new case();
 
 Tant que c n'est pas sur la base oppose au depart:
-	Ce deplacer aleatoirement (x+1 || y+1)
+	Se deplacer aleatoirement (x+1 || y+1)
 	Mettre a jour c avec les nouvelles positions
 	chemin.add(new case(c.x,c.y);
 
@@ -139,7 +139,7 @@ robot realisant le deplacement -- type d'action -- case cible
 Lors du chargement, La partie sera refaite entièrement jusqu'à arrivé à la fin du fichier ce qui permettra de revenir au moment de la sauvegarde.
 
 \newpage
-\section{Vérifier si au moins un robot est dehors}
+\section{Vérifier si au moins un robot est hors de la base}
 Le joueur est toujours obligé d'avoir au moins un robot en dehors de sa base, sauf le premier tour ou alors si le joueur a perdu tous ses robots. Ainsi il faudra vérifier à chaque tour si au moins un robot est dehors grâce à cet algorithme:
 
 \begin{lstlisting}
