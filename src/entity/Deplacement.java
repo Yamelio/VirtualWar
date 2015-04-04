@@ -1,12 +1,12 @@
 
-public class Deplacement {
+public class Deplacement extends Action{
 
 	private Constantes constantes = new Constantes();
 	private Robot robot;
 	private Position cible;
 	
 	public Deplacement(Robot robot, Position cible){
-		this.robot = robot;
+		super(robot);
 		if(this.robot instanceof Tireur || this.robot instanceof Piegeur){
 			if((this.robot.getPosition().getX() == cible.getX() - constantes.getPorteeDeplacementTireur()
 			|| this.robot.getPosition().getX() == cible.getX() + constantes.getPorteeDeplacementTireur()
@@ -31,8 +31,6 @@ public class Deplacement {
 		}
 	}
 
-	public Robot getRobot(){return this.robot;}
-	
 	public Position getCible(){return this.cible;}
 	
 	public void setCible(Position cible2){} //si la cible initiale ne convient pas

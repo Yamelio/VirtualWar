@@ -1,101 +1,100 @@
 
-public class Attaque {
+public class Attaque extends Action{
 
 	private Constantes constantes = new Constantes();
-	private Robot attaquant;
+	private Robot robot;
 	private Position cible;
 		
 	public Attaque(Robot robot, Position cible){
-		this.attaquant = robot;
-		if(this.attaquant instanceof Tireur){
-			if(this.attaquant.getPosition().getY() == cible.getY()){
-				if(this.attaquant.getPosition().getX() > cible.getX()){
-					if((this.attaquant.getPosition().getX() - cible.getX() <= constantes.getPorteeTireur())){
+		super(robot);
+		if(this.robot instanceof Tireur){
+			if(this.robot.getPosition().getY() == cible.getY()){
+				if(this.robot.getPosition().getX() > cible.getX()){
+					if((this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteeTireur())){
 						this.cible = cible;
-						this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirTireur());
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirTireur());
 					}
-				}else if(cible.getX() > this.attaquant.getPosition().getX()){
-					if((cible.getX() - this.attaquant.getPosition().getX() <= constantes.getPorteeTireur())){
+				}else if(cible.getX() > this.robot.getPosition().getX()){
+					if((cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteeTireur())){
 						this.cible = cible;
-						this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirTireur());
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirTireur());
 					}
 				}
-			}else if(this.attaquant.getPosition().getX() == cible.getX()){
-				if(this.attaquant.getPosition().getY() > cible.getY()){
-					if((this.attaquant.getPosition().getY() - cible.getY() <= constantes.getPorteeTireur())){
+			}else if(this.robot.getPosition().getX() == cible.getX()){
+				if(this.robot.getPosition().getY() > cible.getY()){
+					if((this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteeTireur())){
 						this.cible = cible;
-						this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirTireur());
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirTireur());
 					}
-				}else if(cible.getY() > this.attaquant.getPosition().getY()){
-						if((cible.getY() - this.attaquant.getPosition().getY() <= constantes.getPorteeTireur())){
+				}else if(cible.getY() > this.robot.getPosition().getY()){
+						if((cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteeTireur())){
 							this.cible = cible;
-							this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirTireur());
+							this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirTireur());
 						}
 				}
 			}
-		}else if(this.attaquant instanceof Char){
-			if(this.attaquant.getPosition().getY() == cible.getY()){
-				if(this.attaquant.getPosition().getX() > cible.getX()){
-					if((this.attaquant.getPosition().getX() - cible.getX() <= constantes.getPorteeChar())){
+		}else if(this.robot instanceof Char){
+			if(this.robot.getPosition().getY() == cible.getY()){
+				if(this.robot.getPosition().getX() > cible.getX()){
+					if((this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteeChar())){
 						this.cible = cible;
-						this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirChar());
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirChar());
 					}
-				}else if(cible.getX() > this.attaquant.getPosition().getX()){
-					if((cible.getX() - this.attaquant.getPosition().getX() <= constantes.getPorteeChar())){
+				}else if(cible.getX() > this.robot.getPosition().getX()){
+					if((cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteeChar())){
 						this.cible = cible;
-						this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirChar());
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirChar());
 					}
 				}
-			}else if(this.attaquant.getPosition().getX() == cible.getX()){
-				if(this.attaquant.getPosition().getY() > cible.getY()){
-					if((this.attaquant.getPosition().getY() - cible.getY() <= constantes.getPorteeChar())){
+			}else if(this.robot.getPosition().getX() == cible.getX()){
+				if(this.robot.getPosition().getY() > cible.getY()){
+					if((this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteeChar())){
 						this.cible = cible;
-						this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirChar());
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirChar());
 					}
-				}else if(cible.getY() > this.attaquant.getPosition().getY()){
-						if((cible.getY() - this.attaquant.getPosition().getY() <= constantes.getPorteeChar())){
+				}else if(cible.getY() > this.robot.getPosition().getY()){
+						if((cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteeChar())){
 							this.cible = cible;
-							this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutTirChar());
+							this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutTirChar());
 						}
 				}
 			}
 		}else{
-			if(this.attaquant.getPosition().getX() >= cible.getX()
-			&& this.attaquant.getPosition().getY() >= cible.getY()){
-				if(this.attaquant.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
-				&& this.attaquant.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
+			if(this.robot.getPosition().getX() >= cible.getX()
+			&& this.robot.getPosition().getY() >= cible.getY()){
+				if(this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
+				&& this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
 					this.cible = cible;
-					this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutMine());
-					cible.flipMine(this.attaquant.getEquipe());
+					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+					cible.flipMine(this.robot.getEquipe());
 				}
-			}else if(this.attaquant.getPosition().getX() >= cible.getX()
-			&& this.attaquant.getPosition().getY() <= cible.getY()){
-				if(this.attaquant.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
-				&& cible.getY() - this.attaquant.getPosition().getY() <= constantes.getPorteeTireur()){
+			}else if(this.robot.getPosition().getX() >= cible.getX()
+			&& this.robot.getPosition().getY() <= cible.getY()){
+				if(this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
+				&& cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteeTireur()){
 					this.cible = cible;
-					this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutMine());
-					this.cible.flipMine(this.attaquant.getEquipe());
+					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+					this.cible.flipMine(this.robot.getEquipe());
 				}
-			}else if(this.attaquant.getPosition().getX() <= cible.getX()
-			&& this.attaquant.getPosition().getY() >= cible.getY()){
-				if(cible.getX() - this.attaquant.getPosition().getX() <= constantes.getPorteePiegeur()
-				&& this.attaquant.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
+			}else if(this.robot.getPosition().getX() <= cible.getX()
+			&& this.robot.getPosition().getY() >= cible.getY()){
+				if(cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteePiegeur()
+				&& this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
 					this.cible = cible;
-					this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutMine());
-					this.cible.flipMine(this.attaquant.getEquipe());
+					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+					this.cible.flipMine(this.robot.getEquipe());
 				}
 			}else {
-				if(cible.getX() - this.attaquant.getPosition().getX() <= constantes.getPorteePiegeur()
-				&& cible.getY() - this.attaquant.getPosition().getY() <= constantes.getPorteePiegeur()){
+				if(cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteePiegeur()
+				&& cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteePiegeur()){
 					this.cible = cible;
-					this.attaquant.setEnergie(this.attaquant.getEnergie() - constantes.getCoutMine());
-					this.cible.flipMine(this.attaquant.getEquipe());
+					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+					this.cible.flipMine(this.robot.getEquipe());
 				}
 			}
 		}
 	}
 	
-	public Robot getAttaquant(){return this.attaquant;}
 	
 	public Position getCible(){return this.cible;}
 	
