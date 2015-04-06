@@ -7,8 +7,8 @@ public class Tireur extends Robot{
 	private Position pos;
 	private int id;
 	
-	public Tireur(int equipe, int id){
-		super(equipe, id);
+	public Tireur(int equipe){
+		super(equipe);
 		this.energie = constantes.getEnergieInitialeTireur();
 	}
 }

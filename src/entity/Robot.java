@@ -5,11 +5,13 @@ public abstract class Robot {
 	private int energie;
 	private int equipe;
 	private Position pos;
+	public static int cpt = 1;
 	private int id;
 	
-	public Robot(int equipe, int id){
+	public Robot(int equipe){
 		this.equipe = equipe;
-		this.id = id;
+		this.id = cpt;
+		cpt++;
 	}
 	
 	public int getEnergie(){return this.energie;}

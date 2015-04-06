@@ -5,11 +5,10 @@ public class Piegeur extends Robot{
 	private int energie;
 	private int equipe;
 	private Position pos;
-	private int id;
 	private int nbMines = 10;
 	
-	public Piegeur(int equipe, int id){
-		super(equipe, id);
+	public Piegeur(int equipe){
+		super(equipe);
 		this.energie = constantes.getEnergieInitialePiegeur();
 	}
 

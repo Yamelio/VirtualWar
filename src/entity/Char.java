@@ -7,8 +7,8 @@ public class Char extends Robot{
 	private Position pos;
 	private int id;
 	
-	public Char(int equipe, int id){
-		super(equipe, id);
+	public Char(int equipe){
+		super(equipe);
 		this.energie = constantes.getEnergieInitialeChar();
 	}
 }
