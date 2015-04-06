@@ -1,10 +1,6 @@
-package virtualwars.gamefield;
-
 import java.util.ArrayList;
 
-import virtualwars.entity.Robot;
-
-public class Base extends Cellule {
+public class Base extends Position {
 	private ArrayList<Robot> robots;
 
 	/**
@@ -40,7 +36,7 @@ public class Base extends Cellule {
 	public void videCase() {
 		ArrayList<Robot> toRemove = new ArrayList<Robot>();
 		for (Robot r : robots) {
-			if (!r.getCoordonnees().isEquals(this.coord))
+			if (!r.getPosition().isEquals(new Position(largeur, hauteur))
 				toRemove.add(r);
 		}
 		for(Robot t : toRemove) {
@@ -48,23 +44,7 @@ public class Base extends Cellule {
 		}
 	}
 
-	@Override
-	public void ajouteMine(int equipe) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public ArrayList<Robot> getRobotsInBase() {
 		return robots;
-	}
-
-	public String toString() {
-		String s = "Base+--";
-		for (Robot r : robots) {
-			s += "\t+[ " + r.toString()+" ]\n";
-		}
-		if(robots.isEmpty())
-			s += " vide";
-		return s;
 	}
 }
