@@ -44,9 +44,4 @@ public class Position {
 	}
 	
 	public void flipObstacle(){this.obstacle = !this.obstacle;}
-	
-	public boolean isEquals(Coordonnees coord) {
-		// TODO Auto-generated method stub
-		return (this.getX() == coord.getLargeur() && this.getY() == coord.getHauteur());
-	}
 }
