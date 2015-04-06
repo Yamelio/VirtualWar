@@ -6,6 +6,7 @@ public class Piegeur extends Robot{
 	private int equipe;
 	private Position pos;
 	private int nbMines = 10;
+	private int id;
 	
 	public Piegeur(int equipe){
 		super(equipe);
@@ -17,4 +18,8 @@ public class Piegeur extends Robot{
 		this.energie += constantes.getRecharge();
 		this.nbMines = 10;
 	}
+
+	public int getNbMines(){return this.nbMines;}
+	
+	public void setNbMines(int nbMines){this.nbMines = nbMines;}
 }
