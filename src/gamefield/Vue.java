@@ -1,4 +1,3 @@
-package virtualwars.gamefield;
 
 public class Vue {
 
@@ -25,11 +24,8 @@ public class Vue {
 	 *            Coordonnee a verifier
 	 * @return true si libre
 	 */
-	public boolean estLibre(Coordonnees coord) {
-		return !this.plateau.estMur(coord)
-				&& this.plateau.contenu(coord) == null
-				&& (this.plateau.contientMine(coord) == 0 || this.plateau
-						.contientMine(coord) != equipe);
+	public boolean estLibre(Position p) {
+		return !p.estObsatcle() && !p.estMine() && !p.estBase();
 	}
 
 	/**
