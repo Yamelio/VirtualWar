@@ -1,4 +1,3 @@
-
 public class Vue {
 
 	private Plateau plateau;
@@ -25,7 +24,7 @@ public class Vue {
 	 * @return true si libre
 	 */
 	public boolean estLibre(Position p) {
-		return !p.estObsatcle() && !p.estMine() && !p.estBase();
+		return !p.isObstacle() && !p.isMine() && !p.isBase();
 	}
 
 	/**

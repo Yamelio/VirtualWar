@@ -70,33 +70,34 @@ public class Position {
 
 	/**
 	 * Affiche le contenu de la position
-	 * @return char
-	 * 			Retourne le contenu de la cellule en ASCII art
+	 * 
+	 * @return char Retourne le contenu de la cellule en ASCII art
 	 */
-	public String toString(){ //Il faut rajouter les affichages des robots, il n'y que les obstacles, mines, et bases
+	public String toString() { // Il faut rajouter les affichages des robots, il
+								// n'y que les obstacles, mines, et bases
 		String c;
-		if(equipe == 1){
-			if(this.mine){
-				c = "M"; 
-			}else if(this.base){
+		if (equipe == 1) {
+			if (this.mine) {
+				c = "M";
+			} else if (this.base) {
 				c = "B";
-			}else{
+			} else {
 				c = "E";
 			}
-			
-		}else if(equipe == 2){
-			if(this.mine){
-				c = "m"; 
-			}else if(this.base){
+
+		} else if (equipe == 2) {
+			if (this.mine) {
+				c = "m";
+			} else if (this.base) {
 				c = "b";
-			}else{
+			} else {
 				c = "e";
 			}
-			
-		}else{
-			if(this.obsacle){
+
+		} else {
+			if (this.obstacle) {
 				c = "#";
-			}else{
+			} else {
 				c = " ";
 			}
 		}

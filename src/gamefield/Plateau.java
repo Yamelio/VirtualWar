@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-
 public class Plateau {
 	private Map<String, Position> carte;
 	private List<Robot> robots;
@@ -23,16 +22,18 @@ public class Plateau {
 	public Plateau(int largeur, int hauteur) {
 		this.hauteur = hauteur;
 		this.largeur = largeur;
+		initCarte();
+		initObstacles();
 	}
 
 	/**
 	 * Fonction d'initialisation de la carte
 	 */
-	public void initCarte(){
+	public void initCarte() {
 		carte = new HashMap<String, Position>();
-		for(int i = 1; i <= hauteur; i++){
-			for(int j = 1; j <= largeur; j++){
-				carte.put(posToString(new Position(largeur, hauteur)), new Position(largeur, hauteur));
+		for (int i = 1; i <= hauteur; i++) {
+			for (int j = 1; j <= largeur; j++) {
+				carte.put(posToString(new Position(i, j)), new Position(i, j));
 			}
 		}
 	}
@@ -48,7 +49,8 @@ public class Plateau {
 		String s = "";
 		s += (char) (p.getX() + 16); // +16 car les lettres se trouvent à +16
 										// dans la table ASCII
-		s += p.getY(); // Pas besoin de convertion, les ordonnées sont déjà en
+		s += p.getY(); // Pas besoin de convertion, les ordonnées sont déjà
+						// en
 						// int
 		return s;
 	}
@@ -61,9 +63,10 @@ public class Plateau {
 	 * @return La Position voulu
 	 */
 	public Position stringToPos(String s) {
-		int x = (int) ((char) (s.substring(0, 1))); // On converti
-															// l'abscisse en int
-		int y = (int) s.substring(1); // On converti l'ordonné en int
+		int x = Integer.parseInt(s.substring(0, 1)); // On converti
+														// l'abscisse en int
+		int y = Integer.parseInt(s.substring(1)); // On converti l'ordonné en
+													// int
 		return new Position(x, y);
 	}
 
@@ -73,43 +76,64 @@ public class Plateau {
 	 */
 	private void initObstacles() {
 		Random r = new Random();
-		List<Position> liste = new ArrayList<Position>(); //Liste des position à laisser libre
-		Position p = new Position(0,0); //On commence en haut à gauche
-		liste.add(p);//La position en haut à gauche est laissé libre
-		liste.add(new Position(largeur, hauteur)); //La position en bas à droite est laissé libre
+		List<Position> liste = new ArrayList<Position>(); // Liste des position
+															// à laisser libre
+		Position p = new Position(0, 0); // On commence en haut à gauche
+		liste.add(p);// La position en haut à gauche est laissé libre
+		liste.add(new Position(largeur, hauteur)); // La position en bas à
+													// droite est laissé libre
 
-		while(p.getX() != largeur && p.getY() != hauteur){ //Temps qu'on est pas arriver dans le coin en bas à gauche
-			if(r.nextBoolean()){ //une chance sur deux qu'il se déplace verticalement
-				if(p.getX() + 1 <= largeur){
+		while (p.getX() != largeur && p.getY() != hauteur) { // Temps qu'on est
+																// pas arriver
+																// dans le coin
+																// en bas à
+																// gauche
+			if (r.nextBoolean()) { // une chance sur deux qu'il se déplace
+									// verticalement
+				if (p.getX() + 1 <= largeur) {
 					p = new Position(p.getX() + 1, p.getY());
 				}
-			}
-			else
-			{
-				if(p.getY() + 1 <= hauteur){
+			} else {
+				if (p.getY() + 1 <= hauteur) {
 					p = new Position(p.getX(), p.getY() + 1);
 				}
 			}
-			liste.add(p); //On ajoute a la liste
+			liste.add(p); // On ajoute a la liste
 
 		}
-		int nbObstacle = (int) getSurface() * (percentObstacle / 100); //Converti le pourcentage d'obstacle en noimbre d'obsacle
+		int nbObstacle = (int) getSurface() * (percentObstacle / 100); // Converti
+																		// le
+																		// pourcentage
+																		// d'obstacle
+																		// en
+																		// noimbre
+																		// d'obsacle
 
 		int randX;
 		int randY;
-		while(nbObstacle > 0){ // temps qu'il reste desobsacles à ajouter
-			for(int i = 0; i < liste.size(); i++){ 
+		while (nbObstacle > 0) { // temps qu'il reste desobsacles à ajouter
+			for (int i = 0; i < liste.size(); i++) {
 				randX = r.nextInt(largeur + 1);
 				randY = r.nextInt(largeur + 1);
-				if(!(Position p = new Position(randX, randY)).equals(liste.get(i))){ //Si la position aléatoire n'est pas dans la liste
-					--nbObstacle; //On décremente le nombre d'obsacle à ajouter
-					p.estObstacle();//La position est maintenent un u
-					carte.remove(posToString(p)); //histoire d'etre sur on supp d'abord
-					carte.put(posToString(p), p); //On ajoute
+				if (!(p = new Position(randX, randY)).equals(liste.get(i))) { // Si
+																				// la
+																				// position
+																				// aléatoire
+																				// n'est
+																				// pas
+																				// dans
+																				// la
+																				// liste
+					--nbObstacle; // On décremente le nombre d'obsacle à
+									// ajouter
+					p.estObstacle();// La position est maintenent un u
+					carte.remove(posToString(p)); // histoire d'etre sur on supp
+													// d'abord
+					carte.put(posToString(p), p); // On ajoute
 				}
 			}
 		}
-	
+
 	}
 
 	/**
@@ -119,15 +143,17 @@ public class Plateau {
 	 */
 	public String toString() {
 		String s = "";
-		for (int i = 1; i < hauteur + 1; i++) { // On parcourt en hauteur
-			for (int j = 1; i < largeur + 1; j++) { // On parcourt en largeur
+		for (int i = 1; i <= hauteur; i++) { // On parcourt en hauteur
+			for (int j = 1; j <= largeur; j++) { // On parcourt en largeur
 				if (i % 2 != 0) { // toutes les deux lignes on aterne
 					s += "+---";
 				} else {
-					s += "| "+ carte.get(posToString(new Position(i,j))).toString() +" "; //Merci Aurélien
+					s += "| "
+							+ carte.get(posToString(new Position(i, j)))
+									.toString() + " "; // Merci Aurélien
 				}
 			}
-			if (i % 2 == 0) { // Pour finir la ligne joliement
+			if (i % 2 != 0) { // Pour finir la ligne joliement
 				s += "+";
 			} else {
 				s += "|";
