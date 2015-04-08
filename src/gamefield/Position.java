@@ -94,7 +94,7 @@ public class Plateau {
 		int randX;
 		int randY;
 		while(nbObstacle > 0){ // temps qu'il reste desobsacles à ajouter
-			for(int i = 0; i < liste.size(); i++){ 
+			for(int i = 0; i < liste.size(); i++){ // temps qu'il reste desobsacles à ajouter
 				randX = r.nextInt(largeur + 1);
 				randY = r.nextInt(largeur + 1);
 				if(!(Position p = new Position(randX, randY)).equals(liste.get(i))){ //Si la position aléatoire n'est pas dans la liste
