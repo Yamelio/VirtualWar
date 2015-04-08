@@ -73,31 +73,31 @@ public class Position {
 	 * @return char
 	 * 			Retourne le contenu de la cellule en ASCII art
 	 */
-	public char toString(){ //Il faut rajouter les affichages des robots, il n'y que les obstacles, mines, et bases
-		char c;
+	public String toString(){ //Il faut rajouter les affichages des robots, il n'y que les obstacles, mines, et bases
+		String c;
 		if(equipe == 1){
 			if(this.mine){
-				c = 'M'; 
+				c = "M"; 
 			}else if(this.base){
-				c = 'B';
+				c = "B";
 			}else{
-				c = 'E';
+				c = "E";
 			}
 			
 		}else if(equipe == 2){
 			if(this.mine){
-				c = 'm'; 
+				c = "m"; 
 			}else if(this.base){
-				c = 'b';
+				c = "b";
 			}else{
-				c = 'e';
+				c = "e";
 			}
 			
 		}else{
 			if(this.obsacle){
-				c = '#';
+				c = "#";
 			}else{
-				c = ' ';
+				c = " ";
 			}
 		}
 		return c;
