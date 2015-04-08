@@ -60,36 +60,42 @@ public class Attaque extends Action{
 				}
 			}
 		}else{
-			if(this.robot.getPosition().getX() >= cible.getX()
-			&& this.robot.getPosition().getY() >= cible.getY()){
-				if(this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
-				&& this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
-					this.cible = cible;
-					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
-					cible.flipMine(this.robot.getEquipe());
-				}
-			}else if(this.robot.getPosition().getX() >= cible.getX()
-			&& this.robot.getPosition().getY() <= cible.getY()){
-				if(this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
-				&& cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteeTireur()){
-					this.cible = cible;
-					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
-					this.cible.flipMine(this.robot.getEquipe());
-				}
-			}else if(this.robot.getPosition().getX() <= cible.getX()
-			&& this.robot.getPosition().getY() >= cible.getY()){
-				if(cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteePiegeur()
-				&& this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
-					this.cible = cible;
-					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
-					this.cible.flipMine(this.robot.getEquipe());
-				}
-			}else {
-				if(cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteePiegeur()
-				&& cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteePiegeur()){
-					this.cible = cible;
-					this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
-					this.cible.flipMine(this.robot.getEquipe());
+			if(this.robot.getNbMines() > 0){
+				if(this.robot.getPosition().getX() >= cible.getX()
+				&& this.robot.getPosition().getY() >= cible.getY()){
+					if(this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
+					&& this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
+						this.cible = cible;
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+						this.cible.flipMine(this.robot.getEquipe());
+						this.robot.setNbMines(this.robot.getNbMines() - 1);  
+					}
+				}else if(this.robot.getPosition().getX() >= cible.getX()
+				&& this.robot.getPosition().getY() <= cible.getY()){
+					if(this.robot.getPosition().getX() - cible.getX() <= constantes.getPorteePiegeur()
+					&& cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteeTireur()){
+						this.cible = cible;
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+						this.cible.flipMine(this.robot.getEquipe());
+						this.robot.setNbMines(this.robot.getNbMines() - 1);
+					}
+				}else if(this.robot.getPosition().getX() <= cible.getX()
+				&& this.robot.getPosition().getY() >= cible.getY()){
+					if(cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteePiegeur()
+					&& this.robot.getPosition().getY() - cible.getY() <= constantes.getPorteePiegeur()){
+						this.cible = cible;
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+						this.cible.flipMine(this.robot.getEquipe());
+						this.robot.setNbMines(this.robot.getNbMines() - 1);
+					}
+				}else {
+					if(cible.getX() - this.robot.getPosition().getX() <= constantes.getPorteePiegeur()
+					&& cible.getY() - this.robot.getPosition().getY() <= constantes.getPorteePiegeur()){
+						this.cible = cible;
+						this.robot.setEnergie(this.robot.getEnergie() - constantes.getCoutMine());
+						this.cible.flipMine(this.robot.getEquipe());
+						this.robot.setNbMines(this.robot.getNbMines() - 1);
+					}
 				}
 			}
 		}

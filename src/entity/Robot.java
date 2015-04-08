@@ -32,4 +32,8 @@ public abstract class Robot {
 	public void recharger(){this.energie += constantes.getRecharge();}
 	
 	public int getId(){return this.id;}
+	
+	public abstract int getNbMines();
+
+	public abstract void setNbMines(int nbMines);
 }

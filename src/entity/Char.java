@@ -11,4 +11,10 @@ public class Char extends Robot{
 		super(equipe);
 		this.energie = constantes.getEnergieInitialeChar();
 	}
+
+	@Override
+	public int getNbMines() {return 0;}
+
+	@Override
+	public void setNbMines(int nbMines) {}
 }
