@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 
 public class Plateau {
 	private Map<String, Position> carte;
@@ -30,7 +32,8 @@ public class Plateau {
 		carte = new HashMap<String, Position>();
 		for(int i = 1; i <= hauteur; i++){
 			for(int j = 1; j <= largeur; j++){
-				carte.put(posToString(new Postion(largeur, hauteur)), new Postion(largeur, hauteur));
+				carte.put(posToString(new Position(largeur, hauteur)), new Position(largeur, hauteur));
+			}
 		}
 	}
 
@@ -58,7 +61,7 @@ public class Plateau {
 	 * @return La Position voulu
 	 */
 	public Position stringToPos(String s) {
-		int x = (int) ((char) (s.substring(0, 1) - 16)); // On converti
+		int x = (int) ((char) (s.substring(0, 1))); // On converti
 															// l'abscisse en int
 		int y = (int) s.substring(1); // On converti l'ordonné en int
 		return new Position(x, y);
@@ -70,7 +73,7 @@ public class Plateau {
 	 */
 	private void initObstacles() {
 		Random r = new Random();
-		List<Postion> liste = new ArrayList<Position>(); //Liste des position à laisser libre
+		List<Position> liste = new ArrayList<Position>(); //Liste des position à laisser libre
 		Position p = new Position(0,0); //On commence en haut à gauche
 		liste.add(p);//La position en haut à gauche est laissé libre
 		liste.add(new Position(largeur, hauteur)); //La position en bas à droite est laissé libre
@@ -90,7 +93,7 @@ public class Plateau {
 			liste.add(p); //On ajoute a la liste
 
 		}
-		int nbObstacle = (int) getSurface * (percentObstacle / 100); //Converti le pourcentage d'obstacle en noimbre d'obsacle
+		int nbObstacle = (int) getSurface() * (percentObstacle / 100); //Converti le pourcentage d'obstacle en noimbre d'obsacle
 
 		int randX;
 		int randY;
@@ -150,7 +153,7 @@ public class Plateau {
 		return percentObstacle;
 	}
 
-	public HashMap<String, Position> getCarte() {
+	public Map<String, Position> getCarte() {
 		return carte;
 	}
 
