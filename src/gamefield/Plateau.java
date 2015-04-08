@@ -3,8 +3,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import com.sun.xml.internal.ws.duMap<K, V>LoggingDumpTube.Position;
-
 public class Plateau {
 	private Map<String, Position> carte;
 	private List<Robot> robots;
