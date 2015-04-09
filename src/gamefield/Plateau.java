@@ -142,9 +142,15 @@ public class Plateau {
 	 * @return String Le plateau de jeu en ascii art
 	 */
 	public String toString() {
-		String s = "";
-		for (int i = 1; i <= hauteur; i++) { // On parcourt en hauteur
-			for (int j = 1; j <= largeur; j++) { // On parcourt en largeur
+		String s = "  ";
+		for (int k = 1; k < largeur; k++) {
+			s += "" + (char) (k + 16) + "   "; //Pour mettre les coordonne en abscisses
+		}
+		for (int i = 1; i < hauteur; i++) { // On parcourt en hauteur
+			if (i % 2 = 0) { // Pour mettre les coordonnes en ordonnee
+				s += "" + i;
+			} 
+			for (int j = 1; j < largeur; j++) { // On parcourt en largeur
 				if (i % 2 != 0) { // toutes les deux lignes on aterne
 					s += "+---";
 				} else {
