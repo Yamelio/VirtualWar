@@ -7,7 +7,7 @@ public class Position {
 	private boolean base = false;
 	private boolean mine = false;
 	private boolean obstacle = false;
-	private Plateau p;
+	private static Plateau p;
 	
 	public Position(int x, int y){
 		this.x = x;
