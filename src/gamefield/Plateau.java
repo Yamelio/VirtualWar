@@ -130,6 +130,6 @@ public class Plateau {
 		*/
 		return ecran;
 	}
-
-
+	
+	
 }
