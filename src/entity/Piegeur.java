@@ -22,4 +22,8 @@ public class Piegeur extends Robot{
 	public int getNbMines(){return this.nbMines;}
 	
 	public void setNbMines(int nbMines){this.nbMines = nbMines;}
+
+	public String toString(){
+		return "P";
+	}
 }

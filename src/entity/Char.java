@@ -17,4 +17,8 @@ public class Char extends Robot{
 
 	@Override
 	public void setNbMines(int nbMines) {}
+	
+	public String toString(){
+		return "C";
+	}
 }

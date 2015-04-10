@@ -18,6 +18,8 @@ public class Tireur extends Robot{
 	@Override
 	public void setNbMines(int nbMines){}
 
-	
+	public String toString(){
+		return "T";
+	}
 
 }

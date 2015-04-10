@@ -36,4 +36,7 @@ public abstract class Robot {
 	public abstract int getNbMines();
 
 	public abstract void setNbMines(int nbMines);
+	
+	public abstract String toString();
+	
 }

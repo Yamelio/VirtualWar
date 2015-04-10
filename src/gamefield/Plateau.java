@@ -208,4 +208,13 @@ public class Plateau {
 		this.percentObstacle = percentObstacle;
 	}
 
+	public void ajouterListeRobot(Robot r){
+		this.robots.add(r);
+	}
+
+	public void retirerListeRobot(Robot r){
+		this.robots.remove(r);
+	}
+
+	public List<Robot> getListeRobot(){return this.robots;}
 }
