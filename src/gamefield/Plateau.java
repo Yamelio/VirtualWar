@@ -145,7 +145,7 @@ public class Plateau {
 		String s = "  ";
 		int h = 0;
 		int l =0;
-		for (int k = 1; k < largeur * 2; k++) {
+		for (int k = 1; k < largeur; k++) {
 			s += "" + (char) (k + 16) + "   "; //Pour mettre les coordonne en abscisses
 		}
 		for (int i = 1; i < hauteur * 2; i++) { // On parcourt en hauteur
@@ -162,6 +162,7 @@ public class Plateau {
 					}catch{
 						s += "|   ";
 					}
+					finally{/*rien*/}
 				}
 			++l;
 			}
