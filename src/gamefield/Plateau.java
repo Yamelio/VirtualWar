@@ -151,7 +151,7 @@ public class Plateau {
 		for (int i = 1; i < hauteur * 2; i++) { // On parcourt en hauteur
 			if (i % 2 == 0) { // Pour mettre les coordonnes en ordonnee
 				s += "" + i;
-				++h
+				++h;
 			} 
 			for (int j = 1; j < largeur; j++) { // On parcourt en largeur
 				if (i % 2 != 0) { // toutes les deux lignes on aterne
@@ -159,7 +159,7 @@ public class Plateau {
 				} else {
 					try{
 						s += "| " + carte.get(posToString(new Position(l, h))).toString() + " "; // Merci Aurélien
-					}catch{
+					}catch(ClassCastException e){
 						s += "|   ";
 					}
 					finally{/*rien*/}
