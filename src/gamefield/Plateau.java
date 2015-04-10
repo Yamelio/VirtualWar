@@ -143,21 +143,27 @@ public class Plateau {
 	 */
 	public String toString() {
 		String s = "  ";
-		for (int k = 1; k < largeur; k++) {
+		int h = 0;
+		int l =0;
+		for (int k = 1; k < largeur * 2; k++) {
 			s += "" + (char) (k + 16) + "   "; //Pour mettre les coordonne en abscisses
 		}
-		for (int i = 1; i < hauteur; i++) { // On parcourt en hauteur
-			if (i % 2 = 0) { // Pour mettre les coordonnes en ordonnee
+		for (int i = 1; i < hauteur * 2; i++) { // On parcourt en hauteur
+			if (i % 2 == 0) { // Pour mettre les coordonnes en ordonnee
 				s += "" + i;
+				++h
 			} 
 			for (int j = 1; j < largeur; j++) { // On parcourt en largeur
 				if (i % 2 != 0) { // toutes les deux lignes on aterne
 					s += "+---";
 				} else {
-					s += "| "
-							+ carte.get(posToString(new Position(i, j)))
-									.toString() + " "; // Merci Aurélien
+					try{
+						s += "| " + carte.get(posToString(new Position(l, h))).toString() + " "; // Merci Aurélien
+					}catch{
+						s += "|   ";
+					}
 				}
+			++l;
 			}
 			if (i % 2 != 0) { // Pour finir la ligne joliement
 				s += "+";
