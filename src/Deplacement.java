@@ -14,8 +14,12 @@ public class Deplacement extends Action{
 			&& (this.robot.getPosition().getY() == cible.getY() - constantes.getPorteeDeplacementTireur()
 			|| this.robot.getPosition().getY() == cible.getY() + constantes.getPorteeDeplacementTireur()
 			|| this.robot.getPosition().getY() == cible.getY())) {
-				this.cible = cible;
-				this.robot.setPosition(this.cible);
+				if(!cible.estBase()
+				&& !cible.estObstacle()
+				&& !cible.estRobot()){
+					this.cible = cible;
+					this.robot.setPosition(this.cible);
+				}
 			}
 		}else {
 			if(((this.robot.getPosition().getX() == cible.getX() - constantes.getPorteeDeplacementChar()
@@ -24,8 +28,12 @@ public class Deplacement extends Action{
 			||((this.robot.getPosition().getY() == cible.getY() - constantes.getPorteeDeplacementChar()
 			||this.robot.getPosition().getY() == cible.getY() + constantes.getPorteeDeplacementChar())
 			&& this.robot.getPosition().getX() == cible.getX())) {
+				if(!cible.estBase()
+				&& !cible.estObstacle()
+				&& !cible.estRobot()){
 				this.cible = cible;
 				this.robot.setPosition(this.cible);
+				}
 			}
 			
 		}
