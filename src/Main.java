@@ -9,7 +9,19 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		Plateau p = new Plateau(5, 10);
+		Plateau p = new Plateau(5, 5);
+
+		p.ajouterListeRobot(new Tireur(0));
+		p.ajouterListeRobot(new Tireur(0));
+		p.ajouterListeRobot(new Char(0));
+		p.ajouterListeRobot(new Char(0));
+		p.ajouterListeRobot(new Piegeur(0));
+		p.ajouterListeRobot(new Tireur(1));
+		p.ajouterListeRobot(new Tireur(1));
+		p.ajouterListeRobot(new Char(1));
+		p.ajouterListeRobot(new Char(1));
+		p.ajouterListeRobot(new Piegeur(1));
+
 		System.out.println(p);
 
 	}

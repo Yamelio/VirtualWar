@@ -24,7 +24,7 @@ public class Vue {
 	 * @return true si libre
 	 */
 	public boolean estLibre(Position p) {
-		return !p.isObstacle() && !p.isMine() && !p.isBase();
+		return !p.estObstacle() && !p.estMine() && !p.estBase();
 	}
 
 	/**

@@ -1,24 +1,10 @@
-/**
- * 
- * @author Matthieu Gaillard et Benjamin Holquin
- * Cette classe représente un objet Attaque, définit avec son robot et sa cible
- */
+
 public class Attaque extends Action{
 
-	/** Les constantes permettant de déterminer l'énergie initiale, la portée etc... */
 	private Constantes constantes = new Constantes();
-	
-	/** Le robot concerné par l'attaque */
 	private Robot robot;
-	
-	/** La cible du robot*/
 	private Position cible;
-	
-	/**
-	 * Construit une Attaque à partir d'un robot et de sa cible en vérifiant sa possibilité
-	 * @param robot - le robot concerné par l'attaque
-	 * @param cible - la cible du robot
-	 */
+		
 	public Attaque(Robot robot, Position cible){
 		super(robot);
 		if(this.robot instanceof Tireur){
@@ -139,8 +125,8 @@ public class Attaque extends Action{
 		}
 	}
 	/**
-	 * Retourne un booleen qui est vrai si il y a un obstacle sur la trajectoire du tir, faux si non
-	 * @return un booleen qui est vrai si il y a un obstacle sur la trajectoire du tir, faux si non
+	 * verifie si il y a un obstacle sur la trajectoire du tire
+	 * @return 
 	 */
 	public boolean tireSansEntrave(){
 		Position tmp;
@@ -191,11 +177,7 @@ public class Attaque extends Action{
 		}
 		return true;
 	}
-	
-	/**
-	 * Retourne la cible de l'attaque
-	 * @return la cible de l'attaque
-	 */
+		
 	public Position getCible(){return this.cible;}
 	
 	public void setCible(Position cible2){} //si la cible initiale ne convient pas

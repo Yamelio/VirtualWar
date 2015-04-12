@@ -17,26 +17,22 @@ public class Base extends Position {
 		super(largeur, hauteur);
 		robots = new ArrayList<Robot>();
 		// TODO Auto-generated constructor stub
-		this.base = equipe;
+		flipBase(equipe);
 	}
 
-	@Override
 	public void deplaceSur(Robot robot) {
 		// TODO Auto-generated method stub
 		robots.add(robot);
 	}
 
-	@Override
-	void ajoute(int equipe) {
-		// TODO Auto-generated method stub
-
+	public void quitteBase(Robot robot){
+		robots.remove(robot);
 	}
-
-	@Override
+	
 	public void videCase() {
 		ArrayList<Robot> toRemove = new ArrayList<Robot>();
 		for (Robot r : robots) {
-			if (!r.getPosition().isEquals(new Position(largeur, hauteur))
+			if (!r.getPosition().equals(new Position(getX(),getY())));
 				toRemove.add(r);
 		}
 		for(Robot t : toRemove) {
