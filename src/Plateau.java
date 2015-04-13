@@ -43,7 +43,7 @@ public class Plateau {
 		carte.remove("A1");
 		carte.put("A1", new Base(1, 1, 0));
 		carte.remove(max);
-		carte.put(max, new Base(hauteur, largeur, 1));
+		carte.put(max, new Base(largeur, hauteur, 1));
 		Position.setPlateau(this);
 
 	}
