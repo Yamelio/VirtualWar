@@ -22,6 +22,11 @@ public class Deplacement extends Action {
 						&& !cible.estRobot()) {
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
+					if(this.cible.estMine() && this.getRobot() instanceof Tireur){
+						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsTireur());
+					}else if(this.cible.estMine() && this.getRobot() instanceof Piegeur){
+						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsPiegeur());
+					}
 				}
 			}
 		} else {
@@ -39,6 +44,10 @@ public class Deplacement extends Action {
 						&& !cible.estRobot()) {
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
+					if(this.cible.estMine()){
+						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsChar());
+					}
+						
 				}
 			}
 
