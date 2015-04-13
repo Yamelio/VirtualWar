@@ -48,6 +48,22 @@ public class Deplacement extends Action {
 						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsChar());
 					}
 						
+				}else if(cible.estObstacle() || cible.estRobot()){
+					if(this.getRobot().getPosition().getX() == this.cible.getX()){
+						if(this.getRobot().getPosition().getY() - this.cible.getY() < 0){
+							this.cible = new Position(this.cible.getX(), this.cible.getY() - 1); 
+							this.getRobot().setPosition(this.cible);
+						}else {
+							this.cible = new Position(this.cible.getX(), this.cible.getY() + 1);
+						}
+					}else if(this.getRobot().getPosition().getY() == cible.getY()){
+						if(this.getRobot().getPosition().getX() - this.cible.getX() < 0){
+							this.cible = new Position(this.cible.getX() - 1, this.cible.getY()); 
+							this.getRobot().setPosition(this.cible);
+						}else {
+							this.cible = new Position(this.cible.getX() + 1, this.cible.getY());
+						}
+					}
 				}
 			}
 
@@ -57,8 +73,4 @@ public class Deplacement extends Action {
 	public Position getCible() {
 		return this.cible;
 	}
-
-	public void setCible(Position cible2) {
-		this.cible = cible2;
-	} // si la cible initiale ne convient pas
 }
