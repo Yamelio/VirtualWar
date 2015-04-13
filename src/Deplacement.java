@@ -1,43 +1,44 @@
 public class Deplacement extends Action {
 
 	private Constantes constantes = new Constantes();
-	private Robot robot;
 	private Position cible;
 
 	public Deplacement(Robot robot, Position cible) {
 		super(robot);
-		if (this.robot instanceof Tireur || this.robot instanceof Piegeur) {
-			if ((this.robot.getPosition().getX() == cible.getX()
+		if (this.getRobot() instanceof Tireur
+				|| this.getRobot() instanceof Piegeur) {
+			if ((this.getRobot().getPosition().getX() == cible.getX()
 					- constantes.getPorteeDeplacementTireur()
-					|| this.robot.getPosition().getX() == cible.getX()
-							+ constantes.getPorteeDeplacementTireur() || this.robot
-					.getPosition().getX() == cible.getX())
-					&& (this.robot.getPosition().getY() == cible.getY()
+					|| this.getRobot().getPosition().getX() == cible.getX()
+							+ constantes.getPorteeDeplacementTireur() || this
+					.getRobot().getPosition().getX() == cible.getX())
+					&& (this.getRobot().getPosition().getY() == cible.getY()
 							- constantes.getPorteeDeplacementTireur()
-							|| this.robot.getPosition().getY() == cible.getY()
-									+ constantes.getPorteeDeplacementTireur() || this.robot
-							.getPosition().getY() == cible.getY())) {
+							|| this.getRobot().getPosition().getY() == cible
+									.getY()
+									+ constantes.getPorteeDeplacementTireur() || this
+							.getRobot().getPosition().getY() == cible.getY())) {
 				if (!cible.estBase() && !cible.estObstacle()
 						&& !cible.estRobot()) {
 					this.cible = cible;
-					this.robot.setPosition(this.cible);
+					this.getRobot().setPosition(this.cible);
 				}
 			}
 		} else {
-			if (((this.robot.getPosition().getX() == cible.getX()
-					- constantes.getPorteeDeplacementChar() || this.robot
+			if (((this.getRobot().getPosition().getX() == cible.getX()
+					- constantes.getPorteeDeplacementChar() || this.getRobot()
 					.getPosition().getX() == cible.getX()
-					+ constantes.getPorteeDeplacementChar()) && this.robot
+					+ constantes.getPorteeDeplacementChar()) && this.getRobot()
 					.getPosition().getY() == cible.getY())
-					|| ((this.robot.getPosition().getY() == cible.getY()
-							- constantes.getPorteeDeplacementChar() || this.robot
-							.getPosition().getY() == cible.getY()
-							+ constantes.getPorteeDeplacementChar()) && this.robot
-							.getPosition().getX() == cible.getX())) {
+					|| ((this.getRobot().getPosition().getY() == cible.getY()
+							- constantes.getPorteeDeplacementChar() || this
+							.getRobot().getPosition().getY() == cible.getY()
+							+ constantes.getPorteeDeplacementChar()) && this
+							.getRobot().getPosition().getX() == cible.getX())) {
 				if (!cible.estBase() && !cible.estObstacle()
 						&& !cible.estRobot()) {
 					this.cible = cible;
-					this.robot.setPosition(this.cible);
+					this.getRobot().setPosition(this.cible);
 				}
 			}
 

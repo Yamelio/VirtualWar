@@ -22,6 +22,7 @@ public class Main {
 		p.ajouterListeRobot(new Char(1));
 		p.ajouterListeRobot(new Piegeur(1));
 
+		new Deplacement(p.getListeRobot().get(1), p.getCarte().get("B1"));
 		System.out.println(p);
 
 	}
