@@ -125,7 +125,7 @@ public class Plateau {
 
 			while (liste.contains(p)) {
 				randX = r.nextInt(largeur + 1);
-				randY = r.nextInt(largeur + 1);
+				randY = r.nextInt(hauteur + 1);
 				p = new Position(randX, randY);
 			}
 
