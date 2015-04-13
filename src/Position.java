@@ -64,7 +64,18 @@ public class Position {
 		}
 		return false;
 	}
-
+	
+	public Robot getRobot(){
+		
+		for (int i = 0; i < p.getListeRobot().size(); i++) {
+			if (p.getListeRobot().get(i).getPosition().equals(this))
+				return p.getListeRobot().get(i);
+		}
+		return null;
+		
+	}
+	
+	
 	public static void setPlateau(Plateau pl) {
 		p = pl;
 	}
