@@ -19,10 +19,10 @@ public class Plateau {
 	 * @param hauteur
 	 *            Initialise la hauteur du plateau
 	 */
-	public Plateau(int largeur, int hauteur) {
+	public Plateau(int largeur, int hauteur, int obstacles) {
 		this.hauteur = hauteur;
 		this.largeur = largeur;
-		this.percentObstacle = 25;
+		this.percentObstacle = obstacles;
 		initCarte();
 		initObstacles();
 		robots = new ArrayList<Robot>(10);
@@ -32,18 +32,27 @@ public class Plateau {
 	 * Fonction d'initialisation de la carte
 	 */
 	public void initCarte() {
-		String max = "";
 		carte = new HashMap<String, Position>();
-		for (int i = 1; i <= hauteur; i++) {
-			for (int j = 1; j <= largeur; j++) {
-				carte.put(posToString(new Position(i, j)), new Position(i, j));
-				max = posToString(new Position(i, j));
+		for (int i = 1; i <= largeur; i++) {
+			for (int j = 1; j <= hauteur; j++) {
+				if (i == 1 & j == 1) {
+					carte.put(posToString(new Position(i, j)),
+							new Base(i, j, 0));
+				} else if (i == largeur && j == hauteur) {
+					carte.put(posToString(new Position(i, j)),
+							new Base(i, j, 1));
+				}
+
+				else {
+					carte.put(posToString(new Position(i, j)), new Position(i,
+							j));
+				}
 			}
 		}
-		carte.remove("A1");
-		carte.put("A1", new Base(1, 1, 0));
-		carte.remove(max);
-		carte.put(max, new Base(largeur, hauteur, 1));
+		/*
+		 * carte.remove("A1"); carte.put("A1", new Base(1, 1, 0));
+		 * carte.remove(max); carte.put(max, new Base(largeur, hauteur, 1));
+		 */
 		Position.setPlateau(this);
 
 	}
@@ -57,8 +66,8 @@ public class Plateau {
 	 */
 	public String posToString(Position p) {
 		String s = "";
-		s += (char) ((char) p.getX() + 64); // +16 car les lettres se trouvent
-											// à +16
+		s += (char) ((char) p.getX() + 64); // +64 car les lettres se trouvent
+											// � partir de 65
 											// dans la table ASCII
 		s += p.getY(); // Pas besoin de convertion, les ordonnées sont déjà
 						// en
@@ -74,8 +83,8 @@ public class Plateau {
 	 * @return La Position voulu
 	 */
 	public Position stringToPos(String s) {
-		int x = Integer.parseInt(s.substring(0, 1)); // On converti
-														// l'abscisse en int
+		int x = s.charAt(0) - 64; // On converti
+									// l'abscisse en int
 		int y = Integer.parseInt(s.substring(1)); // On converti l'ordonné en
 													// int
 		return new Position(x, y);
@@ -124,8 +133,8 @@ public class Plateau {
 		while (nbObstacle > 0) { // tant qu'il reste des obsacles à ajouter
 
 			while (liste.contains(p)) {
-				randX = r.nextInt(largeur + 1);
-				randY = r.nextInt(hauteur + 1);
+				randX = r.nextInt(largeur) + 1;
+				randY = r.nextInt(hauteur) + 1;
 				p = new Position(randX, randY);
 			}
 
@@ -161,8 +170,8 @@ public class Plateau {
 			s += "+" + "\n" + i + "\t";
 			for (int k = 1; k <= largeur; k++) {
 				s += "|"
-						+ carte.get(posToString(new Position(i, k))).toString()
-						+ " ";
+						+ carte.get(posToString((Position) new Position(k, i)))
+								.getContenu();
 			}
 			s += "|\n";
 		}
@@ -223,5 +232,109 @@ public class Plateau {
 
 	public List<Robot> getListeRobot() {
 		return this.robots;
+	}
+
+	public void afficherRobotsJ1() {
+		String res = "Equipe 1 :\t";
+		Robot r;
+		for (int i = 0; i < robots.size(); i++) {
+			r = robots.get(i);
+			if (r.getEquipe() == 0) {
+				res += r.toString();
+				if (((Base) carte.get("A1")).getRobotsInBase().contains(
+						robots.get(i))) {
+					res += "(b)";
+				}
+
+				res += "\t[";
+				int energiemax;
+				if (r instanceof Char) {
+					energiemax = Constantes.getEnergieInitialeChar();
+					for (int k = 0; k < energiemax / 2; k++) {
+						if (r.getEnergie() > k - energiemax / 2) {
+							res += "|";
+						} else {
+							res += " ";
+						}
+					}
+
+				} else if (r instanceof Piegeur) {
+					energiemax = Constantes.getEnergieInitialePiegeur();
+					for (int k = 0; k < energiemax / 2; k++) {
+						if (r.getEnergie() > k - energiemax / 2) {
+							res += "|";
+						} else {
+							res += " ";
+						}
+					}
+
+				} else {
+					energiemax = Constantes.getEnergieInitialeTireur();
+					for (int k = 0; k < energiemax / 2; k++) {
+						if (r.getEnergie() > k - energiemax / 2) {
+							res += "|";
+						} else {
+							res += " ";
+						}
+					}
+
+				}
+
+				res += "] " + r.getEnergie() + "/" + energiemax + "\n\t\t";
+			}
+		}
+		System.out.println(res);
+	}
+
+	public void afficherRobotsJ2() {
+		String res = "Equipe 2 :\t";
+		Robot r;
+		for (int i = 0; i < robots.size(); i++) {
+			r = robots.get(i);
+			if (r.getEquipe() == 1) {
+				res += r.toString();
+				if (((Base) carte
+						.get(posToString(new Position(largeur, hauteur))))
+						.getRobotsInBase().contains(robots.get(i))) {
+					res += "(b)";
+				}
+				res += "\t[";
+				int energiemax;
+				if (r instanceof Char) {
+					energiemax = Constantes.getEnergieInitialeChar();
+					for (int k = 0; k < energiemax / 2; k++) {
+						if (r.getEnergie() > k - energiemax / 2) {
+							res += "|";
+						} else {
+							res += " ";
+						}
+					}
+
+				} else if (r instanceof Piegeur) {
+					energiemax = Constantes.getEnergieInitialePiegeur();
+					for (int k = 0; k < energiemax / 2; k++) {
+						if (r.getEnergie() > k - energiemax / 2) {
+							res += "|";
+						} else {
+							res += " ";
+						}
+					}
+
+				} else {
+					energiemax = Constantes.getEnergieInitialeTireur();
+					for (int k = 0; k < energiemax / 2; k++) {
+						if (r.getEnergie() > k - energiemax / 2) {
+							res += "|";
+						} else {
+							res += " ";
+						}
+					}
+
+				}
+
+				res += "] " + r.getEnergie() + "/" + energiemax + "\n\t\t";
+			}
+		}
+		System.out.println(res);
 	}
 }

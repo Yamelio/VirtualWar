@@ -25,22 +25,27 @@ public class Base extends Position {
 		robots.add(robot);
 	}
 
-	public void quitteBase(Robot robot){
+	public void quitteBase(Robot robot) {
 		robots.remove(robot);
 	}
-	
+
 	public void videCase() {
 		ArrayList<Robot> toRemove = new ArrayList<Robot>();
 		for (Robot r : robots) {
-			if (!r.getPosition().equals(new Position(getX(),getY())));
-				toRemove.add(r);
+			if (!r.getPosition().equals(new Position(getX(), getY())))
+				;
+			toRemove.add(r);
 		}
-		for(Robot t : toRemove) {
+		for (Robot t : toRemove) {
 			robots.remove(t);
 		}
 	}
 
 	public ArrayList<Robot> getRobotsInBase() {
 		return robots;
+	}
+
+	public String toString() {
+		return ("Equipe " + getEquipe() + ", contient " + robots);
 	}
 }

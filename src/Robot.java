@@ -44,6 +44,7 @@ public abstract class Robot {
 
 	public void setPosition(Position pos) {
 		this.pos = pos;
+		
 	}
 
 	public void recharger() {

@@ -59,34 +59,35 @@ public class Position {
 
 	public boolean estRobot() {
 		for (int i = 0; i < p.getListeRobot().size(); i++) {
-			if (p.getListeRobot().get(i).getPosition().equals(this))
+			if (p.getListeRobot().get(i).getPosition().getX() == this.getX()
+					&& p.getListeRobot().get(i).getPosition().getY() == this
+							.getY())
 				return true;
 		}
 		return false;
 	}
-	
-	public Robot getRobot(){
-		
+
+	public Robot getRobot() {
+
 		for (int i = 0; i < p.getListeRobot().size(); i++) {
 			if (p.getListeRobot().get(i).getPosition().equals(this))
 				return p.getListeRobot().get(i);
 		}
 		return null;
-		
+
 	}
-	
-	
+
 	public static void setPlateau(Plateau pl) {
 		p = pl;
 	}
 
-	public String toString() {
+	public String getContenu() {
 		if (this.estBase()) {
-			return "B";
+			return "B ";
 		} else if (this.estMine()) {
-			return "M";
+			return "M ";
 		} else if (this.estObstacle()) {
-			return "#";
+			return "# ";
 		} else if (this.estRobot()) {
 			for (int i = 0; i < p.getListeRobot().size(); i++) {
 				if (p.getListeRobot().get(i).getPosition().equals(this)) {
@@ -94,7 +95,7 @@ public class Position {
 				}
 			}
 		}
-		return " ";
+		return "  ";
 	}
 
 	public int getEquipe() {
@@ -107,5 +108,10 @@ public class Position {
 
 	public void setEquipe(int equipe) {
 		this.equipe = equipe;
+	}
+
+	public boolean equals(Position p) {
+		return x == p.x && y == p.y;
+
 	}
 }

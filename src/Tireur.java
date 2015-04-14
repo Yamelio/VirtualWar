@@ -1,21 +1,21 @@
+public class Tireur extends Robot {
 
-public class Tireur extends Robot{
-
-	private Constantes constantes = new Constantes();
-	
-	public Tireur(int equipe){
+	public Tireur(int equipe) {
 		super(equipe);
-		setEnergie(constantes.getEnergieInitialePiegeur());
+		setEnergie(Constantes.getEnergieInitialeTireur());
 	}
 
 	@Override
-	public int getNbMines() {return 0;}
+	public int getNbMines() {
+		return 0;
+	}
 
 	@Override
-	public void setNbMines(int nbMines){}
+	public void setNbMines(int nbMines) {
+	}
 
-	public String toString(){
-		return "T";
+	public String toString() {
+		return "T" + getId();
 	}
 
 }

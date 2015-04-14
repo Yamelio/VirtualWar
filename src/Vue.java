@@ -35,4 +35,8 @@ public class Vue {
 		return this.plateau;
 	}
 
+	public int getEquipe() {
+		return this.equipe;
+	}
+
 }

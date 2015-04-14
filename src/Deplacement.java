@@ -20,12 +20,19 @@ public class Deplacement extends Action {
 							.getRobot().getPosition().getY() == cible.getY())) {
 				if (!cible.estBase() && !cible.estObstacle()
 						&& !cible.estRobot()) {
+					quitteBase(robot.getPosition());
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
-					if(this.cible.estMine() && this.getRobot() instanceof Tireur){
-						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsTireur());
-					}else if(this.cible.estMine() && this.getRobot() instanceof Piegeur){
-						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsPiegeur());
+					if (this.cible.estMine()
+							&& this.getRobot() instanceof Tireur) {
+						this.getRobot().setEnergie(
+								this.getRobot().getEnergie()
+										- constantes.getDegatsTireur());
+					} else if (this.cible.estMine()
+							&& this.getRobot() instanceof Piegeur) {
+						this.getRobot().setEnergie(
+								this.getRobot().getEnergie()
+										- constantes.getDegatsPiegeur());
 					}
 				}
 			}
@@ -36,32 +43,45 @@ public class Deplacement extends Action {
 					+ constantes.getPorteeDeplacementChar()) && this.getRobot()
 					.getPosition().getY() == cible.getY())
 					|| ((this.getRobot().getPosition().getY() == cible.getY()
-							- constantes.getPorteeDeplacementChar() || this
+							- Constantes.getPorteeDeplacementChar() || this
 							.getRobot().getPosition().getY() == cible.getY()
-							+ constantes.getPorteeDeplacementChar()) && this
+							+ Constantes.getPorteeDeplacementChar()) && this
 							.getRobot().getPosition().getX() == cible.getX())) {
 				if (!cible.estBase() && !cible.estObstacle()
 						&& !cible.estRobot()) {
+					quitteBase(robot.getPosition());
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
-					if(this.cible.estMine()){
-						this.getRobot().setEnergie(this.getRobot().getEnergie() - constantes.getDegatsChar());
+					if (this.cible.estMine()) {
+						this.getRobot().setEnergie(
+								this.getRobot().getEnergie()
+										- Constantes.getDegatsChar());
 					}
-						
-				}else if(cible.estObstacle() || cible.estRobot()){
-					if(this.getRobot().getPosition().getX() == this.cible.getX()){
-						if(this.getRobot().getPosition().getY() - this.cible.getY() < 0){
-							this.cible = new Position(this.cible.getX(), this.cible.getY() - 1); 
+
+				} else if (cible.estObstacle() || cible.estRobot()) {
+					if (this.getRobot().getPosition().getX() == this.cible
+							.getX()) {
+						if (this.getRobot().getPosition().getY()
+								- this.cible.getY() < 0) {
+							quitteBase(robot.getPosition());
+							this.cible = new Position(this.cible.getX(),
+									this.cible.getY() - 1);
 							this.getRobot().setPosition(this.cible);
-						}else {
-							this.cible = new Position(this.cible.getX(), this.cible.getY() + 1);
+						} else {
+							this.cible = new Position(this.cible.getX(),
+									this.cible.getY() + 1);
 						}
-					}else if(this.getRobot().getPosition().getY() == cible.getY()){
-						if(this.getRobot().getPosition().getX() - this.cible.getX() < 0){
-							this.cible = new Position(this.cible.getX() - 1, this.cible.getY()); 
+					} else if (this.getRobot().getPosition().getY() == cible
+							.getY()) {
+						if (this.getRobot().getPosition().getX()
+								- this.cible.getX() < 0) {
+							quitteBase(robot.getPosition());
+							this.cible = new Position(this.cible.getX() - 1,
+									this.cible.getY());
 							this.getRobot().setPosition(this.cible);
-						}else {
-							this.cible = new Position(this.cible.getX() + 1, this.cible.getY());
+						} else {
+							this.cible = new Position(this.cible.getX() + 1,
+									this.cible.getY());
 						}
 					}
 				}
@@ -72,5 +92,11 @@ public class Deplacement extends Action {
 
 	public Position getCible() {
 		return this.cible;
+	}
+
+	public void quitteBase(Position p) {
+		if (p.getRobot().getPosition().estBase()) {
+			((Base) p.getRobot().getPosition()).quitteBase(p.getRobot());
+		}
 	}
 }

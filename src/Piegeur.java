@@ -1,25 +1,27 @@
+public class Piegeur extends Robot {
 
-public class Piegeur extends Robot{
-	
-	private Constantes constantes = new Constantes();
 	private int nbMines = 10;
-	
-	public Piegeur(int equipe){
+
+	public Piegeur(int equipe) {
 		super(equipe);
-		setEnergie(constantes.getEnergieInitialePiegeur());
+		setEnergie(Constantes.getEnergieInitialePiegeur());
 	}
 
 	@Override
-	public void recharger(){
+	public void recharger() {
 		super.recharger();
 		this.nbMines = 10;
 	}
 
-	public int getNbMines(){return this.nbMines;}
-	
-	public void setNbMines(int nbMines){this.nbMines = nbMines;}
+	public int getNbMines() {
+		return this.nbMines;
+	}
 
-	public String toString(){
-		return "P";
+	public void setNbMines(int nbMines) {
+		this.nbMines = nbMines;
+	}
+
+	public String toString() {
+		return "P"+getId();
 	}
 }

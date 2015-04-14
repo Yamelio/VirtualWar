@@ -1,10 +1,8 @@
 public class Char extends Robot {
 
-	private Constantes constantes = new Constantes();
-
 	public Char(int equipe) {
 		super(equipe);
-		setEnergie(constantes.getEnergieInitialePiegeur());
+		setEnergie(Constantes.getEnergieInitialeChar());
 	}
 
 	@Override
@@ -17,6 +15,6 @@ public class Char extends Robot {
 	}
 
 	public String toString() {
-		return "C";
+		return "C" + getId();
 	}
 }
