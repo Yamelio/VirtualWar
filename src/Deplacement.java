@@ -23,6 +23,15 @@ public class Deplacement extends Action {
 					quitteBase(robot.getPosition());
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
+					if(this.getRobot() instanceof Tireur){
+						this.getRobot().setEnergie(
+								this.getRobot().getEnergie()
+								- constantes.getCoutDeplacementTireur());
+					}else if(this.getRobot() instanceof Piegeur){
+						this.getRobot().setEnergie(
+								this.getRobot().getEnergie()
+								- constantes.getCoutDeplacementPiegeur());
+					}
 					if (this.cible.estMine()
 							&& this.getRobot() instanceof Tireur) {
 						this.getRobot().setEnergie(
@@ -52,6 +61,9 @@ public class Deplacement extends Action {
 					quitteBase(robot.getPosition());
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
+					this.getRobot().setEnergie(
+							this.getRobot().getEnergie()
+							- constantes.getCoutDeplacementChar());
 					if (this.cible.estMine()) {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
@@ -67,9 +79,17 @@ public class Deplacement extends Action {
 							this.cible = new Position(this.cible.getX(),
 									this.cible.getY() - 1);
 							this.getRobot().setPosition(this.cible);
+							this.getRobot().setEnergie(
+									this.getRobot().getEnergie()
+									- constantes.getCoutDeplacementChar());
 						} else {
+							quitteBase(robot.getPosition());
 							this.cible = new Position(this.cible.getX(),
 									this.cible.getY() + 1);
+							this.getRobot().setPosition(this.cible);
+							this.getRobot().setEnergie(
+									this.getRobot().getEnergie()
+									- constantes.getCoutDeplacementChar());
 						}
 					} else if (this.getRobot().getPosition().getY() == cible
 							.getY()) {
@@ -79,9 +99,17 @@ public class Deplacement extends Action {
 							this.cible = new Position(this.cible.getX() - 1,
 									this.cible.getY());
 							this.getRobot().setPosition(this.cible);
+							this.getRobot().setEnergie(
+									this.getRobot().getEnergie()
+									- constantes.getCoutDeplacementChar());
 						} else {
+							quitteBase(robot.getPosition());
 							this.cible = new Position(this.cible.getX() + 1,
 									this.cible.getY());
+							this.getRobot().setPosition(this.cible);
+							this.getRobot().setEnergie(
+									this.getRobot().getEnergie()
+									- constantes.getCoutDeplacementChar());
 						}
 					}
 				}
