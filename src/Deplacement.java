@@ -19,7 +19,7 @@ public class Deplacement extends Action {
 							.getRobot().getPosition().getY() == cible.getY())) {
 				if (!cible.estBase() && !cible.estObstacle()
 						&& !cible.estRobot()) {
-					quitteBase(robot.getPosition());
+					quitteBase(robot);
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
 					if (this.getRobot() instanceof Tireur) {
@@ -60,7 +60,7 @@ public class Deplacement extends Action {
 							.getRobot().getPosition().getX() == cible.getX())) {
 				if (!cible.estBase() && !cible.estObstacle()
 						&& !cible.estRobot()) {
-					quitteBase(robot.getPosition());
+					quitteBase(robot);
 					this.cible = cible;
 					this.getRobot().setPosition(this.cible);
 					this.getRobot().setEnergie(
@@ -77,7 +77,7 @@ public class Deplacement extends Action {
 							.getX()) {
 						if (this.getRobot().getPosition().getY()
 								- this.cible.getY() < 0) {
-							quitteBase(robot.getPosition());
+							quitteBase(robot);
 							this.cible.setPosition(this.cible.getX(),
 									this.cible.getY() - 1);
 							this.getRobot().setPosition(this.cible);
@@ -86,7 +86,7 @@ public class Deplacement extends Action {
 											- Constantes
 													.getCoutDeplacementChar());
 						} else {
-							quitteBase(robot.getPosition());
+							quitteBase(robot);
 							this.cible.setPosition(this.cible.getX(),
 									this.cible.getY() + 1);
 							this.getRobot().setPosition(this.cible);
@@ -99,7 +99,7 @@ public class Deplacement extends Action {
 							.getY()) {
 						if (this.getRobot().getPosition().getX()
 								- this.cible.getX() < 0) {
-							quitteBase(robot.getPosition());
+							quitteBase(robot);
 							this.cible.setPosition(this.cible.getX() - 1,
 									this.cible.getY());
 							this.getRobot().setPosition(this.cible);
@@ -108,7 +108,7 @@ public class Deplacement extends Action {
 											- Constantes
 													.getCoutDeplacementChar());
 						} else {
-							quitteBase(robot.getPosition());
+							quitteBase(robot);
 							this.cible.setPosition(this.cible.getX() + 1,
 									this.cible.getY());
 							this.getRobot().setPosition(this.cible);
@@ -128,9 +128,9 @@ public class Deplacement extends Action {
 		return this.cible;
 	}
 
-	public void quitteBase(Position p) {
-		if (p.getRobot().getPosition().estBase()) {
-			((Base) p.getRobot().getPosition()).quitteBase(p.getRobot());
+	public void quitteBase(Robot r) {
+		if (r.getPosition().estBase()) {
+			((Base) r.getPosition()).quitteBase(r);
 		}
 	}
 }

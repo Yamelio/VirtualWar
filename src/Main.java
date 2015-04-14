@@ -108,9 +108,15 @@ public class Main {
 			choixCible = p.stringToPos(s.nextLine());
 			if (choixAction == 1) {
 				actions.add(new Attaque(robotChoisi, choixCible));
-				System.out.println("Le robot " + robotChoisi.getId()
-						+ " a attaque le robot "
-						+ choixCible.getRobot().getId());
+				if (robotChoisi instanceof Piegeur) {
+					System.out.println("Le robot " + robotChoisi.getId()
+							+ " a posé une mine en "
+							+ p.posToString(choixCible));
+				} else {
+					System.out.println("Le robot " + robotChoisi.getId()
+							+ " a attaque le robot "
+							+ choixCible.getRobot().getId());
+				}
 			} else {
 				actions.add(new Deplacement(robotChoisi, choixCible));
 				System.out.println("Le robot " + robotChoisi.getId()
