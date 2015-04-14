@@ -48,12 +48,26 @@ public class Deplacement extends Action {
 				}else if(cible.estBase()){
 					if(cible.getEquipe() == robot.getEquipe()){
 						if(robot.getEquipe() == 0){
-							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(robot);
+							this.cible = cible;
+							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(this.getRobot());
+							this.getRobot().setPosition(this.cible);
+							if(this.getRobot() instanceof Tireur){
+								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementTireur());
+							}else if(this.getRobot() instanceof Piegeur){
+								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementPiegeur());
+							}
 						}else {
+							this.cible = cible;
 							((Base) Position.getPlateau().getCarte().get(Position.getPlateau()
 							.posToString(new Position(Position.getPlateau().getLargeur(),
 							Position.getPlateau().getHauteur()))))
-							.deplaceSur(robot);;
+							.deplaceSur(this.getRobot());
+							this.getRobot().setPosition(this.cible);
+							if(this.getRobot() instanceof Tireur){
+								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementTireur());
+							}else if(this.getRobot() instanceof Piegeur){
+								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementPiegeur());
+							}
 						}
 					}
 				}
@@ -132,12 +146,18 @@ public class Deplacement extends Action {
 				}else if(cible.estBase()){
 					if(cible.getEquipe() == robot.getEquipe()){
 						if(robot.getEquipe() == 0){
-							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(robot);
+							this.cible = cible;
+							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(this.getRobot());
+							this.getRobot().setPosition(this.cible);
+							this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementChar());
 						}else {
+							this.cible = cible;
 							((Base) Position.getPlateau().getCarte().get(Position.getPlateau()
 							.posToString(new Position(Position.getPlateau().getLargeur(),
 							Position.getPlateau().getHauteur()))))
-							.deplaceSur(robot);;
+							.deplaceSur(this.getRobot());
+							this.getRobot().setPosition(this.cible);
+							this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementChar());
 						}
 					}
 				}
