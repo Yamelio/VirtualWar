@@ -114,4 +114,9 @@ public class Position {
 		return x == p.x && y == p.y;
 
 	}
+
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 }
