@@ -78,7 +78,7 @@ public class Deplacement extends Action {
 						if (this.getRobot().getPosition().getY()
 								- this.cible.getY() < 0) {
 							quitteBase(robot.getPosition());
-							this.cible = new Position(this.cible.getX(),
+							this.cible.setPosition(this.cible.getX(),
 									this.cible.getY() - 1);
 							this.getRobot().setPosition(this.cible);
 							this.getRobot().setEnergie(
@@ -87,7 +87,7 @@ public class Deplacement extends Action {
 													.getCoutDeplacementChar());
 						} else {
 							quitteBase(robot.getPosition());
-							this.cible = new Position(this.cible.getX(),
+							this.cible.setPosition(this.cible.getX(),
 									this.cible.getY() + 1);
 							this.getRobot().setPosition(this.cible);
 							this.getRobot().setEnergie(
@@ -100,7 +100,7 @@ public class Deplacement extends Action {
 						if (this.getRobot().getPosition().getX()
 								- this.cible.getX() < 0) {
 							quitteBase(robot.getPosition());
-							this.cible = new Position(this.cible.getX() - 1,
+							this.cible.setPosition(this.cible.getX() - 1,
 									this.cible.getY());
 							this.getRobot().setPosition(this.cible);
 							this.getRobot().setEnergie(
@@ -109,7 +109,7 @@ public class Deplacement extends Action {
 													.getCoutDeplacementChar());
 						} else {
 							quitteBase(robot.getPosition());
-							this.cible = new Position(this.cible.getX() + 1,
+							this.cible.setPosition(this.cible.getX() + 1,
 									this.cible.getY());
 							this.getRobot().setPosition(this.cible);
 							this.getRobot().setEnergie(
