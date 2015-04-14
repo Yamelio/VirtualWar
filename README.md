@@ -8,7 +8,7 @@ Contributeurs:
 
 Guillaume Kleinpoort (Chef de projet)
 
-Nicolas Mauger (Responsable  fonctionnelle)
+Nicolas Mauger (Responsable  fonctionnel)
 
 Aurélien Svevi (Responsable technique)
 
