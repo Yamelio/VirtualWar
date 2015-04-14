@@ -1,6 +1,5 @@
 public abstract class Robot {
 
-	private Constantes constantes = new Constantes();
 	private int energie;
 	private int equipe;
 	private Position pos;
@@ -44,11 +43,11 @@ public abstract class Robot {
 
 	public void setPosition(Position pos) {
 		this.pos = pos;
-		
+
 	}
 
 	public void recharger() {
-		this.energie += constantes.getRecharge();
+		this.energie += Constantes.getRecharge();
 	}
 
 	public int getId() {

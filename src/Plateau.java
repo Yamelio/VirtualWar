@@ -112,18 +112,26 @@ public class Plateau {
 									// verticalement
 				if (p.getX() + 1 <= largeur) {
 					p = new Position(p.getX() + 1, p.getY());
+					liste.add(new Position(p.getX() + 1, p.getY()));
+				} else {
+					if (p.getY() + 1 <= hauteur) {
+						p = new Position(p.getX(), p.getY() + 1);
+						liste.add(new Position(p.getX(), p.getY() + 1));
+					}
 				}
 			} else {
 				if (p.getY() + 1 <= hauteur) {
 					p = new Position(p.getX(), p.getY() + 1);
+					liste.add(new Position(p.getX(), p.getY() + 1));
 				} else {
 					if (p.getX() + 1 <= largeur) {
 						p = new Position(p.getX() + 1, p.getY());
+						liste.add(new Position(p.getX() + 1, p.getY()));
+
 					}
 				}
-			}
-			liste.add(p); // On ajoute a la liste
 
+			}
 		}
 		int nbObstacle = (int) (getSurface() * (percentObstacle / 100.0));
 
@@ -131,7 +139,6 @@ public class Plateau {
 		int randY;
 
 		while (nbObstacle > 0) { // tant qu'il reste des obsacles à ajouter
-
 			while (liste.contains(p)) {
 				randX = r.nextInt(largeur) + 1;
 				randY = r.nextInt(hauteur) + 1;
@@ -141,9 +148,8 @@ public class Plateau {
 			--nbObstacle; // On décremente le nombre d'obsacle à
 							// ajouter
 			liste.add(p);
-			p.flipObstacle();
-			carte.remove(posToString(p));
-			carte.put(posToString(p), p);
+
+			carte.get(posToString(p)).flipObstacle();
 		}
 		Position.setPlateau(this);
 	}
@@ -251,7 +257,7 @@ public class Plateau {
 				if (r instanceof Char) {
 					energiemax = Constantes.getEnergieInitialeChar();
 					for (int k = 0; k < energiemax / 2; k++) {
-						if (r.getEnergie() > k - energiemax / 2) {
+						if (r.getEnergie() / 2 > k) {
 							res += "|";
 						} else {
 							res += " ";
@@ -261,7 +267,7 @@ public class Plateau {
 				} else if (r instanceof Piegeur) {
 					energiemax = Constantes.getEnergieInitialePiegeur();
 					for (int k = 0; k < energiemax / 2; k++) {
-						if (r.getEnergie() > k - energiemax / 2) {
+						if (r.getEnergie() / 2 > k) {
 							res += "|";
 						} else {
 							res += " ";
@@ -271,7 +277,7 @@ public class Plateau {
 				} else {
 					energiemax = Constantes.getEnergieInitialeTireur();
 					for (int k = 0; k < energiemax / 2; k++) {
-						if (r.getEnergie() > k - energiemax / 2) {
+						if (r.getEnergie() / 2 > k) {
 							res += "|";
 						} else {
 							res += " ";
@@ -303,7 +309,7 @@ public class Plateau {
 				if (r instanceof Char) {
 					energiemax = Constantes.getEnergieInitialeChar();
 					for (int k = 0; k < energiemax / 2; k++) {
-						if (r.getEnergie() > k - energiemax / 2) {
+						if (r.getEnergie() / 2 > k) {
 							res += "|";
 						} else {
 							res += " ";
@@ -313,7 +319,7 @@ public class Plateau {
 				} else if (r instanceof Piegeur) {
 					energiemax = Constantes.getEnergieInitialePiegeur();
 					for (int k = 0; k < energiemax / 2; k++) {
-						if (r.getEnergie() > k - energiemax / 2) {
+						if (r.getEnergie() / 2 > k) {
 							res += "|";
 						} else {
 							res += " ";
@@ -323,7 +329,7 @@ public class Plateau {
 				} else {
 					energiemax = Constantes.getEnergieInitialeTireur();
 					for (int k = 0; k < energiemax / 2; k++) {
-						if (r.getEnergie() > k - energiemax / 2) {
+						if (r.getEnergie() / 2 > k) {
 							res += "|";
 						} else {
 							res += " ";

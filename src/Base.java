@@ -48,4 +48,25 @@ public class Base extends Position {
 	public String toString() {
 		return ("Equipe " + getEquipe() + ", contient " + robots);
 	}
+
+	public void recharge() {
+		for (Robot r : robots) {
+			r.recharger();
+			if (r instanceof Piegeur) {
+				if (r.getEnergie() > Constantes.getEnergieInitialePiegeur()) {
+					r.setEnergie(Constantes.getEnergieInitialePiegeur());
+				}
+			} else {
+				if (r instanceof Char) {
+					if (r.getEnergie() > Constantes.getEnergieInitialeChar()) {
+						r.setEnergie(Constantes.getEnergieInitialeChar());
+					}
+				} else {
+					if (r.getEnergie() > Constantes.getEnergieInitialeTireur()) {
+						r.setEnergie(Constantes.getEnergieInitialeTireur());
+					}
+				}
+			}
+		}
+	}
 }

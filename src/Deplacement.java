@@ -48,9 +48,9 @@ public class Deplacement extends Action {
 				}else if(cible.estBase()){
 					if(cible.getEquipe() == robot.getEquipe()){
 						if(robot.getEquipe() == 0){
-							((Base) cible.getPlateau().getCarte().get("A1")).deplaceSur(robot);
+							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(robot);
 						}else {
-							((Base) cible.getPlateau().getCarte().get(Position.getPlateau()
+							((Base) Position.getPlateau().getCarte().get(Position.getPlateau()
 							.posToString(new Position(Position.getPlateau().getLargeur(),
 							Position.getPlateau().getHauteur()))))
 							.deplaceSur(robot);;
@@ -132,9 +132,9 @@ public class Deplacement extends Action {
 				}else if(cible.estBase()){
 					if(cible.getEquipe() == robot.getEquipe()){
 						if(robot.getEquipe() == 0){
-							((Base) cible.getPlateau().getCarte().get("A1")).deplaceSur(robot);
+							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(robot);
 						}else {
-							((Base) cible.getPlateau().getCarte().get(Position.getPlateau()
+							((Base) Position.getPlateau().getCarte().get(Position.getPlateau()
 							.posToString(new Position(Position.getPlateau().getLargeur(),
 							Position.getPlateau().getHauteur()))))
 							.deplaceSur(robot);;
