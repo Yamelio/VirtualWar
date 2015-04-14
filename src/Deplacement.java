@@ -45,6 +45,17 @@ public class Deplacement extends Action {
 								this.getRobot().getEnergie()
 										- Constantes.getDegatsPiegeur());
 					}
+				}else if(cible.estBase()){
+					if(cible.getEquipe() == robot.getEquipe()){
+						if(robot.getEquipe() == 0){
+							((Base) cible.getPlateau().getCarte().get("A1")).deplaceSur(robot);
+						}else {
+							((Base) cible.getPlateau().getCarte().get(Position.getPlateau()
+							.posToString(new Position(Position.getPlateau().getLargeur(),
+							Position.getPlateau().getHauteur()))))
+							.deplaceSur(robot);;
+						}
+					}
 				}
 			}
 		} else {
@@ -116,6 +127,17 @@ public class Deplacement extends Action {
 									this.getRobot().getEnergie()
 											- Constantes
 													.getCoutDeplacementChar());
+						}
+					}
+				}else if(cible.estBase()){
+					if(cible.getEquipe() == robot.getEquipe()){
+						if(robot.getEquipe() == 0){
+							((Base) cible.getPlateau().getCarte().get("A1")).deplaceSur(robot);
+						}else {
+							((Base) cible.getPlateau().getCarte().get(Position.getPlateau()
+							.posToString(new Position(Position.getPlateau().getLargeur(),
+							Position.getPlateau().getHauteur()))))
+							.deplaceSur(robot);;
 						}
 					}
 				}
