@@ -39,11 +39,13 @@ public class Deplacement extends Action {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getDegatsTireur());
+						this.cible.flipMine(0);
 					} else if (this.cible.estMine()
 							&& this.getRobot() instanceof Piegeur) {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getDegatsPiegeur());
+						this.cible.flipMine(0);
 					}
 				}else if(cible.estBase()){
 					if(cible.getEquipe() == robot.getEquipe()){
@@ -95,6 +97,7 @@ public class Deplacement extends Action {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getDegatsChar());
+						this.cible.flipMine(0);
 					}
 
 				} else if (cible.estObstacle() || cible.estRobot()) {

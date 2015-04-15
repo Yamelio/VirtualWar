@@ -39,7 +39,7 @@ public class Position {
 			this.setEquipe(equipe);
 		} else {
 			this.base = !this.base;
-			this.setEquipe(0);
+			this.setEquipe(2);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class Position {
 			this.setEquipe(equipe);
 		} else {
 			this.mine = !this.mine;
-			this.setEquipe(0);
+			this.setEquipe(2);
 		}
 	}
 
