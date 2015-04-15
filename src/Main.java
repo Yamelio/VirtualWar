@@ -76,7 +76,6 @@ public class Main {
 		for (int i = 0; i < nbPiegeurJ2; i++) {
 			p.ajouterListeRobot(new Piegeur(1));
 		}
-
 		boolean joueur = r.nextBoolean(); // J1=true, J2=false
 		String joueurCourant; // J1 ou J2
 		Robot robotChoisi;
@@ -84,6 +83,7 @@ public class Main {
 		Position choixCible;
 
 		while (true) {
+			Position.setPlateau(p);
 			System.out.println(p);
 			p.afficherRobotsJ1();
 			p.afficherRobotsJ2();
@@ -95,8 +95,11 @@ public class Main {
 			System.out
 					.println("C'est a  "
 							+ joueurCourant
-							+ " de jouer !\nselectionnez le numero du robot que vous souhaitez utiliser, ainsi que son action");
-			robotChoisi = p.getListeRobot().get(s.nextInt());
+							+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
+			do {
+				robotChoisi = p.getListeRobot().get(s.nextInt());
+			} while ((robotChoisi.getEquipe() == 1 && joueur)
+					|| (robotChoisi.getEquipe() == 0 && !joueur));
 			if (robotChoisi instanceof Piegeur) {
 				System.out.println("\t1- Poser une mine\n\t2- Se deplacer");
 			} else {

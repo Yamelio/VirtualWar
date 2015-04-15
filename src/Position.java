@@ -2,7 +2,7 @@ public class Position {
 
 	private int x;
 	private int y;
-	private int equipe = 0;
+	private int equipe = 2;
 	private boolean base = false;
 	private boolean mine = false;
 	private boolean obstacle = false;

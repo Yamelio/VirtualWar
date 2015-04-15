@@ -202,7 +202,9 @@ public class Attaque extends Action {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getCoutMine());
-						this.cible.flipMine(this.getRobot().getEquipe());
+						Position.getPlateau().getCarte()
+								.get(Position.getPlateau().posToString(cible))
+								.flipMine(this.getRobot().getEquipe());
 						this.getRobot().setNbMines(
 								this.getRobot().getNbMines() - 1);
 					}
@@ -221,7 +223,9 @@ public class Attaque extends Action {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getCoutMine());
-						this.cible.flipMine(this.getRobot().getEquipe());
+						Position.getPlateau().getCarte()
+								.get(Position.getPlateau().posToString(cible))
+								.flipMine(this.getRobot().getEquipe());
 						this.getRobot().setNbMines(
 								this.getRobot().getNbMines() - 1);
 					}
@@ -240,7 +244,9 @@ public class Attaque extends Action {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getCoutMine());
-						this.cible.flipMine(this.getRobot().getEquipe());
+						Position.getPlateau().getCarte()
+								.get(Position.getPlateau().posToString(cible))
+								.flipMine(this.getRobot().getEquipe());
 						this.getRobot().setNbMines(
 								this.getRobot().getNbMines() - 1);
 					}
@@ -258,7 +264,9 @@ public class Attaque extends Action {
 						this.getRobot().setEnergie(
 								this.getRobot().getEnergie()
 										- Constantes.getCoutMine());
-						this.cible.flipMine(this.getRobot().getEquipe());
+						Position.getPlateau().getCarte()
+								.get(Position.getPlateau().posToString(cible))
+								.flipMine(this.getRobot().getEquipe());
 						this.getRobot().setNbMines(
 								this.getRobot().getNbMines() - 1);
 					}
