@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * La classe Plateau définit le plateau de jeu ou se déroulera la partie  
+ */
 public class Plateau {
 	private Map<String, Position> carte;
 	private List<Robot> robots;
@@ -61,15 +64,15 @@ public class Plateau {
 	 * Fonction pour convertir la String en position
 	 * 
 	 * @param Position
-	 *            La position à convertir
+	 *            La position Ã  convertir
 	 * @return La String sous la forme "B11"
 	 */
 	public String posToString(Position p) {
 		String s = "";
 		s += (char) ((char) p.getX() + 64); // +64 car les lettres se trouvent
-											// � partir de 65
+											// à partir de 65
 											// dans la table ASCII
-		s += p.getY(); // Pas besoin de convertion, les ordonnées sont déjà
+		s += p.getY(); // Pas besoin de convertion, les ordonnÃ©es sont dÃ©jÃ 
 						// en
 						// int
 		return s;
@@ -79,36 +82,36 @@ public class Plateau {
 	 * Fonction pour convertir la Position en String
 	 * 
 	 * @param String
-	 *            La String à convertir, sous la forme "C4"
+	 *            La String Ã  convertir, sous la forme "C4"
 	 * @return La Position voulu
 	 */
 	public Position stringToPos(String s) {
 		int x = s.charAt(0) - 64; // On converti
 									// l'abscisse en int
-		int y = Integer.parseInt(s.substring(1)); // On converti l'ordonné en
+		int y = Integer.parseInt(s.substring(1)); // On converti l'ordonnÃ© en
 													// int
 		return new Position(x, y);
 	}
 
 	/**
-	 * Crée un chemin libre pour pouvoir poser des obstacles autour
+	 * CrÃ©e un chemin libre pour pouvoir poser des obstacles autour
 	 * 
 	 */
 	private void initObstacles() {
 		Random r = new Random();
 		List<Position> liste = new ArrayList<Position>(); // Liste des position
-															// à laisser libre
-		Position p = new Position(1, 1); // On commence en haut à gauche
-		liste.add(p);// La position en haut à gauche est laissé libre
-		liste.add(new Position(largeur, hauteur)); // La position en bas à
-													// droite est laissé libre
+															// Ã  laisser libre
+		Position p = new Position(1, 1); // On commence en haut Ã  gauche
+		liste.add(p);// La position en haut Ã  gauche est laissÃ© libre
+		liste.add(new Position(largeur, hauteur)); // La position en bas Ã 
+													// droite est laissÃ© libre
 
 		while (p.getX() != largeur && p.getY() != hauteur) { // Temps qu'on est
 																// pas arriver
 																// dans le coin
-																// en bas à
+																// en bas Ã 
 																// gauche
-			if (r.nextBoolean()) { // une chance sur deux qu'il se déplace
+			if (r.nextBoolean()) { // une chance sur deux qu'il se dÃ©place
 									// verticalement
 				if (p.getX() + 1 <= largeur) {
 					p = new Position(p.getX() + 1, p.getY());
@@ -138,14 +141,14 @@ public class Plateau {
 		int randX;
 		int randY;
 
-		while (nbObstacle > 0) { // tant qu'il reste des obsacles à ajouter
+		while (nbObstacle > 0) { // tant qu'il reste des obsacles Ã  ajouter
 			while (liste.contains(p)) {
 				randX = r.nextInt(largeur) + 1;
 				randY = r.nextInt(hauteur) + 1;
 				p = new Position(randX, randY);
 			}
 
-			--nbObstacle; // On décremente le nombre d'obsacle à
+			--nbObstacle; // On dÃ©cremente le nombre d'obsacle Ã 
 							// ajouter
 			liste.add(p);
 
@@ -217,7 +220,7 @@ public class Plateau {
 	public void setHauteur(int hauteur) {
 		this.hauteur = hauteur;
 	}
-
+	
 	public void setPercentObstacle(int percentObstacle) {
 		this.percentObstacle = percentObstacle;
 	}
