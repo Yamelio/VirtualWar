@@ -6,12 +6,7 @@ public abstract class Robot {
 	public static int cpt = 0;
 	private int id;
 	
-	/**
-	 * Constructeur de la classe robot
-	 * 
-	 * @param equipe
-	 * 		Prend le numéro de léquipe en paramètre
-	 */
+
 	public Robot(int equipe) {
 		this.equipe = equipe;
 		this.id = cpt++;
@@ -52,9 +47,6 @@ public abstract class Robot {
 
 	}
 	
-	/**
-	 *Procedure qui recharge l'énérgie du robot courant
-	 */
 	public void recharger() {
 		this.energie += Constantes.getRecharge();
 	}
