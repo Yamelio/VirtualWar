@@ -1,7 +1,24 @@
+/**
+ * 
+ * @author Matthieu Gaillard, Guillaume Kleinpoort et Benjamin Holquin
+ * Cette classe représent une Action Déplacement définit à partir de sa cible
+ */
 public class Deplacement extends Action {
-
+	
+	/** La cible du déplacement */
 	private Position cible;
 
+	/**
+	 * 
+	 * Constructeur de la classe Deplacement
+	 * 
+	 * @param robot
+	 * 					Robot qui se déplace
+	 * @param cible
+	 *					Cible vers laquelle il se déplace
+	 * @throws Erreur
+	 * 					Erreur en cas de cible incorrecte
+	 */
 	public Deplacement(Robot robot, Position cible) throws Erreur {
 		super(robot);
 		this.cible = Position.getPlateau().getCarte()
@@ -24,6 +41,9 @@ public class Deplacement extends Action {
 		return this.cible;
 	}
 
+	/**
+	 * Fonction qui vérifie si la cible est une base ou si le robot est dans sa base et le fait rentrer ou sortir
+	 */
 	public boolean checkBase() {
 		if (getRobot().getPosition().estBase()) {
 			((Base) getRobot().getPosition()).quitteBase(getRobot());
@@ -38,6 +58,9 @@ public class Deplacement extends Action {
 		return false;
 	}
 
+	/**
+	 * Fonction qui vérifie que la cible du déplacement est bien à portée du robot
+	 */
 	public boolean checkCoordonees() {
 		if (this.getRobot() instanceof Tireur
 				|| this.getRobot() instanceof Piegeur) {
@@ -70,6 +93,11 @@ public class Deplacement extends Action {
 		return false;
 	}
 
+	
+	/**
+	 * Fonction qui vérifie si la cible est une mine et enlève l'énergie en conséquant
+	 * @return
+	 */
 	public boolean checkMine() {
 		if (!cible.estMine()) {
 			return false;
@@ -81,11 +109,18 @@ public class Deplacement extends Action {
 			return true;
 		}
 	}
-
+	
+	
+	/**
+	 * Fonction qui vérifie que la cible est bien vide
+	 */
 	public boolean checkObstacle() {
 		return !(cible.estRobot() || cible.estObstacle());
 	}
 
+	/**
+	 * Fonction qui déplace effectivement le robot
+	 */
 	public void deplacerRobot() {
 
 		if (!checkBase()) {

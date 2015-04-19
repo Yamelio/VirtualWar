@@ -1,5 +1,17 @@
+/**
+ * 
+ * @author Matthieu Gaillard
+ * Cette classe représente un Robot Char, définit par son équipe
+ */
 public class Char extends Robot {
 
+	/**
+	 * 
+	 * Constructeur de la classe Char
+	 * 
+	 * @param equipe
+	 * 					l'équipe du char
+	 */
 	public Char(int equipe) {
 		super(equipe);
 		setEnergie(Constantes.getEnergieInitialeChar());

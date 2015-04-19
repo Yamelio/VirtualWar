@@ -1,11 +1,31 @@
+/**
+ * 
+ * @author Matthieu Gaillard
+ * Cette classe représente un objet Robot définit par son équipe
+ */
 public abstract class Robot {
-
+	
+	/** L'énergie du robot */
 	private int energie;
+	
+	/** l'équipe du robot */
 	private int equipe;
+	
+	/** la position du robot */
 	private Position pos;
+	
+	/** le compteur servant à définir l'ID du robot */
 	public static int cpt = 0;
+	
+	/** l'ID du robot */
 	private int id;
 
+	/**
+	 * Construit un Robot à partir de son équipe
+	 * 
+	 * @param equipe
+	 * 					l'équipe du robot
+	 */
 	public Robot(int equipe) {
 		this.equipe = equipe;
 		this.id = cpt++;
@@ -45,7 +65,10 @@ public abstract class Robot {
 		this.pos = pos;
 
 	}
-
+	
+	/**
+	 * Recharge en vie, et en mine le cas échéant, le robot
+	 */
 	public void recharger() {
 		this.energie += Constantes.getRecharge();
 	}
