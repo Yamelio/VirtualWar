@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class Main {
 	/**
-	 * C'est le main
+	 * C'est le main (merci capitaine)
 	 */
 	public static void main(String[] args) {
 		Random r = new Random();
@@ -113,7 +113,7 @@ public class Main {
 				} else {
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
-								+ " a posé une mine en "
+								+ " a posÃ© une mine en "
 								+ p.posToString(choixCible));
 					} else {
 						System.out.println("Le robot " + robotChoisi.getId()
@@ -126,9 +126,9 @@ public class Main {
 				try {
 					System.out
 
-							.println("C'est a  "
+							.println("C'est aÂ  "
 									+ joueurCourant
-									+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
+									+ " de jouer !\nselectionnez le numero du robot de votre Ã©quipe que vous souhaitez utiliser, ainsi que son action");
 					do {
 						robotChoisi = p.getListeRobot().get(s.nextInt());
 					} while ((robotChoisi.getEquipe() == 1 && joueur)

@@ -19,12 +19,21 @@ public abstract class Robot {
 	
 	/** l'ID du robot */
 	private int id;
+<<<<<<< HEAD
 
 	/**
 	 * Construit un Robot à partir de son équipe
 	 * 
 	 * @param equipe
 	 * 					l'équipe du robot
+=======
+	
+	/**
+	 * Constructeur de la classe robot
+	 * 
+	 * @param equipe
+	 * 		Prend le numÃ©ro de lÃ©quipe en paramÃ¨tre
+>>>>>>> origin/master
 	 */
 	public Robot(int equipe) {
 		this.equipe = equipe;
@@ -67,7 +76,11 @@ public abstract class Robot {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Recharge en vie, et en mine le cas échéant, le robot
+=======
+	 *Procedure qui recharge l'Ã©nÃ©rgie du robot courant
+>>>>>>> origin/master
 	 */
 	public void recharger() {
 		this.energie += Constantes.getRecharge();
