@@ -27,10 +27,6 @@ public class Vue {
 		return !p.estObstacle() && !p.estMine() && !p.estBase();
 	}
 
-	/**
-	 * 
-	 * @return le plateau de la vue
-	 */
 	public Plateau getPlateau() {
 		return this.plateau;
 	}
