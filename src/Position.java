@@ -70,12 +70,12 @@ public class Position {
 	 *            L'équipe à qui appartient la mine
 	 */
 	public void flipMine(int equipe) {
-		this.mine = !this.mine;
 		if (!this.mine) {
 			this.setEquipe(equipe);
 		} else {
 			this.setEquipe(2);
 		}
+		this.mine = !this.mine;
 	}
 
 	/**

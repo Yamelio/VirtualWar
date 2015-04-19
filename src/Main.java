@@ -45,10 +45,10 @@ public class Main {
 		int hauteur;
 		do {
 			System.out
-					.println(" Entrez la taille de la map (largeur, puis hauteur)");
+					.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
 			largeur = s.nextInt();
 			hauteur = s.nextInt();
-		} while (largeur < 5 && largeur > 26 && hauteur < 5 && hauteur > 26);
+		} while (largeur < 5 || largeur > 26 || hauteur < 5 || hauteur > 26);
 		int obstacles;
 		do {
 			System.out
@@ -76,23 +76,52 @@ public class Main {
 		for (int i = 0; i < nbPiegeurJ2; i++) {
 			p.ajouterListeRobot(new Piegeur(1));
 		}
+		int fin = 2;
 		boolean joueur = r.nextBoolean(); // J1=true, J2=false
 		String joueurCourant; // J1 ou J2
-		Robot robotChoisi;
+		Robot robotChoisi = new Tireur(2);
 		int choixAction;
-		Position choixCible;
+		Position choixCible = new Position(10, 10);
 		Position.setPlateau(p);
+		Vue vueJ1 = new Vue(p, 0);
+		Vue vueJ2 = new Vue(p, 1);
 
-		while (true) {
-			p = Position.getPlateau();
-			System.out.println(p);
-			p.afficherRobotsJ1();
-			p.afficherRobotsJ2();
+		while (fin >= 2) {
+
+			for (int i = 0; i < 20; i++) {
+				System.out.println("");
+			}
+
 			if (joueur) {
 				joueurCourant = "J1";
 			} else {
 				joueurCourant = "J2";
 			}
+			if (joueur) {
+				System.out.println(vueJ1);
+			} else {
+				System.out.println(vueJ2);
+			}
+			p.afficherRobotsJ1();
+			p.afficherRobotsJ2();
+
+			if (!actions.isEmpty()) {
+				if (actions.get(actions.size() - 1) instanceof Deplacement) {
+					System.out.println("Le robot " + robotChoisi.getId()
+							+ " s'est deplace en " + p.posToString(choixCible));
+				} else {
+					if (robotChoisi instanceof Piegeur) {
+						System.out.println("Le robot " + robotChoisi.getId()
+								+ " a posé une mine en "
+								+ p.posToString(choixCible));
+					} else {
+						System.out.println("Le robot " + robotChoisi.getId()
+								+ " a attaque le robot "
+								+ choixCible.getRobot().getId());
+					}
+				}
+			}
+
 			System.out
 					.println("C'est a  "
 							+ joueurCourant
@@ -112,27 +141,50 @@ public class Main {
 			choixCible = p.stringToPos(s.nextLine());
 			if (choixAction == 1) {
 				actions.add(new Attaque(robotChoisi, choixCible));
-				if (robotChoisi instanceof Piegeur) {
-					System.out.println("Le robot " + robotChoisi.getId()
-							+ " a posé une mine en "
-							+ p.posToString(choixCible));
-				} else {
-					System.out.println("Le robot " + robotChoisi.getId()
-							+ " a attaque le robot "
-							+ choixCible.getRobot().getId());
-				}
 			} else {
 				try {
 					actions.add(new Deplacement(robotChoisi, choixCible));
 				} catch (Erreur e) {
 					e.printStackTrace();
 				}
-				System.out.println("Le robot " + robotChoisi.getId()
-						+ " s'est deplace en " + p.posToString(choixCible));
 			}
 			joueur = !joueur;
 			p.recharges();
+			fin = checkFin();
 		}
 	}
 
+	private static int checkFin() {
+		int aliveJ1 = 0;
+		int aliveJ2 = 0;
+		List<Robot> toRemove = new ArrayList<Robot>();
+		for (Robot r : Position.getPlateau().getListeRobot()) {
+			if (r.getEnergie() > 0) {
+				if (r.getEquipe() == 0) {
+					aliveJ1++;
+				} else {
+					aliveJ2++;
+				}
+			} else {
+				toRemove.add(Position.getPlateau().getListeRobot()
+						.get(r.getId()));
+			}
+		}
+
+		for (Robot r : toRemove) {
+			Position.getPlateau().getListeRobot().remove(r.getId());
+		}
+
+		if (aliveJ1 == 0 && aliveJ2 == 0) {
+			return -1;
+		}
+
+		if (aliveJ1 == 0) {
+			return 1;
+		}
+		if (aliveJ2 == 0) {
+			return 0;
+		}
+		return 2;
+	}
 }
