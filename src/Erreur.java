@@ -1,6 +1,6 @@
 @SuppressWarnings("serial")
 /**
- * Constructs a new exception with null as its detail message
+ * Constructs a new exception with Erreur as its detail message
  */
 public class Erreur extends Exception {
 
