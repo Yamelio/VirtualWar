@@ -16,31 +16,31 @@ public class Base extends Position {
 	public Base(int largeur, int hauteur, int equipe) {
 		super(largeur, hauteur);
 		robots = new ArrayList<Robot>();
-		// TODO Auto-generated constructor stub
 		flipBase(equipe);
 	}
-	
+
 	/**
-	 * Procedure qui dÃ©place le robot pris en paramÃ¨tre dans la base
+	 * Procedure qui déplace le robot pris en paramètre dans la base
+	 * 
 	 * @param robot
-	 * 	Le robot qui doit Ãªtre dÃ©placer sur la base
+	 *            Le robot qui doit être déplacer sur la base
 	 */
 	public void deplaceSur(Robot robot) {
-		// TODO Auto-generated method stub
 		robots.add(robot);
 	}
 
 	/**
-	 * Retire le robot prit en paramÃ©tre de la base
+	 * Retire le robot prit en paramétre de la base
+	 * 
 	 * @param robot
-	 * 		Le robot qui doit Ãªtre retirer
-	 */ 
+	 *            Le robot qui doit être retirer
+	 */
 	public void quitteBase(Robot robot) {
 		robots.remove(robot);
 	}
 
 	/**
-	 * Procedure qui retire tout les robots prÃ©sent dans la base
+	 * Procedure qui retire tout les robots présent dans la base
 	 */
 	public void videCase() {
 		ArrayList<Robot> toRemove = new ArrayList<Robot>();
@@ -61,10 +61,11 @@ public class Base extends Position {
 	public String toString() {
 		return ("Equipe " + getEquipe() + ", contient " + robots);
 	}
-	
+
 	/**
-	 * ProcÃ©dure qui recharge en Ã©nergie les robots prÃ©sent dans la base, et remplie le stock de mine si c'est un piÃ¨geur 
-	 */ 
+	 * Procédure qui recharge en énergie les robots présent dans la base, et
+	 * remplie le stock de mine si c'est un piègeur
+	 */
 	public void recharge() {
 		for (Robot r : robots) {
 			r.recharger();

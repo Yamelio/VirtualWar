@@ -1,27 +1,10 @@
-/**
- * 
- * @author Matthieu Gaillard, Guillaume Kleinpoort et Benjamin Holquin
- * Cette classe représente une Action Attaque définit par sa cible
- */
 public class Attaque extends Action {
 
-	/** la cible de l'attaque */
 	private Position cible;
 
-	/**
-	 * 
-	 * Constructeur de la classe Attaque
-	 * 
-	 * @param robot
-	 * 					le robot qui attaque
-	 * @param cible
-	 * 					la cible du robot
-	 * @throws Erreur
-	 * 					Erreur en cas de cible incorrecte
-	 */
 	public Attaque(Robot robot, Position cible) throws Erreur {
 		super(robot);
-		int energieInit=getRobot().getEnergie();
+		int energieInit = getRobot().getEnergie();
 		this.cible = cible;
 		if (this.getRobot() instanceof Tireur) {
 			if (this.getRobot().getPosition().getY() == cible.getY()) {
@@ -291,13 +274,15 @@ public class Attaque extends Action {
 				}
 			}
 		}
-		if(energieInit==getRobot().getEnergie()){
+		if (energieInit == getRobot().getEnergie()) {
 			throw new Erreur("Action impossible");
 		}
 	}
 
 	/**
-	 * Fonction qui verifie si il y a un obstacle sur la trajectoire du tir
+	 * verifie si il y a un obstacle sur la trajectoire du tir
+	 * 
+	 * @return
 	 */
 	public boolean tireSansEntrave() {
 		Position tmp;
@@ -348,4 +333,10 @@ public class Attaque extends Action {
 	public Position getCible() {
 		return this.cible;
 	}
+
+	public String toString() {
+		return this.getRobot().getEquipe() + " " + this.getRobot().getId()
+				+ " " + 1 + " " + Position.getPlateau().posToString(cible);
+	}
+
 }

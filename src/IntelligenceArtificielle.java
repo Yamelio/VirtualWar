@@ -1,6 +1,6 @@
 /**
- * @author Aur√©lien SVEVI
- * @author Nicolas MAUGER lol
+ * @author Les Quatre Cavaliers de l'Apocalypse
+ * 
  */
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class IntelligenceArtificielle {
 
 	private String formation;
 	private List<Robot> robots;
-	private int equipe;	
+	private int equipe;
 	private Plateau plateau;
 	private Constantes constantes = new Constantes();
 
@@ -24,136 +24,142 @@ public class IntelligenceArtificielle {
 		this.equipe = equipe;
 		this.plateau = p;
 	}
-	
+
 	/**
-	 * Choisis en d√©but de tour quel robot devra jouer
+	 * Choisis en dÈbut de tour quel robot devra jouer
+	 * 
 	 * @return le robot choisis
 	 */
-	public Robot choixRobotJoue(){
+	public Robot choixRobotJoue() {
 		Random r = new Random();
 		Robot temp;
-		do{
+		do {
 			temp = robots.get(r.nextInt(5));
-		}while(temp.getEnergie() < 5);
-		
+		} while (temp.getEnergie() < 5);
+
 		return temp;
-		
+
 	}
-	
-	
+
 	/**
-	 * Calcul la meilleur action √† faire pour le robot
-	 * @param robot a tester
-	 * @return type d'action (attaque ou d√©placement)
+	 * Calcul la meilleur action ‡ faire pour le robot
+	 * 
+	 * @param robot
+	 *            a tester
+	 * @return type d'action (attaque ou dÈplacement)
 	 */
-	
-	public String choixAction(Robot robot){
-		
-		if(robotAPortee(robot) != null){
+
+	public String choixAction(Robot robot) {
+
+		if (robotAPortee(robot) != null) {
 			return "Attaque";
 		}
-		
-		if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie()>constantes.getCoutMine()){
+
+		if (robot instanceof Piegeur && robot.getNbMines() > 0
+				&& robot.getEnergie() > constantes.getCoutMine()) {
 			return "Attaque";
 		}
-		
-		
-		
+
 		return "";
 	}
-	
-	
+
 	/**
-	 * Verifie si le robot fournit en param√®tre a un robot ennemi √† port√©e
-	 * @param robot a tester
-	 * @return le robot le plus utile √† viser
+	 * Verifie si le robot fournit en paramËtre a un robot ennemi ‡ portÈe
+	 * 
+	 * @param robot
+	 *            a tester
+	 * @return le robot le plus utile ‡ viser
 	 */
-	public Robot robotAPortee(Robot robot){
-		
+	public Robot robotAPortee(Robot robot) {
+
 		int portee;
 		List<Robot> robotsPortee = new ArrayList<Robot>();
-		
-		if(robot instanceof Tireur){
+
+		if (robot instanceof Tireur) {
 			portee = constantes.getPorteeTireur();
 		}
-		
-		else if(robot instanceof Piegeur){
+
+		else if (robot instanceof Piegeur) {
 			portee = constantes.getPorteePiegeur();
 		}
-		
-		else{
+
+		else {
 			return null;
 		}
-		
+
 		int PositionX = robot.getPosition().getX();
 		int PositionY = robot.getPosition().getY();
 		String strTemp;
 		Position posTemp;
-		
+
 		for (int i = -portee; i <= portee; i++) {
-			strTemp = plateau.posToString(new Position(PositionX + portee, PositionY));
+			strTemp = plateau.posToString(new Position(PositionX + portee,
+					PositionY));
 			posTemp = plateau.getCarte().get(strTemp);
-			if(posTemp.getRobot() != null){
+			if (posTemp.getRobot() != null) {
 				robotsPortee.add(posTemp.getRobot());
 			}
 		}
-		
-		if(robotsPortee.size() == 0){
+
+		if (robotsPortee.size() == 0) {
 			return null;
 		}
-		
-		else if(robotsPortee.size() == 1){
+
+		else if (robotsPortee.size() == 1) {
 			return robotsPortee.get(0);
 		}
-		
-		else{
+
+		else {
 			Robot rTemp = robotsPortee.get(0);
-			for(Robot r : robotsPortee){
-				if(r.getEnergie() < rTemp.getEnergie()){ //tries les robots pour renvoyer celui avec le moins d'energie
+			for (Robot r : robotsPortee) {
+				if (r.getEnergie() < rTemp.getEnergie()) { // tries les robots
+															// pour renvoyer
+															// celui avec le
+															// moins d'energie
 					rTemp = r;
 				}
 			}
 			return rTemp;
 		}
-		
+
 	}
-	
-	
+
 	/**
-	 * Cr√©ation de la List des robots √† partir de la formation
+	 * CrÈation de la List des robots ‡ partir de la formation
+	 * 
 	 * @return la liste des robots
 	 */
-	
+
 	private List<Robot> creerRobots() {
 		List<Robot> r = new ArrayList<Robot>();
 		char c;
 		int compt;
 		int position = 0;
-		for(int i = 0;i<3;i++){
+		for (int i = 0; i < 3; i++) {
 			c = formation.charAt(position);
-			compt = (int)c -48; //car le chiffre 1 en ascii est cod√© par 48
-			for(int j = 0; j<compt;j++){
-				if(i == 0){
+			compt = (int) c - 48; // car le chiffre 1 en ascii est codÈ par 48
+			for (int j = 0; j < compt; j++) {
+				if (i == 0) {
 					r.add(new Tireur(equipe));
-				}
-				else if(i == 1){
+				} else if (i == 1) {
 					r.add(new Piegeur(equipe));
-				}
-				else if(i == 2){
+				} else if (i == 2) {
 					r.add(new Char(equipe));
 				}
-				
+
 			}
 			position += compt + 1;
-			
+
 		}
 		return r;
 	}
 
-
 	/**
-	 * G√©n√®re la formation que l'IA va adopter de mani√®re al√©atoire et sous la forme d'un String
-	 * @return Un String contenant le nombre de chaques types de robots avec leurs types de formations
+	 * GÈnËre la formation que l'IA va adopter de maniËre alÈatoire et sous la
+	 * forme d'un String
+	 * 
+	 * @return Un String contenant le nombre de chaques types de robots avec
+	 *         leurs types de formations
 	 */
 
 	public String choixFormation() {
@@ -182,8 +188,8 @@ public class IntelligenceArtificielle {
 	public String getFormation() {
 		return this.formation;
 	}
-	
-	public List<Robot> getRobots(){
+
+	public List<Robot> getRobots() {
 		return this.robots;
 	}
 

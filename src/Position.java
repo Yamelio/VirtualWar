@@ -1,25 +1,24 @@
 /**
- * @author Matthieu Gaillard
- * Cette classe représente un objet Position définit à partir de son abscisse x, et de son ordonnée y
+ * @author Les Quatre Cavaliers de l'Apocalypse
  */
 
 public class Position {
 
 	/** L'abscisse de la position */
 	private int x;
-	
+
 	/** L'ordonnée de la position */
 	private int y;
-	
+
 	/* L'équipe d'une position, si cette case est une base ou une mine */
 	private int equipe = 2;
-	
+
 	/** Si la position est une base */
 	private boolean base = false;
-	
+
 	/** Si la position est une mine */
 	private boolean mine = false;
-	
+
 	/** Si la position est un obstacle */
 	private boolean obstacle = false;
 
@@ -47,23 +46,14 @@ public class Position {
 		return this.y;
 	}
 
-	/*
-	 * Fonction qui indique si la position est une base ou non
-	 */
 	public boolean estBase() {
 		return this.base;
 	}
 
-	/*
-	 * Fonction qui indique si la position est une mine ou non
-	 */
 	public boolean estMine() {
 		return this.mine;
 	}
 
-	/*
-	 * Fonction qui indique si la position est un obstacle ou non
-	 */
 	public boolean estObstacle() {
 		return this.obstacle;
 	}
@@ -127,11 +117,6 @@ public class Position {
 		return false;
 	}
 
-	
-	/**
-	 * Retourne le robot présent sur la position, si elle en contient un
-	 * @return le robot présent sur la position, si elle en contient un
-	 */
 	public Robot getRobot() {
 		for (int i = 0; i < p.getListeRobot().size(); i++) {
 			if (p.getListeRobot().get(i).getPosition().equals(this))

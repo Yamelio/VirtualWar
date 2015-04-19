@@ -1,18 +1,27 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @author Moi
+ * @author Les Quatre Cavaliers de l'Apocalypse
  */
-public class Main {
+
+public class Main extends Sauvegarde {
+
+	private static List<Action> actions;
+	static Plateau p;
+
 	/**
-	 * C'est le main (merci capitaine)
+	 * C'est le main
 	 */
 	public static void main(String[] args) {
 		Random r = new Random();
-		List<Action> actions = new ArrayList<Action>();
+		actions = new ArrayList<Action>();
 		int nbTireurJ1;
 		int nbPiegeurJ1;
 		int nbCharJ1;
@@ -56,7 +65,8 @@ public class Main {
 			obstacles = s.nextInt();
 		} while (obstacles <= 0 && obstacles >= 50);
 
-		Plateau p = new Plateau(largeur, hauteur, obstacles);
+		p = new Plateau(largeur, hauteur, obstacles);
+		p.initObstacles();
 
 		for (int i = 0; i < nbTireurJ1; i++) {
 			p.ajouterListeRobot(new Tireur(0));
@@ -113,7 +123,7 @@ public class Main {
 				} else {
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
-								+ " a posÃ© une mine en "
+								+ " a posé une mine en "
 								+ p.posToString(choixCible));
 					} else {
 						System.out.println("Le robot " + robotChoisi.getId()
@@ -126,9 +136,9 @@ public class Main {
 				try {
 					System.out
 
-							.println("C'est aÂ  "
+							.println("C'est a  "
 									+ joueurCourant
-									+ " de jouer !\nselectionnez le numero du robot de votre Ã©quipe que vous souhaitez utiliser, ainsi que son action");
+									+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
 					do {
 						robotChoisi = p.getListeRobot().get(s.nextInt());
 					} while ((robotChoisi.getEquipe() == 1 && joueur)
@@ -148,7 +158,6 @@ public class Main {
 							actions.add(new Attaque(robotChoisi, choixCible));
 							saisieOk = true;
 						} catch (Erreur e) {
-							// e.printStackTrace();
 							System.out.println(e.getMessage());
 							saisieOk = false;
 						}
@@ -157,7 +166,6 @@ public class Main {
 							actions.add(new Deplacement(robotChoisi, choixCible));
 							saisieOk = true;
 						} catch (Erreur e) {
-							// e.printStackTrace();
 							System.out.println(e.getMessage());
 							saisieOk = false;
 						}
@@ -165,17 +173,43 @@ public class Main {
 				} catch (Exception e) {
 					System.out.println("Erreur de saisie");
 					saisieOk = false;
-					s.nextLine();
-
 				}
 			} while (!saisieOk);
 
 			joueur = !joueur;
 			p.recharges();
 			fin = checkFin();
+
+		}
+
+		for (int i = 0; i < 20; i++) {
+			System.out.println("");
+		}
+
+		System.out.println(p);
+		switch (fin) {
+
+		case 1:
+			p.afficherRobotsJ2();
+			System.out.println("Joueur 2 a gagné !");
+			break;
+
+		case 0:
+			p.afficherRobotsJ1();
+			System.out.println("Joueur 1 a gagné !");
+			break;
+
+		case -1:
+			System.out.println("Match nul !");
+			break;
 		}
 	}
 
+	/**
+	 * Vérifie si la partie est finie
+	 * 
+	 * @return int Entier correspondant à la situation
+	 */
 	private static int checkFin() {
 		int aliveJ1 = 0;
 		int aliveJ2 = 0;
@@ -194,7 +228,7 @@ public class Main {
 		}
 
 		for (Robot r : toRemove) {
-			Position.getPlateau().getListeRobot().remove(r.getId());
+			Position.getPlateau().getListeRobot().remove(r);
 		}
 
 		if (aliveJ1 == 0 && aliveJ2 == 0) {
@@ -209,4 +243,5 @@ public class Main {
 		}
 		return 2;
 	}
+
 }
