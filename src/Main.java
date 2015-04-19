@@ -85,6 +85,7 @@ public class Main {
 		Position.setPlateau(p);
 		Vue vueJ1 = new Vue(p, 0);
 		Vue vueJ2 = new Vue(p, 1);
+		boolean saisieOk = false;
 
 		while (fin >= 2) {
 
@@ -121,33 +122,54 @@ public class Main {
 					}
 				}
 			}
-
-			System.out
-					.println("C'est a  "
-							+ joueurCourant
-							+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
 			do {
-				robotChoisi = p.getListeRobot().get(s.nextInt());
-			} while ((robotChoisi.getEquipe() == 1 && joueur)
-					|| (robotChoisi.getEquipe() == 0 && !joueur));
-			if (robotChoisi instanceof Piegeur) {
-				System.out.println("\t1- Poser une mine\n\t2- Se deplacer");
-			} else {
-				System.out.println("\t1- Attaquer\n\t2- Se deplacer");
-			}
-			choixAction = s.nextInt();
-			System.out.println("Ou ?");
-			s.nextLine();
-			choixCible = p.stringToPos(s.nextLine());
-			if (choixAction == 1) {
-				actions.add(new Attaque(robotChoisi, choixCible));
-			} else {
 				try {
-					actions.add(new Deplacement(robotChoisi, choixCible));
-				} catch (Erreur e) {
-					e.printStackTrace();
+					System.out
+
+							.println("C'est a  "
+									+ joueurCourant
+									+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
+					do {
+						robotChoisi = p.getListeRobot().get(s.nextInt());
+					} while ((robotChoisi.getEquipe() == 1 && joueur)
+							|| (robotChoisi.getEquipe() == 0 && !joueur));
+					if (robotChoisi instanceof Piegeur) {
+						System.out
+								.println("\t1- Poser une mine\n\t2- Se deplacer");
+					} else {
+						System.out.println("\t1- Attaquer\n\t2- Se deplacer");
+					}
+					choixAction = s.nextInt();
+					System.out.println("Ou ?");
+					s.nextLine();
+					choixCible = p.stringToPos(s.nextLine());
+					if (choixAction == 1) {
+						try {
+							actions.add(new Attaque(robotChoisi, choixCible));
+							saisieOk = true;
+						} catch (Erreur e) {
+							// e.printStackTrace();
+							System.out.println(e.getMessage());
+							saisieOk = false;
+						}
+					} else {
+						try {
+							actions.add(new Deplacement(robotChoisi, choixCible));
+							saisieOk = true;
+						} catch (Erreur e) {
+							// e.printStackTrace();
+							System.out.println(e.getMessage());
+							saisieOk = false;
+						}
+					}
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					saisieOk = false;
+					s.nextLine();
+
 				}
-			}
+			} while (!saisieOk);
+
 			joueur = !joueur;
 			p.recharges();
 			fin = checkFin();
