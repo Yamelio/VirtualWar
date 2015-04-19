@@ -227,7 +227,12 @@ public class Plateau {
 	public void setPercentObstacle(int percentObstacle) {
 		this.percentObstacle = percentObstacle;
 	}
-
+	
+	/**
+	 * Procedure qui ajoute le robot entrée en paramètre à la liste des robots présent sur le plateau
+	 * 
+	 * @param Robot
+	 */
 	public void ajouterListeRobot(Robot r) {
 		this.robots.add(r);
 		if (r.getEquipe() == 0) {
@@ -237,7 +242,12 @@ public class Plateau {
 					.deplaceSur(r);
 		}
 	}
-
+	
+	/**
+	 * Procedure qui retire le robot entrée en paramètre de la liste des robots présent sur le plateau
+	 * 
+	 * @param Robot
+	 */
 	public void retirerListeRobot(Robot r) {
 		this.robots.remove(r);
 	}
@@ -245,7 +255,10 @@ public class Plateau {
 	public List<Robot> getListeRobot() {
 		return this.robots;
 	}
-
+	
+	/**
+	 * Procedure qui affiche les robots de l'équipe 1
+	 */ 
 	public void afficherRobotsJ1() {
 		String res = "Equipe 1 :\t";
 		Robot r;
@@ -304,7 +317,10 @@ public class Plateau {
 		}
 		System.out.println(res);
 	}
-
+	
+	/**
+	 * Procedure qui affiche les robots de l'équipe 2
+	 */ 
 	public void afficherRobotsJ2() {
 		String res = "Equipe 2 :\t";
 		Robot r;
@@ -363,7 +379,10 @@ public class Plateau {
 		}
 		System.out.println(res);
 	}
-
+	
+	/**
+	 * Procedure qui recharges les robots présent sur les bases
+	 */ 
 	public void recharges() {
 		((Base) carte.get("A1")).recharge();
 		((Base) carte.get(posToString(new Position(largeur, hauteur))))
