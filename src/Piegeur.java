@@ -1,6 +1,6 @@
 public class Piegeur extends Robot {
 
-	private int nbMines = 10;
+	private int nbMines = Constantes.getMinesInit();
 
 	public Piegeur(int equipe) {
 		super(equipe);

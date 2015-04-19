@@ -81,9 +81,10 @@ public class Main {
 		Robot robotChoisi;
 		int choixAction;
 		Position choixCible;
+		Position.setPlateau(p);
 
 		while (true) {
-			Position.setPlateau(p);
+			p = Position.getPlateau();
 			System.out.println(p);
 			p.afficherRobotsJ1();
 			p.afficherRobotsJ2();
@@ -121,11 +122,17 @@ public class Main {
 							+ choixCible.getRobot().getId());
 				}
 			} else {
-				actions.add(new Deplacement(robotChoisi, choixCible));
+				try {
+					actions.add(new Deplacement(robotChoisi, choixCible));
+				} catch (Erreur e) {
+					e.printStackTrace();
+				}
 				System.out.println("Le robot " + robotChoisi.getId()
 						+ " s'est deplace en " + p.posToString(choixCible));
 			}
 			joueur = !joueur;
+			p.recharges();
 		}
 	}
+
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * La classe Plateau définit le plateau de jeu ou se déroulera la partie  
+ * La classe Plateau définit le plateau de jeu ou se déroulera la partie
  */
 public class Plateau {
 	private Map<String, Position> carte;
@@ -72,7 +72,8 @@ public class Plateau {
 		s += (char) ((char) p.getX() + 64); // +64 car les lettres se trouvent
 											// à partir de 65
 											// dans la table ASCII
-		s += p.getY(); // Pas besoin de convertion, les ordonnÃ©es sont dÃ©jÃ 
+		s += p.getY(); // Pas besoin de convertion, les ordonnÃ©es sont
+						// dÃ©jÃ 
 						// en
 						// int
 		return s;
@@ -100,11 +101,13 @@ public class Plateau {
 	private void initObstacles() {
 		Random r = new Random();
 		List<Position> liste = new ArrayList<Position>(); // Liste des position
-															// Ã  laisser libre
+															// Ã  laisser
+															// libre
 		Position p = new Position(1, 1); // On commence en haut Ã  gauche
 		liste.add(p);// La position en haut Ã  gauche est laissÃ© libre
 		liste.add(new Position(largeur, hauteur)); // La position en bas Ã 
-													// droite est laissÃ© libre
+													// droite est laissÃ©
+													// libre
 
 		while (p.getX() != largeur && p.getY() != hauteur) { // Temps qu'on est
 																// pas arriver
@@ -220,7 +223,7 @@ public class Plateau {
 	public void setHauteur(int hauteur) {
 		this.hauteur = hauteur;
 	}
-	
+
 	public void setPercentObstacle(int percentObstacle) {
 		this.percentObstacle = percentObstacle;
 	}
@@ -289,7 +292,14 @@ public class Plateau {
 
 				}
 
-				res += "] " + r.getEnergie() + "/" + energiemax + "\n\t\t";
+				res += "] " + r.getEnergie() + "/" + energiemax;
+
+				if (r instanceof Piegeur) {
+					res += "  // Mines : " + ((Piegeur) r).getNbMines() + "/"
+							+ Constantes.getMinesInit();
+				}
+
+				res += "\n\t\t";
 			}
 		}
 		System.out.println(res);
@@ -341,9 +351,22 @@ public class Plateau {
 
 				}
 
-				res += "] " + r.getEnergie() + "/" + energiemax + "\n\t\t";
+				res += "] " + r.getEnergie() + "/" + energiemax;
+
+				if (r instanceof Piegeur) {
+					res += "  // Mines : " + ((Piegeur) r).getNbMines() + "/"
+							+ Constantes.getMinesInit();
+				}
+
+				res += "\n\t\t";
 			}
 		}
 		System.out.println(res);
+	}
+
+	public void recharges() {
+		((Base) carte.get("A1")).recharge();
+		((Base) carte.get(posToString(new Position(largeur, hauteur))))
+				.recharge();
 	}
 }

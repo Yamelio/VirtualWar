@@ -30,6 +30,8 @@ public class Constantes {
 	private final static int DEGATS_PIEGEUR = 2;
 	private final static int DEGATS_CHAR = 6;
 
+	private static final int MINES_INIT = 10;
+
 	public static int getRecharge() {
 		return RECHARGE;
 	}
@@ -104,6 +106,10 @@ public class Constantes {
 
 	public static int getDegatsChar() {
 		return DEGATS_CHAR;
+	}
+
+	public static int getMinesInit() {
+		return MINES_INIT;
 	}
 
 }

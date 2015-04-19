@@ -2,8 +2,43 @@ public class Deplacement extends Action {
 
 	private Position cible;
 
-	public Deplacement(Robot robot, Position cible) {
+	public Deplacement(Robot robot, Position cible) throws Erreur {
 		super(robot);
+		this.cible = Position.getPlateau().getCarte()
+				.get(Position.getPlateau().posToString(cible));
+
+		if (checkCoordonees()) {
+			if (checkObstacle()) {
+				deplacerRobot();
+				checkMine();
+			} else {
+				throw new Erreur("Obstacle sur la case");
+			}
+		} else {
+			throw new Erreur("Case non atteignable");
+		}
+
+	}
+
+	public Position getCible() {
+		return this.cible;
+	}
+
+	public boolean checkBase() {
+		if (getRobot().getPosition().estBase()) {
+			((Base) getRobot().getPosition()).quitteBase(getRobot());
+			getRobot().setPosition(cible);
+			return true;
+		} else if (cible.estBase()
+				&& cible.getEquipe() == getRobot().getEquipe()) {
+			((Base) cible).deplaceSur(getRobot());
+			getRobot().setPosition(cible);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean checkCoordonees() {
 		if (this.getRobot() instanceof Tireur
 				|| this.getRobot() instanceof Piegeur) {
 			if ((this.getRobot().getPosition().getX() == cible.getX()
@@ -17,66 +52,7 @@ public class Deplacement extends Action {
 									.getY()
 									+ Constantes.getPorteeDeplacementTireur() || this
 							.getRobot().getPosition().getY() == cible.getY())) {
-				if (!cible.estBase() && !cible.estObstacle()
-						&& !cible.estRobot()) {
-					quitteBase(robot);
-					this.cible = cible;
-					this.getRobot().setPosition(this.cible);
-					if (this.getRobot() instanceof Tireur) {
-						this.getRobot()
-								.setEnergie(
-										this.getRobot().getEnergie()
-												- Constantes
-														.getCoutDeplacementTireur());
-					} else if (this.getRobot() instanceof Piegeur) {
-						this.getRobot().setEnergie(
-								this.getRobot().getEnergie()
-										- Constantes
-												.getCoutDeplacementPiegeur());
-					}
-					if (this.cible.estMine()
-							&& this.getRobot() instanceof Tireur) {
-						this.getRobot().setEnergie(
-								this.getRobot().getEnergie()
-										- Constantes.getDegatsTireur());
-						Position.getPlateau().getCarte()
-						.get(Position.getPlateau().posToString(cible))
-						.flipMine(0);
-					} else if (this.cible.estMine()
-							&& this.getRobot() instanceof Piegeur) {
-						this.getRobot().setEnergie(
-								this.getRobot().getEnergie()
-										- Constantes.getDegatsPiegeur());
-						Position.getPlateau().getCarte()
-						.get(Position.getPlateau().posToString(cible))
-						.flipMine(0);
-					}
-				}else if(cible.estBase()){
-					if(cible.getEquipe() == robot.getEquipe()){
-						if(robot.getEquipe() == 0){
-							this.cible = cible;
-							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(this.getRobot());
-							this.getRobot().setPosition(this.cible);
-							if(this.getRobot() instanceof Tireur){
-								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementTireur());
-							}else if(this.getRobot() instanceof Piegeur){
-								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementPiegeur());
-							}
-						}else {
-							this.cible = cible;
-							((Base) Position.getPlateau().getCarte().get(Position.getPlateau()
-							.posToString(new Position(Position.getPlateau().getLargeur(),
-							Position.getPlateau().getHauteur()))))
-							.deplaceSur(this.getRobot());
-							this.getRobot().setPosition(this.cible);
-							if(this.getRobot() instanceof Tireur){
-								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementTireur());
-							}else if(this.getRobot() instanceof Piegeur){
-								this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementPiegeur());
-							}
-						}
-					}
-				}
+				return true;
 			}
 		} else {
 			if (((this.getRobot().getPosition().getX() == cible.getX()
@@ -88,100 +64,47 @@ public class Deplacement extends Action {
 							- Constantes.getPorteeDeplacementChar() || this
 							.getRobot().getPosition().getY() == cible.getY()
 							+ Constantes.getPorteeDeplacementChar()) && this
-							.getRobot().getPosition().getX() == cible.getX())) {
-				if (!cible.estBase() && !cible.estObstacle()
-						&& !cible.estRobot()) {
-					quitteBase(robot);
-					this.cible = cible;
-					this.getRobot().setPosition(this.cible);
-					this.getRobot().setEnergie(
-							this.getRobot().getEnergie()
-									- Constantes.getCoutDeplacementChar());
-					if (this.cible.estMine()) {
-						this.getRobot().setEnergie(
-								this.getRobot().getEnergie()
-										- Constantes.getDegatsChar());
-						Position.getPlateau().getCarte()
-						.get(Position.getPlateau().posToString(cible))
-						.flipMine(0);
-					}
+							.getRobot().getPosition().getX() == cible.getX()))
+				return true;
+		}
+		return false;
+	}
 
-				} else if (cible.estObstacle() || cible.estRobot()) {
-					if (this.getRobot().getPosition().getX() == this.cible
-							.getX()) {
-						if (this.getRobot().getPosition().getY()
-								- this.cible.getY() < 0) {
-							quitteBase(robot);
-							this.cible.setPosition(this.cible.getX(),
-									this.cible.getY() - 1);
-							this.getRobot().setPosition(this.cible);
-							this.getRobot().setEnergie(
-									this.getRobot().getEnergie()
-											- Constantes
-													.getCoutDeplacementChar());
-						} else {
-							quitteBase(robot);
-							this.cible.setPosition(this.cible.getX(),
-									this.cible.getY() + 1);
-							this.getRobot().setPosition(this.cible);
-							this.getRobot().setEnergie(
-									this.getRobot().getEnergie()
-											- Constantes
-													.getCoutDeplacementChar());
-						}
-					} else if (this.getRobot().getPosition().getY() == cible
-							.getY()) {
-						if (this.getRobot().getPosition().getX()
-								- this.cible.getX() < 0) {
-							quitteBase(robot);
-							this.cible.setPosition(this.cible.getX() - 1,
-									this.cible.getY());
-							this.getRobot().setPosition(this.cible);
-							this.getRobot().setEnergie(
-									this.getRobot().getEnergie()
-											- Constantes
-													.getCoutDeplacementChar());
-						} else {
-							quitteBase(robot);
-							this.cible.setPosition(this.cible.getX() + 1,
-									this.cible.getY());
-							this.getRobot().setPosition(this.cible);
-							this.getRobot().setEnergie(
-									this.getRobot().getEnergie()
-											- Constantes
-													.getCoutDeplacementChar());
-						}
-					}
-				}else if(cible.estBase()){
-					if(cible.getEquipe() == robot.getEquipe()){
-						if(robot.getEquipe() == 0){
-							this.cible = cible;
-							((Base) Position.getPlateau().getCarte().get("A1")).deplaceSur(this.getRobot());
-							this.getRobot().setPosition(this.cible);
-							this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementChar());
-						}else {
-							this.cible = cible;
-							((Base) Position.getPlateau().getCarte().get(Position.getPlateau()
-							.posToString(new Position(Position.getPlateau().getLargeur(),
-							Position.getPlateau().getHauteur()))))
-							.deplaceSur(this.getRobot());
-							this.getRobot().setPosition(this.cible);
-							this.getRobot().setEnergie(this.getRobot().getEnergie() - Constantes.getCoutDeplacementChar());
-						}
-					}
-				}
-			}
-
+	public boolean checkMine() {
+		if (!cible.estMine()) {
+			return false;
+		} else {
+			getRobot().setEnergie(
+					getRobot().getEnergie() - Constantes.getDegatsPiegeur());
+			Position.getPlateau().getCarte()
+					.get(Position.getPlateau().posToString(cible)).flipMine(2);
+			return true;
 		}
 	}
 
-	public Position getCible() {
-		return this.cible;
+	public boolean checkObstacle() {
+		return !(cible.estRobot() || cible.estObstacle());
 	}
 
-	public void quitteBase(Robot r) {
-		if (r.getPosition().estBase()) {
-			((Base) r.getPosition()).quitteBase(r);
+	public void deplacerRobot() {
+
+		if (!checkBase()) {
+			getRobot().setPosition(cible);
 		}
+
+		if (this.getRobot() instanceof Tireur) {
+			this.getRobot().setEnergie(
+					this.getRobot().getEnergie()
+							- Constantes.getCoutDeplacementTireur());
+		} else if (this.getRobot() instanceof Piegeur) {
+			this.getRobot().setEnergie(
+					this.getRobot().getEnergie()
+							- Constantes.getCoutDeplacementPiegeur());
+		} else {
+			this.getRobot().setEnergie(
+					this.getRobot().getEnergie()
+							- Constantes.getCoutDeplacementChar());
+		}
+
 	}
 }

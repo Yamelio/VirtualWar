@@ -1,5 +1,5 @@
 /**
- * @author Nicolas Mauger lol 
+ * @author Nicolas Mauger lol
  */
 
 public class Position {
@@ -14,10 +14,11 @@ public class Position {
 
 	/**
 	 * Constructeur de la classe Plateau
+	 * 
 	 * @param x
-	 * 		Coordonnée de la position en X
+	 *            Coordonnée de la position en X
 	 * @param y
-	 * 		Coordonnée de la position en y
+	 *            Coordonnée de la position en y
 	 */
 	public Position(int x, int y) {
 		this.x = x;
@@ -45,9 +46,11 @@ public class Position {
 	}
 
 	/**
-	 * Fonction qui change en base la position si elle n'est pas base, et inversement
+	 * Fonction qui change en base la position si elle n'est pas base, et
+	 * inversement
+	 * 
 	 * @param equipe
-	 * 		L'équipe à qui appartient la base 		
+	 *            L'équipe à qui appartient la base
 	 */
 	public void flipBase(int equipe) {
 		if (!this.base) {
@@ -58,40 +61,45 @@ public class Position {
 			this.setEquipe(2);
 		}
 	}
-	
+
 	/**
-	 * Fonction qui change en mine la position si elle n'est pas mine, et inversement
+	 * Fonction qui change en mine la position si elle n'est pas mine, et
+	 * inversement
+	 * 
 	 * @param equipe
-	 * 		L'équipe à qui appartient la mine
+	 *            L'équipe à qui appartient la mine
 	 */
 	public void flipMine(int equipe) {
+		this.mine = !this.mine;
 		if (!this.mine) {
-			this.mine = !this.mine;
 			this.setEquipe(equipe);
 		} else {
-			this.mine = !this.mine;
 			this.setEquipe(2);
 		}
 	}
-	
+
 	/**
-	 * Procedure qui change la position en obstacle si elle ne l'est pas, et inversement
-	 */ 
+	 * Procedure qui change la position en obstacle si elle ne l'est pas, et
+	 * inversement
+	 */
 	public void flipObstacle() {
 		this.obstacle = !this.obstacle;
 	}
-	
+
 	/**
 	 * Fonction qui indique si la position est robot ou non
-	 * @return boolean
-	 * 		Retourne true si la position contient un robot
+	 * 
+	 * @return boolean Retourne true si la position contient un robot
 	 */
 	public boolean estRobot() {
 		for (int i = 0; i < p.getListeRobot().size(); i++) {
 			if (p.getListeRobot().get(i).getPosition().getX() == this.getX()
 					&& p.getListeRobot().get(i).getPosition().getY() == this
-							.getY())
-				return true;
+							.getY()) {
+				if (!base) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -111,8 +119,9 @@ public class Position {
 
 	/**
 	 * Fonction qui retourne le contenu de la position en ascii art
-	 * @return String
-	 * 		B si c'est une base, M si c'est une mine, # si c'est un obstacle
+	 * 
+	 * @return String B si c'est une base, M si c'est une mine, # si c'est un
+	 *         obstacle
 	 */
 	public String getContenu() {
 		if (this.estBase()) {
