@@ -26,6 +26,21 @@ public class IntelligenceArtificielle {
 	}
 	
 	/**
+	 * Méthode appelée pour générer le meilleur déplacement que l'IA a choisis de réaliser
+	 * @return Action (déplacement ou attaque)
+	 */
+	public Action Jouer(){
+		Robot r = choixRobotJoue();
+		String action = choixAction(r);
+		if(action == "Attaque" && !(r instanceof Piegeur)){
+			return new Attaque(r, robotAPortee(r).getPosition());
+		}
+		
+		return null;
+	}
+	
+		
+	/**
 	 * Choisis en début de tour quel robot devra jouer
 	 * @return le robot choisis
 	 */
@@ -40,7 +55,6 @@ public class IntelligenceArtificielle {
 		
 	}
 	
-	
 	/**
 	 * Calcul la meilleur action à faire pour le robot
 	 * @param robot a tester
@@ -53,14 +67,53 @@ public class IntelligenceArtificielle {
 			return "Attaque";
 		}
 		
-		if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie()>constantes.getCoutMine()){
+		if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie() > constantes.getCoutMine()){ // !!!!!!!!! à modifier, poses des mines trop souvent
 			return "Attaque";
 		}
 		
+		if(robot.getPosition().estBase()){
+			return "Deplacement";
+		}
 		
-		
-		return "";
+		return "Deplacement";
 	}
+	
+	
+	
+	public Position choixCibleDeplacement(Robot robot){//!!!!!!!!!!!!!!!!A TERMINER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		Position pos;
+		for(int i = -1;i<=1;i++){
+			for(int j =-1;j<=1;j++){
+				pos = plateau.getCarte().get(plateau.posToString(new Position(robot.getPosition().getX()+i,robot.getPosition().getY()+j)));
+				
+				if(!pos.estObstacle() && !pos.estRobot()){
+					if(robot.getEquipe() == 0){
+						if(robot.getEnergie()>3*constantes.getCoutDeplacement(robot) && pos.getX()>robot.getPosition().getX()){//essaye de se rapporcher de la base adverse
+							return pos;
+						}
+						
+						else if(robot.getEnergie()<= 3*constantes.getCoutDeplacement(robot) && pos.getX()<robot.getPosition().getX()){
+							return pos;
+						}
+						
+						
+					}
+					else if(robot.getEquipe() == 1){
+						if(robot.getEnergie()>3*constantes.getCoutDeplacement(robot) && pos.getX()<robot.getPosition().getX()){
+							return pos;
+						}
+						
+						else if(robot.getEnergie()<= 3*constantes.getCoutDeplacement(robot) && pos.getX()>robot.getPosition().getX()){
+							return pos;
+						}
+					}
+				}
+			}
+		}		
+		return null;
+	}
+	
+	
 	
 	
 	/**
@@ -77,8 +130,8 @@ public class IntelligenceArtificielle {
 			portee = constantes.getPorteeTireur();
 		}
 		
-		else if(robot instanceof Piegeur){
-			portee = constantes.getPorteePiegeur();
+		else if(robot instanceof Char){
+			portee = constantes.getPorteeChar();
 		}
 		
 		else{
@@ -142,7 +195,6 @@ public class IntelligenceArtificielle {
 				else if(i == 2){
 					r.add(new Char(equipe));
 				}
-				
 			}
 			position += compt + 1;
 			

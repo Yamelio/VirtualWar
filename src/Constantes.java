@@ -81,6 +81,22 @@ public class Constantes {
 	public static int getCoutTirChar() {
 		return COUT_CHAR;
 	}
+	
+	public int getCoutDeplacement(Robot r){
+		if(r instanceof Tireur){
+			return COUT_DEPLACEMENT_TIREUR;
+		}
+		
+		else if(r instanceof Piegeur){
+			return COUT_DEPLACEMENT_PIEGEUR;
+		}
+		
+		else {
+			return COUT_DEPLACEMENT_CHAR;
+		}
+		
+		
+	}
 
 	public static int getCoutDeplacementTireur() {
 		return COUT_DEPLACEMENT_TIREUR;
