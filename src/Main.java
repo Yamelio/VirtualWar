@@ -1,18 +1,27 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @author Moi
+ * @author Les Quatre Cavaliers de l'Apocalypse
  */
-public class Main {
+
+public class Main extends Sauvegarde {
+
+	private static List<Action> actions;
+	static Plateau p;
+
 	/**
 	 * C'est le main
 	 */
 	public static void main(String[] args) {
 		Random r = new Random();
-		List<Action> actions = new ArrayList<Action>();
+		actions = new ArrayList<Action>();
 		int nbTireurJ1;
 		int nbPiegeurJ1;
 		int nbCharJ1;
@@ -45,10 +54,10 @@ public class Main {
 		int hauteur;
 		do {
 			System.out
-					.println(" Entrez la taille de la map (largeur, puis hauteur)");
+					.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
 			largeur = s.nextInt();
 			hauteur = s.nextInt();
-		} while (largeur < 5 && largeur > 26 && hauteur < 5 && hauteur > 26);
+		} while (largeur < 5 || largeur > 26 || hauteur < 5 || hauteur > 26);
 		int obstacles;
 		do {
 			System.out
@@ -56,7 +65,8 @@ public class Main {
 			obstacles = s.nextInt();
 		} while (obstacles <= 0 && obstacles >= 50);
 
-		Plateau p = new Plateau(largeur, hauteur, obstacles);
+		p = new Plateau(largeur, hauteur, obstacles);
+		p.initObstacles();
 
 		for (int i = 0; i < nbTireurJ1; i++) {
 			p.ajouterListeRobot(new Tireur(0));
@@ -76,56 +86,162 @@ public class Main {
 		for (int i = 0; i < nbPiegeurJ2; i++) {
 			p.ajouterListeRobot(new Piegeur(1));
 		}
+		int fin = 2;
 		boolean joueur = r.nextBoolean(); // J1=true, J2=false
 		String joueurCourant; // J1 ou J2
-		Robot robotChoisi;
+		Robot robotChoisi = new Tireur(2);
 		int choixAction;
-		Position choixCible;
+		Position choixCible = new Position(10, 10);
+		Position.setPlateau(p);
+		Vue vueJ1 = new Vue(p, 0);
+		Vue vueJ2 = new Vue(p, 1);
+		boolean saisieOk = false;
 
-		while (true) {
-			Position.setPlateau(p);
-			System.out.println(p);
-			p.afficherRobotsJ1();
-			p.afficherRobotsJ2();
+		while (fin >= 2) {
+
+			for (int i = 0; i < 20; i++) {
+				System.out.println("");
+			}
+
 			if (joueur) {
 				joueurCourant = "J1";
 			} else {
 				joueurCourant = "J2";
 			}
-			System.out
-					.println("C'est a  "
-							+ joueurCourant
-							+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
-			do {
-				robotChoisi = p.getListeRobot().get(s.nextInt());
-			} while ((robotChoisi.getEquipe() == 1 && joueur)
-					|| (robotChoisi.getEquipe() == 0 && !joueur));
-			if (robotChoisi instanceof Piegeur) {
-				System.out.println("\t1- Poser une mine\n\t2- Se deplacer");
+			if (joueur) {
+				System.out.println(vueJ1);
 			} else {
-				System.out.println("\t1- Attaquer\n\t2- Se deplacer");
+				System.out.println(vueJ2);
 			}
-			choixAction = s.nextInt();
-			System.out.println("Ou ?");
-			s.nextLine();
-			choixCible = p.stringToPos(s.nextLine());
-			if (choixAction == 1) {
-				actions.add(new Attaque(robotChoisi, choixCible));
-				if (robotChoisi instanceof Piegeur) {
+			p.afficherRobotsJ1();
+			p.afficherRobotsJ2();
+
+			if (!actions.isEmpty()) {
+				if (actions.get(actions.size() - 1) instanceof Deplacement) {
 					System.out.println("Le robot " + robotChoisi.getId()
-							+ " a posé une mine en "
-							+ p.posToString(choixCible));
+							+ " s'est deplace en " + p.posToString(choixCible));
 				} else {
-					System.out.println("Le robot " + robotChoisi.getId()
-							+ " a attaque le robot "
-							+ choixCible.getRobot().getId());
+					if (robotChoisi instanceof Piegeur) {
+						System.out.println("Le robot " + robotChoisi.getId()
+								+ " a posé une mine en "
+								+ p.posToString(choixCible));
+					} else {
+						System.out.println("Le robot " + robotChoisi.getId()
+								+ " a attaque le robot "
+								+ choixCible.getRobot().getId());
+					}
 				}
-			} else {
-				actions.add(new Deplacement(robotChoisi, choixCible));
-				System.out.println("Le robot " + robotChoisi.getId()
-						+ " s'est deplace en " + p.posToString(choixCible));
 			}
+			do {
+				try {
+					System.out
+
+							.println("C'est a  "
+									+ joueurCourant
+									+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
+					do {
+						robotChoisi = p.getListeRobot().get(s.nextInt());
+					} while ((robotChoisi.getEquipe() == 1 && joueur)
+							|| (robotChoisi.getEquipe() == 0 && !joueur));
+					if (robotChoisi instanceof Piegeur) {
+						System.out
+								.println("\t1- Poser une mine\n\t2- Se deplacer");
+					} else {
+						System.out.println("\t1- Attaquer\n\t2- Se deplacer");
+					}
+					choixAction = s.nextInt();
+					System.out.println("Ou ?");
+					s.nextLine();
+					choixCible = p.stringToPos(s.nextLine());
+					if (choixAction == 1) {
+						try {
+							actions.add(new Attaque(robotChoisi, choixCible));
+							saisieOk = true;
+						} catch (Erreur e) {
+							System.out.println(e.getMessage());
+							saisieOk = false;
+						}
+					} else {
+						try {
+							actions.add(new Deplacement(robotChoisi, choixCible));
+							saisieOk = true;
+						} catch (Erreur e) {
+							System.out.println(e.getMessage());
+							saisieOk = false;
+						}
+					}
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					saisieOk = false;
+				}
+			} while (!saisieOk);
+
 			joueur = !joueur;
+			p.recharges();
+			fin = checkFin();
+
+		}
+
+		for (int i = 0; i < 20; i++) {
+			System.out.println("");
+		}
+
+		System.out.println(p);
+		switch (fin) {
+
+		case 1:
+			p.afficherRobotsJ2();
+			System.out.println("Joueur 2 a gagné !");
+			break;
+
+		case 0:
+			p.afficherRobotsJ1();
+			System.out.println("Joueur 1 a gagné !");
+			break;
+
+		case -1:
+			System.out.println("Match nul !");
+			break;
 		}
 	}
+
+	/**
+	 * Vérifie si la partie est finie
+	 * 
+	 * @return int Entier correspondant à la situation
+	 */
+	private static int checkFin() {
+		int aliveJ1 = 0;
+		int aliveJ2 = 0;
+		List<Robot> toRemove = new ArrayList<Robot>();
+		for (Robot r : Position.getPlateau().getListeRobot()) {
+			if (r.getEnergie() > 0) {
+				if (r.getEquipe() == 0) {
+					aliveJ1++;
+				} else {
+					aliveJ2++;
+				}
+			} else {
+				toRemove.add(Position.getPlateau().getListeRobot()
+						.get(r.getId()));
+			}
+		}
+
+		for (Robot r : toRemove) {
+			Position.getPlateau().getListeRobot().remove(r);
+		}
+
+		if (aliveJ1 == 0 && aliveJ2 == 0) {
+			return -1;
+		}
+
+		if (aliveJ1 == 0) {
+			return 1;
+		}
+		if (aliveJ2 == 0) {
+			return 0;
+		}
+		return 2;
+	}
+
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * La classe Plateau définit le plateau de jeu ou se déroulera la partie  
+ * La classe Plateau définit le plateau de jeu ou se déroulera la partie
  */
 public class Plateau {
 	private Map<String, Position> carte;
@@ -27,7 +27,6 @@ public class Plateau {
 		this.largeur = largeur;
 		this.percentObstacle = obstacles;
 		initCarte();
-		initObstacles();
 		robots = new ArrayList<Robot>(10);
 	}
 
@@ -52,10 +51,7 @@ public class Plateau {
 				}
 			}
 		}
-		/*
-		 * carte.remove("A1"); carte.put("A1", new Base(1, 1, 0));
-		 * carte.remove(max); carte.put(max, new Base(largeur, hauteur, 1));
-		 */
+
 		Position.setPlateau(this);
 
 	}
@@ -72,7 +68,8 @@ public class Plateau {
 		s += (char) ((char) p.getX() + 64); // +64 car les lettres se trouvent
 											// à partir de 65
 											// dans la table ASCII
-		s += p.getY(); // Pas besoin de convertion, les ordonnÃ©es sont dÃ©jÃ 
+		s += p.getY(); // Pas besoin de convertion, les ordonnÃ©es sont
+						// dÃ©jÃ 
 						// en
 						// int
 		return s;
@@ -97,64 +94,66 @@ public class Plateau {
 	 * CrÃ©e un chemin libre pour pouvoir poser des obstacles autour
 	 * 
 	 */
-	private void initObstacles() {
+	public void initObstacles() {
 		Random r = new Random();
-		List<Position> liste = new ArrayList<Position>(); // Liste des position
-															// Ã  laisser libre
-		Position p = new Position(1, 1); // On commence en haut Ã  gauche
-		liste.add(p);// La position en haut Ã  gauche est laissÃ© libre
-		liste.add(new Position(largeur, hauteur)); // La position en bas Ã 
-													// droite est laissÃ© libre
+		List<Position> chemin = new ArrayList<Position>();
+		List<Position> obstacles = new ArrayList<Position>();
 
-		while (p.getX() != largeur && p.getY() != hauteur) { // Temps qu'on est
-																// pas arriver
-																// dans le coin
-																// en bas Ã 
-																// gauche
-			if (r.nextBoolean()) { // une chance sur deux qu'il se dÃ©place
-									// verticalement
-				if (p.getX() + 1 <= largeur) {
+		Position p = new Position(2, 2);
+		chemin.add(new Position(1, 1));
+		chemin.add(new Position(1, 2));
+		chemin.add(new Position(2, 1));
+		chemin.add(new Position(largeur, hauteur));
+		chemin.add(new Position(largeur - 1, hauteur));
+		chemin.add(new Position(largeur, hauteur - 1));
+
+		while (p.getX() != largeur - 1 || p.getY() != hauteur - 1) {
+			Position init = p;
+			if (r.nextBoolean()) {
+				if (p.getX() + 1 <= largeur - 1) {
 					p = new Position(p.getX() + 1, p.getY());
-					liste.add(new Position(p.getX() + 1, p.getY()));
 				} else {
-					if (p.getY() + 1 <= hauteur) {
+					if (p.getY() + 1 <= hauteur - 1) {
 						p = new Position(p.getX(), p.getY() + 1);
-						liste.add(new Position(p.getX(), p.getY() + 1));
 					}
 				}
 			} else {
-				if (p.getY() + 1 <= hauteur) {
+				if (p.getY() + 1 <= hauteur - 1) {
 					p = new Position(p.getX(), p.getY() + 1);
-					liste.add(new Position(p.getX(), p.getY() + 1));
 				} else {
-					if (p.getX() + 1 <= largeur) {
+					if (p.getX() + 1 <= largeur - 1) {
 						p = new Position(p.getX() + 1, p.getY());
-						liste.add(new Position(p.getX() + 1, p.getY()));
-
 					}
 				}
-
+			}
+			if (!contient(chemin, p)) {
+				chemin.add(new Position(p.getX(), p.getY()));
+			} else {
+				p = init;
 			}
 		}
 		int nbObstacle = (int) (getSurface() * (percentObstacle / 100.0));
 
-		int randX;
-		int randY;
-
 		while (nbObstacle > 0) { // tant qu'il reste des obsacles Ã  ajouter
-			while (liste.contains(p)) {
-				randX = r.nextInt(largeur) + 1;
-				randY = r.nextInt(hauteur) + 1;
-				p = new Position(randX, randY);
-			}
+			do {
+				p = new Position(r.nextInt(largeur) + 1, r.nextInt(hauteur) + 1);
+			} while (contient(obstacles, p) || contient(chemin, (p)));
 
-			--nbObstacle; // On dÃ©cremente le nombre d'obsacle Ã 
-							// ajouter
-			liste.add(p);
+			--nbObstacle;
+			obstacles.add(p);
 
 			carte.get(posToString(p)).flipObstacle();
 		}
 		Position.setPlateau(this);
+	}
+
+	private boolean contient(List<Position> liste, Position p) {
+		for (Position pos : liste) {
+			if (pos.getX() == p.getX() && pos.getY() == p.getY()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -220,11 +219,17 @@ public class Plateau {
 	public void setHauteur(int hauteur) {
 		this.hauteur = hauteur;
 	}
-	
+
 	public void setPercentObstacle(int percentObstacle) {
 		this.percentObstacle = percentObstacle;
 	}
 
+	/**
+	 * Procedure qui ajoute le robot entr�e en param�tre � la liste des robots
+	 * pr�sent sur le plateau
+	 * 
+	 * @param Robot
+	 */
 	public void ajouterListeRobot(Robot r) {
 		this.robots.add(r);
 		if (r.getEquipe() == 0) {
@@ -235,6 +240,12 @@ public class Plateau {
 		}
 	}
 
+	/**
+	 * Procedure qui retire le robot entr�e en param�tre de la liste des robots
+	 * pr�sent sur le plateau
+	 * 
+	 * @param Robot
+	 */
 	public void retirerListeRobot(Robot r) {
 		this.robots.remove(r);
 	}
@@ -243,6 +254,9 @@ public class Plateau {
 		return this.robots;
 	}
 
+	/**
+	 * Procedure qui affiche les robots de l'�quipe 1
+	 */
 	public void afficherRobotsJ1() {
 		String res = "Equipe 1 :\t";
 		Robot r;
@@ -289,12 +303,22 @@ public class Plateau {
 
 				}
 
-				res += "] " + r.getEnergie() + "/" + energiemax + "\n\t\t";
+				res += "] " + r.getEnergie() + "/" + energiemax;
+
+				if (r instanceof Piegeur) {
+					res += "  // Mines : " + ((Piegeur) r).getNbMines() + "/"
+							+ Constantes.getMinesInit();
+				}
+
+				res += "\n\t\t";
 			}
 		}
 		System.out.println(res);
 	}
 
+	/**
+	 * Procedure qui affiche les robots de l'�quipe 2
+	 */
 	public void afficherRobotsJ2() {
 		String res = "Equipe 2 :\t";
 		Robot r;
@@ -341,9 +365,25 @@ public class Plateau {
 
 				}
 
-				res += "] " + r.getEnergie() + "/" + energiemax + "\n\t\t";
+				res += "] " + r.getEnergie() + "/" + energiemax;
+
+				if (r instanceof Piegeur) {
+					res += "  // Mines : " + ((Piegeur) r).getNbMines() + "/"
+							+ Constantes.getMinesInit();
+				}
+
+				res += "\n\t\t";
 			}
 		}
 		System.out.println(res);
+	}
+
+	/**
+	 * Procedure qui recharges les robots pr�sent sur les bases
+	 */
+	public void recharges() {
+		((Base) carte.get("A1")).recharge();
+		((Base) carte.get(posToString(new Position(largeur, hauteur))))
+				.recharge();
 	}
 }

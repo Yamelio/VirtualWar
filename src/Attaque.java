@@ -2,8 +2,9 @@ public class Attaque extends Action {
 
 	private Position cible;
 
-	public Attaque(Robot robot, Position cible) {
+	public Attaque(Robot robot, Position cible) throws Erreur {
 		super(robot);
+		int energieInit = getRobot().getEnergie();
 		this.cible = cible;
 		if (this.getRobot() instanceof Tireur) {
 			if (this.getRobot().getPosition().getY() == cible.getY()) {
@@ -273,6 +274,9 @@ public class Attaque extends Action {
 				}
 			}
 		}
+		if (energieInit == getRobot().getEnergie()) {
+			throw new Erreur("Action impossible");
+		}
 	}
 
 	/**
@@ -330,7 +334,9 @@ public class Attaque extends Action {
 		return this.cible;
 	}
 
-	public void setCible(Position cible2) {
-	} // si la cible initiale ne convient pas
+	public String toString() {
+		return this.getRobot().getEquipe() + " " + this.getRobot().getId()
+				+ " " + 1 + " " + Position.getPlateau().posToString(cible);
+	}
 
 }

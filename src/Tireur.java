@@ -1,5 +1,16 @@
+/**
+ * 
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représente un Robot
+ *         Tireur, définit à partir de son équipe
+ */
 public class Tireur extends Robot {
 
+	/**
+	 * Constructeur de la classe Tireur
+	 * 
+	 * @param equipe
+	 *            Son équipe
+	 */
 	public Tireur(int equipe) {
 		super(equipe);
 		setEnergie(Constantes.getEnergieInitialeTireur());
