@@ -17,7 +17,7 @@ public class Ihm {
 		
 	
 	public Ihm() {
-		JFrame f = new JFrame("Explorateur2");
+		JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
 
 		JPanel panelPrincipale = new JPanel();
