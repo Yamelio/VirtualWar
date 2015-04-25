@@ -26,7 +26,7 @@ public class Deplacement extends Action {
 				.get(Position.getPlateau().posToString(cible));
 
 		if (checkCoordonees()) {
-			if (checkObstacle()) {
+			if (checkObstacle() && charPeutDeplacer()) {
 				deplacerRobot();
 				checkMine();
 			} else {
@@ -144,4 +144,56 @@ public class Deplacement extends Action {
 		return this.getRobot().getEquipe() + " " + this.getRobot().getId()
 				+ " " + 0 + " " + Position.getPlateau().posToString(cible);
 	}
+	
+	public boolean charPeutDeplacer() {
+		if (this.getRobot() instanceof Char){
+			Position tmp;
+			if (cible.getX() == this.getRobot().getPosition().getX()) {
+				if (cible.getY() < this.getRobot().getPosition().getY()) {
+					for (int v = this.getRobot().getPosition().getY() + 1; v < cible
+							.getY(); v++) {
+						tmp = new Position(this.getRobot().getPosition().getX(), v);
+						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+							return false;
+						}
+					}
+				} else {
+					for (int v = this.getRobot().getPosition().getY() - 1; v > cible
+							.getY(); v--) {
+						tmp = new Position(this.getRobot().getPosition().getX(), v);
+						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+							return false;
+						}
+					}
+				}
+			} else if (cible.getY() == this.getRobot().getPosition().getY()) {
+				if (cible.getX() < this.getRobot().getPosition().getX()) {
+					for (int v = this.getRobot().getPosition().getX() + 1; v < cible
+							.getX(); v++) {
+						tmp = new Position(v, this.getRobot().getPosition().getX());
+						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+							return false;
+						}
+					}
+				} else {
+					for (int v = this.getRobot().getPosition().getX() - 1; v > cible
+							.getX(); v--) {
+						tmp = new Position(v, this.getRobot().getPosition().getX());
+						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+							return false;
+						}
+					}
+				}
+			}
+			if (cible.getX() != this.getRobot().getPosition().getX()
+					&& cible.getY() == this.getRobot().getPosition().getY()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	
+	
 }
