@@ -386,4 +386,13 @@ public class Plateau {
 		((Base) carte.get(posToString(new Position(largeur, hauteur))))
 				.recharge();
 	}
+
+	public Robot getRobot(int i) {
+		for (Robot r : robots) {
+			if (r.getId() == i) {
+				return r;
+			}
+		}
+		return null;
+	}
 }

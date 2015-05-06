@@ -20,5 +20,3 @@ Benjamin Holquin (Testeur)
 
 Pour lancer le jeu, il vous suffit de double-clic sur le fichier "VirtualWar.jar" et le jeu se lance.
 
-27-27- S.E.V.R.A.N. Oh! Oh! -
-
