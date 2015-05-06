@@ -26,6 +26,8 @@ public class Main extends Sauvegarde {
 		actions = new ArrayList<Action>();
 		Scanner s = new Scanner(System.in);
 		boolean joueur = r.nextBoolean(); // J1=true, J2=false
+		Robot robotChoisi = null;
+		Position choixCible = null;
 
 		System.out.println("Voulez vous charger une partie ? (o/n)");
 		String rep;
@@ -35,6 +37,9 @@ public class Main extends Sauvegarde {
 
 		if (rep.equals("o")) {
 			chargement();
+
+			robotChoisi = actions.get(actions.size() - 1).getRobot();
+			choixCible = actions.get(actions.size() - 1).getCible();
 			if (actions.get(actions.size() - 1).getRobot().getEquipe() == 0) {
 				joueur = false;
 			} else {
@@ -110,9 +115,9 @@ public class Main extends Sauvegarde {
 
 		int fin = 2;
 		String joueurCourant; // J1 ou J2
-		Robot robotChoisi = new Tireur(2);
+
 		int choixAction;
-		Position choixCible = new Position(10, 10);
+
 		Position.setPlateau(p);
 		Vue vueJ1 = new Vue(p, 0);
 		Vue vueJ2 = new Vue(p, 1);

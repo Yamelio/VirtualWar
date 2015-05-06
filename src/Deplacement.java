@@ -7,7 +7,6 @@
 public class Deplacement extends Action {
 
 	/** La cible du déplacement */
-	private Position cible;
 
 	/**
 	 * 
@@ -21,7 +20,7 @@ public class Deplacement extends Action {
 	 *             Erreur en cas de cible incorrecte
 	 */
 	public Deplacement(Robot robot, Position cible) throws Erreur {
-		super(robot);
+		super(robot, cible);
 		this.cible = Position.getPlateau().getCarte()
 				.get(Position.getPlateau().posToString(cible));
 
@@ -144,24 +143,28 @@ public class Deplacement extends Action {
 		return this.getRobot().getEquipe() + " " + this.getRobot().getId()
 				+ " " + 0 + " " + Position.getPlateau().posToString(cible);
 	}
-	
+
 	public boolean charPeutDeplacer() {
-		if (this.getRobot() instanceof Char){
+		if (this.getRobot() instanceof Char) {
 			Position tmp;
 			if (cible.getX() == this.getRobot().getPosition().getX()) {
 				if (cible.getY() < this.getRobot().getPosition().getY()) {
 					for (int v = this.getRobot().getPosition().getY() + 1; v < cible
 							.getY(); v++) {
-						tmp = new Position(this.getRobot().getPosition().getX(), v);
-						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+						tmp = new Position(
+								this.getRobot().getPosition().getX(), v);
+						if (tmp.estRobot() || tmp.estBase()
+								|| tmp.estObstacle()) {
 							return false;
 						}
 					}
 				} else {
 					for (int v = this.getRobot().getPosition().getY() - 1; v > cible
 							.getY(); v--) {
-						tmp = new Position(this.getRobot().getPosition().getX(), v);
-						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+						tmp = new Position(
+								this.getRobot().getPosition().getX(), v);
+						if (tmp.estRobot() || tmp.estBase()
+								|| tmp.estObstacle()) {
 							return false;
 						}
 					}
@@ -170,16 +173,20 @@ public class Deplacement extends Action {
 				if (cible.getX() < this.getRobot().getPosition().getX()) {
 					for (int v = this.getRobot().getPosition().getX() + 1; v < cible
 							.getX(); v++) {
-						tmp = new Position(v, this.getRobot().getPosition().getX());
-						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+						tmp = new Position(v, this.getRobot().getPosition()
+								.getX());
+						if (tmp.estRobot() || tmp.estBase()
+								|| tmp.estObstacle()) {
 							return false;
 						}
 					}
 				} else {
 					for (int v = this.getRobot().getPosition().getX() - 1; v > cible
 							.getX(); v--) {
-						tmp = new Position(v, this.getRobot().getPosition().getX());
-						if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
+						tmp = new Position(v, this.getRobot().getPosition()
+								.getX());
+						if (tmp.estRobot() || tmp.estBase()
+								|| tmp.estObstacle()) {
 							return false;
 						}
 					}
@@ -192,8 +199,5 @@ public class Deplacement extends Action {
 		}
 		return true;
 	}
-	
-	
-	
-	
+
 }

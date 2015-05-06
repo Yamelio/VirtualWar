@@ -1,11 +1,10 @@
 public class Attaque extends Action {
 
-	private Position cible;
 
 	public Attaque(Robot robot, Position cible) throws Erreur {
-		super(robot);
+		super(robot,cible);
 		int energieInit = getRobot().getEnergie();
-		this.cible = cible;
+		
 		if (this.getRobot() instanceof Tireur) {
 			if (this.getRobot().getPosition().getY() == cible.getY()) {
 				if (this.getRobot().getPosition().getX() > cible.getX()) {
