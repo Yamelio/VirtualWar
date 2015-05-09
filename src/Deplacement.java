@@ -28,7 +28,11 @@ public class Deplacement extends Action {
 			if (checkObstacle() && charPeutDeplacer()) {
 				deplacerRobot();
 				checkMine();
-			} else {
+			}else if(!checkObstacle() && super.getRobot() instanceof Char){
+				changerCibleChar();
+				deplacerRobot();
+				checkMine();
+			}else {
 				throw new Erreur("Obstacle sur la case");
 			}
 		} else {
@@ -200,4 +204,42 @@ public class Deplacement extends Action {
 		return true;
 	}
 
+	public void changerCibleChar() throws Erreur{
+		if(!checkObstacle()) {
+			if(super.getRobot().getPosition().getX() == cible.getX()) {
+				if(super.getRobot().getPosition().getY() < cible.getY()){
+					this.cible = Position.getPlateau().getCarte().get(
+					Position.getPlateau().posToString(
+					new Position(cible.getX(), cible.getY() + 1)));
+						if(cible.estRobot() || cible.estObstacle()){
+							throw new Erreur("Obstacle sur la case 1");
+						}
+				}else {
+					this.cible = Position.getPlateau().getCarte().get(
+					Position.getPlateau().posToString(
+					new Position(cible.getX(), cible.getY() + 1)));
+						if(cible.estRobot() || cible.estObstacle()){
+							throw new Erreur("Obstacle sur la case 2");
+						}
+				}
+			}else {
+				if(super.getRobot().getPosition().getX() < cible.getX()){
+					this.cible = Position.getPlateau().getCarte().get(
+					Position.getPlateau().posToString(
+					new Position(cible.getX() - 1, cible.getY())));
+					if(cible.estRobot() || cible.estObstacle()){
+						throw new Erreur("Obstacle sur la case 3");
+					}
+				}else {
+					this.cible = Position.getPlateau().getCarte().get(
+					Position.getPlateau().posToString(
+					new Position(cible.getX() + 1, cible.getY())));
+					if(cible.estRobot() || cible.estObstacle()){
+						throw new Erreur("Obstacle sur la case 4");
+					}
+				}
+			}
+	
+		}
+	}
 }
