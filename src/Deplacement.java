@@ -23,15 +23,19 @@ public class Deplacement extends Action {
 		super(robot, cible);
 		this.cible = Position.getPlateau().getCarte()
 				.get(Position.getPlateau().posToString(cible));
-		if (checkCoordonees()) {
-			if (checkObstacle()) {
-				deplacerRobot();
-				checkMine();
+		if (checkTotalRobots()) {
+			if (checkCoordonees()) {
+				if (checkObstacle()) {
+					deplacerRobot();
+					checkMine();
+				} else {
+					throw new Erreur("Obstacle sur la case");
+				}
 			} else {
-				throw new Erreur("Obstacle sur la case");
+				throw new Erreur("Case non atteignable");
 			}
 		} else {
-			throw new Erreur("Case non atteignable");
+			throw new Erreur("Au moins un robot hors de la base");
 		}
 
 	}
@@ -55,7 +59,26 @@ public class Deplacement extends Action {
 			getRobot().setPosition(cible);
 			return true;
 		}
+
 		return false;
+	}
+
+	private boolean checkTotalRobots() {
+		if (this.cible.estBase()) {
+			int equipe = this.getRobot().getEquipe();
+			int cpt = 0;
+
+			for (Robot r : Position.getPlateau().getListeRobot()) {
+				if (r.getEquipe() == equipe && !r.getPosition().estBase()) {
+					cpt++;
+				}
+			}
+			// if (cpt == 0) {
+			// return true;
+			// }
+			return cpt > 1;
+		}
+		return true;
 	}
 
 	/**
