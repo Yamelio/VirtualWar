@@ -20,30 +20,42 @@ import javax.swing.ScrollPaneConstants;
 
 public class IHM {
 
-	protected int hauteurFenetre = 600;
-	protected int largeurFenetre = 800;
+	protected int hauteurFenetre = 700;
+	protected int largeurFenetre = 900;
 
 	public IHM() {
 		JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
 		f.setJMenuBar(MenuBar());
-
+		
+		//Panel principale
 		JPanel panelPrincipale = new JPanel();
-
+		
+		//Panel de gauche
 		JScrollPane panelPlateau = new JScrollPane();
 		panelPlateau.setBorder(BorderFactory
 				.createTitledBorder("Plateau de Jeu"));
-
+		
+		//Panel de droite
 		JPanel panelInformation = new JPanel();
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				panelPlateau, panelInformation);
-
+		
+		//Panel d'information sur le robot
 		JPanel panelRobot = new JPanel();
 		panelRobot.setBorder(BorderFactory.createTitledBorder("Robot"));
-
+		
+		//Panel du choix d'action
 		JPanel panelAction = new JPanel();
 		panelAction.setBorder(BorderFactory.createTitledBorder("Action"));
-
+		JButton bouttonAttaquer = new JButton("Attaquer");
+		JButton bouttonMouvoir = new JButton("Mouvoir");
+		bouttonAttaquer.setPreferredSize(new Dimension(largeurFenetre / 10, hauteurFenetre / 10));
+		bouttonMouvoir.setPreferredSize(new Dimension(largeurFenetre / 10, hauteurFenetre / 10));
+		panelAction.add(bouttonMouvoir);
+		panelAction.add(bouttonAttaquer);
+		
+		//Panel historique
 		JTextArea display = new JTextArea();
 		display.setEditable(false);
 		JScrollPane panelHistorique = new JScrollPane(display);
@@ -51,17 +63,16 @@ public class IHM {
 				.createTitledBorder("Historique"));
 		panelHistorique
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
+		
+		//Le bordel pour tout disposer
 		panelPrincipale.setLayout(new GridLayout(1, 2));
 		panelInformation.setLayout(new GridLayout(3, 1));
 		splitPane.setDividerLocation((int) largeurFenetre * 70 / 100);
-
 		f.getContentPane().add(panelPrincipale);
 		panelPrincipale.add(splitPane);
 		panelInformation.add(panelRobot, BorderLayout.NORTH);
 		panelInformation.add(panelAction, BorderLayout.CENTER);
 		panelInformation.add(panelHistorique, BorderLayout.SOUTH);
-
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.pack();
 		f.setVisible(true);
