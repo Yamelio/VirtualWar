@@ -27,7 +27,7 @@ public class Deplacement extends Action {
 			if (checkCoordonees()) {
 				if (checkObstacle()) {
 					deplacerRobot();
-					checkMine();
+					checkMine(this.cible);
 					this.cible = Position.getPlateau().getCarte()
 							.get(Position.getPlateau().posToString(cible));
 				} else {
@@ -127,14 +127,14 @@ public class Deplacement extends Action {
 	 * 
 	 * @return
 	 */
-	public boolean checkMine() {
-		if (!cible.estMine()) {
+	public boolean checkMine(Position p) {
+		if (!p.estMine()) {
 			return false;
 		} else {
 			getRobot().setEnergie(
 					getRobot().getEnergie() - Constantes.getDegatsPiegeur());
 			Position.getPlateau().getCarte()
-					.get(Position.getPlateau().posToString(cible)).flipMine(2);
+					.get(Position.getPlateau().posToString(p)).flipMine(2);
 			return true;
 		}
 	}
@@ -208,6 +208,7 @@ public class Deplacement extends Action {
 			if (chgtCible) {
 				this.cible = tmp;
 			}
+			checkMine(tmp);
 			return !(tmp.estObstacle() || tmp.estRobot());
 		} else {
 			return false;

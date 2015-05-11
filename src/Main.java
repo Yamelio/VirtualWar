@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author Les Quatre Cavaliers de l'Apocalypse
  */
 
-public class Main extends Sauvegarde {
+public class Main {
 
 	private static List<Action> actions;
 	private static Plateau p;
@@ -159,8 +159,7 @@ public class Main extends Sauvegarde {
 				} else {
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
-								+ " a posé une mine en "
-								+ p.posToString(choixCible));
+								+ " a posé une mine");
 					} else {
 						System.out.println("Le robot " + robotChoisi.getId()
 								+ " a attaque le robot "
