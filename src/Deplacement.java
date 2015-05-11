@@ -26,10 +26,22 @@ public class Deplacement extends Action {
 		if (checkTotalRobots()) {
 			if (checkCoordonees()) {
 				if (checkObstacle()) {
+					if (!checkBase()) {
+						if (this.cible.estBase()) {
+							if (this.cible.getEquipe() != getRobot()
+									.getEquipe()) {
+								throw new Erreur("Ce n'est pas votre base");
+							}
+						} else {
+							getRobot().setPosition(cible);
+
+						}
+					}
 					deplacerRobot();
 					checkMine(this.cible);
 					this.cible = Position.getPlateau().getCarte()
 							.get(Position.getPlateau().posToString(cible));
+
 				} else {
 					throw new Erreur("Obstacle sur la case");
 				}
@@ -144,10 +156,6 @@ public class Deplacement extends Action {
 	}
 
 	public void deplacerRobot() {
-
-		if (!checkBase()) {
-			getRobot().setPosition(cible);
-		}
 
 		if (this.getRobot() instanceof Tireur) {
 			this.getRobot().setEnergie(

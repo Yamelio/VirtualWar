@@ -84,20 +84,30 @@ public class Main {
 				}
 			} while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5
 					|| nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 <= 0);
-			int largeur;
-			int hauteur;
+			int largeur = 0;
+			int hauteur = 0;
 			do {
-				System.out
-						.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
-				largeur = s.nextInt();
-				hauteur = s.nextInt();
+				try {
+					System.out
+							.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
+					largeur = s.nextInt();
+					hauteur = s.nextInt();
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					s.next();
+				}
 			} while (largeur < 5 || largeur > 26 || hauteur < 5 || hauteur > 26);
-			int obstacles;
+			int obstacles = -1;
 			do {
-				System.out
-						.println("\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)");
-				obstacles = s.nextInt();
-			} while (obstacles <= 0 && obstacles >= 50);
+				try {
+					System.out
+							.println("\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)");
+					obstacles = s.nextInt();
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					s.next();
+				}
+			} while (!(obstacles > -1 && obstacles < 51));
 
 			p = new Plateau(largeur, hauteur, obstacles);
 			p.initObstacles();

@@ -103,6 +103,8 @@ public class Plateau {
 		chemin.add(new Position(1, 1));
 		chemin.add(new Position(1, 2));
 		chemin.add(new Position(2, 1));
+		chemin.add(p);
+
 		chemin.add(new Position(largeur, hauteur));
 		chemin.add(new Position(largeur - 1, hauteur));
 		chemin.add(new Position(largeur, hauteur - 1));
