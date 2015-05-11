@@ -28,6 +28,8 @@ public class Deplacement extends Action {
 				if (checkObstacle()) {
 					deplacerRobot();
 					checkMine();
+					this.cible = Position.getPlateau().getCarte()
+							.get(Position.getPlateau().posToString(cible));
 				} else {
 					throw new Erreur("Obstacle sur la case");
 				}

@@ -47,31 +47,41 @@ public class Main extends Sauvegarde {
 			}
 		} else {
 
-			int nbTireurJ1;
-			int nbPiegeurJ1;
-			int nbCharJ1;
+			int nbTireurJ1 = 10;
+			int nbPiegeurJ1 = 10;
+			int nbCharJ1 = 10;
 			do {
-				System.out
-						.println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-				nbTireurJ1 = s.nextInt();
-				System.out.println("\n\tChar : ");
-				nbCharJ1 = s.nextInt();
-				System.out.println("\n\tPiegeur : ");
-				nbPiegeurJ1 = s.nextInt();
+				try {
+					System.out
+							.println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : ");
+					nbTireurJ1 = s.nextInt();
+					System.out.println("\n\tChar : ");
+					nbCharJ1 = s.nextInt();
+					System.out.println("\n\tPiegeur : ");
+					nbPiegeurJ1 = s.nextInt();
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					s.next();
+				}
 			} while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5
 					|| nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 <= 0);
-			int nbTireurJ2;
-			int nbCharJ2;
-			int nbPiegeurJ2;
+			int nbTireurJ2 = 10;
+			int nbCharJ2 = 10;
+			int nbPiegeurJ2 = 10;
 
 			do {
-				System.out
-						.println("\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-				nbTireurJ2 = s.nextInt();
-				System.out.println("\n\tChar : ");
-				nbCharJ2 = s.nextInt();
-				System.out.println("\n\tPiegeur : ");
-				nbPiegeurJ2 = s.nextInt();
+				try {
+					System.out
+							.println("\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
+					nbTireurJ2 = s.nextInt();
+					System.out.println("\n\tChar : ");
+					nbCharJ2 = s.nextInt();
+					System.out.println("\n\tPiegeur : ");
+					nbPiegeurJ2 = s.nextInt();
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					s.next();
+				}
 			} while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5
 					|| nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 <= 0);
 			int largeur;
