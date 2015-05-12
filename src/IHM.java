@@ -27,6 +27,7 @@ public class IHM {
 	public IHM() {
 		JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
+		f.setMinimumSize(new Dimension(500, 400));
 		f.setJMenuBar(MenuBar());
 		
 		//Panel principale
@@ -51,10 +52,10 @@ public class IHM {
 		panelAction.setBorder(BorderFactory.createTitledBorder("Action"));
 		JButton bouttonAttaquer = new JButton("Attaquer");
 		JButton bouttonMouvoir = new JButton("Mouvoir");
-		bouttonAttaquer.setPreferredSize(new Dimension(largeurFenetre / 10, hauteurFenetre / 10));
-		bouttonMouvoir.setPreferredSize(new Dimension(largeurFenetre / 10, hauteurFenetre / 10));
-		panelAction.add(bouttonMouvoir);
+		bouttonAttaquer.setPreferredSize(new Dimension(largeurFenetre / 9, hauteurFenetre / 10));
+		bouttonMouvoir.setPreferredSize(new Dimension(largeurFenetre / 9, hauteurFenetre / 10));
 		panelAction.add(bouttonAttaquer);
+		panelAction.add(bouttonMouvoir);
 		
 		//Panel historique
 		JTextArea display = new JTextArea();
