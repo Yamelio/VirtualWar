@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -23,6 +24,7 @@ public class IHM {
 
 	protected int hauteurFenetre = 700;
 	protected int largeurFenetre = 900;
+	
 
 	public IHM() {
 		JFrame f = new JFrame("VirtualWar");
@@ -46,6 +48,16 @@ public class IHM {
 		//Panel d'information sur le robot
 		JPanel panelRobot = new JPanel();
 		panelRobot.setBorder(BorderFactory.createTitledBorder("Robot"));
+		JProgressBar barDeVie = new JProgressBar();
+		barDeVie.setMaximum(10); //mettre ici la constante de vie max du robot
+		barDeVie.setMinimum(0);
+		barDeVie.setBorderPainted(true);
+		barDeVie.setStringPainted(true);
+		barDeVie.setString("5/10"); // nombre de pv du robot / pv max du robot
+		barDeVie.setValue(5); //nombre de pv du robot
+		panelRobot.setLayout(new GridLayout(2,1));
+		panelRobot.add(barDeVie, BorderLayout.NORTH);
+		//panelRobot.add(null, BorderLayout.SOUTH);
 		
 		//Panel du choix d'action
 		JPanel panelAction = new JPanel();
