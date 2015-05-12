@@ -217,6 +217,7 @@ public class Main {
 					}
 				} catch (Exception e) {
 					System.out.println("Erreur de saisie");
+					s.next();
 					saisieOk = false;
 				}
 			} while (!saisieOk);
