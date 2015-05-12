@@ -2,11 +2,6 @@ public class Attaque extends Action {
 
 	public Attaque(Robot robot, Position cible) throws Erreur {
 		super(robot, cible);
-		this.cible = Position.getPlateau().getCarte()
-				.get(Position.getPlateau().posToString(cible));
-		if (getRobot() instanceof Piegeur && this.cible.estMine()) {
-			throw new Erreur("Action impossible");
-		}
 		int energieInit = getRobot().getEnergie();
 		if (robot.getPosition().estBase()) {
 			throw new Erreur("Le robot ne peut pas attaquer depuis sa base");
@@ -17,6 +12,7 @@ public class Attaque extends Action {
 						if ((this.getRobot().getPosition().getX()
 								- cible.getX() <= Constantes.getPorteeTireur())
 								&& tireSansEntrave()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
@@ -43,6 +39,7 @@ public class Attaque extends Action {
 						if ((cible.getX()
 								- this.getRobot().getPosition().getX() <= Constantes
 									.getPorteeTireur()) && tireSansEntrave()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
@@ -70,6 +67,7 @@ public class Attaque extends Action {
 						if ((this.getRobot().getPosition().getY()
 								- cible.getY() <= Constantes.getPorteeTireur())
 								&& tireSansEntrave()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
@@ -96,6 +94,7 @@ public class Attaque extends Action {
 						if ((cible.getY()
 								- this.getRobot().getPosition().getY() <= Constantes
 									.getPorteeTireur()) && tireSansEntrave()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
@@ -152,6 +151,7 @@ public class Attaque extends Action {
 						if ((cible.getX()
 								- this.getRobot().getPosition().getX() <= Constantes
 									.getPorteeChar()) && tireSansEntrave()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirChar());
@@ -206,6 +206,7 @@ public class Attaque extends Action {
 						if ((cible.getY()
 								- this.getRobot().getPosition().getY() <= Constantes
 									.getPorteeChar()) && tireSansEntrave()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirChar());
@@ -242,6 +243,7 @@ public class Attaque extends Action {
 								&& !cible.estBase()
 								&& !cible.estObstacle()
 								&& !cible.estRobot() && !cible.estMine()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutMine());
@@ -265,6 +267,7 @@ public class Attaque extends Action {
 								&& !cible.estBase()
 								&& !cible.estObstacle()
 								&& !cible.estRobot() && !cible.estMine()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutMine());
@@ -288,6 +291,7 @@ public class Attaque extends Action {
 								&& !cible.estBase()
 								&& !cible.estObstacle()
 								&& !cible.estRobot() && !cible.estMine()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutMine());
@@ -308,6 +312,7 @@ public class Attaque extends Action {
 								&& !cible.estBase()
 								&& !cible.estObstacle()
 								&& !cible.estRobot() && !cible.estMine()) {
+							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutMine());
