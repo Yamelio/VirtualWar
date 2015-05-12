@@ -170,7 +170,7 @@ public class Deplacement extends Action {
 					this.getRobot().getEnergie()
 							- Constantes.getCoutDeplacementChar());
 		}
-
+		this.getRobot().setPosition(this.cible);
 	}
 
 	public String toString() {
@@ -181,7 +181,6 @@ public class Deplacement extends Action {
 	public boolean charPeutDeplacer() {
 		boolean chgtCible = cible.estObstacle() || cible.estRobot();
 		Position tmp = null;
-
 		if (cible.getX() == this.getRobot().getPosition().getX()) {
 			if (cible.getY() < this.getRobot().getPosition().getY()) {
 				tmp = Position
@@ -217,7 +216,7 @@ public class Deplacement extends Action {
 				this.cible = tmp;
 			}
 			checkMine(tmp);
-			return !(tmp.estObstacle() || tmp.estRobot());
+			return checkObstacle();
 		} else {
 			return false;
 		}
