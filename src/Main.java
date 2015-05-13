@@ -25,6 +25,9 @@ public class Main extends Sauvegarde {
 		Random r = new Random();
 		actions = new ArrayList<Action>();
 		Scanner s = new Scanner(System.in);
+		IntelligenceArtificielle IA1 = null;
+		IntelligenceArtificielle IA2 = null;
+		String nbrIA = "0";
 		boolean joueur = r.nextBoolean(); // J1=true, J2=false
 		Robot robotChoisi = null;
 		Position choixCible = null;
@@ -46,34 +49,61 @@ public class Main extends Sauvegarde {
 				joueur = true;
 			}
 		} else {
+			
+			do {
+				System.out.println("Combien de joueur virtuels voulez vous ?(0 Ã  2)");
+				nbrIA = s.next();
+			} while (!(nbrIA.equals("0") || nbrIA.equals("1") || nbrIA.equals("2")));
 
+			
 			int nbTireurJ1;
 			int nbPiegeurJ1;
 			int nbCharJ1;
-			do {
-				System.out
-						.println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-				nbTireurJ1 = s.nextInt();
-				System.out.println("\n\tChar : ");
-				nbCharJ1 = s.nextInt();
-				System.out.println("\n\tPiegeur : ");
-				nbPiegeurJ1 = s.nextInt();
-			} while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5
-					|| nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 <= 0);
+			if(nbrIA.equals("0") || nbrIA.equals("1")){
+
+				do {
+					System.out
+							.println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : ");
+					nbTireurJ1 = s.nextInt();
+					System.out.println("\n\tChar : ");
+					nbCharJ1 = s.nextInt();
+					System.out.println("\n\tPiegeur : ");
+					nbPiegeurJ1 = s.nextInt();
+				} while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5
+						|| nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 <= 0);
+			}
+			else{
+				nbTireurJ1=0;
+				nbPiegeurJ1=0;
+				nbCharJ1=0;
+			}
+			
+			
 			int nbTireurJ2;
 			int nbCharJ2;
 			int nbPiegeurJ2;
+			if(nbrIA.equals("0")){
 
-			do {
-				System.out
-						.println("\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-				nbTireurJ2 = s.nextInt();
-				System.out.println("\n\tChar : ");
-				nbCharJ2 = s.nextInt();
-				System.out.println("\n\tPiegeur : ");
-				nbPiegeurJ2 = s.nextInt();
-			} while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5
-					|| nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 <= 0);
+				do {
+					System.out
+							.println("\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
+					nbTireurJ2 = s.nextInt();
+					System.out.println("\n\tChar : ");
+					nbCharJ2 = s.nextInt();
+					System.out.println("\n\tPiegeur : ");
+					nbPiegeurJ2 = s.nextInt();
+				} while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5
+						|| nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 <= 0);
+			}
+			
+			else{
+				nbTireurJ2=0;
+				nbCharJ2=0;
+				nbPiegeurJ2=0;
+			}
+			
+	
+			
 			int largeur;
 			int hauteur;
 			do {
@@ -91,7 +121,7 @@ public class Main extends Sauvegarde {
 
 			p = new Plateau(largeur, hauteur, obstacles);
 			p.initObstacles();
-
+			
 			for (int i = 0; i < nbTireurJ1; i++) {
 				p.ajouterListeRobot(new Tireur(0));
 			}
@@ -110,6 +140,39 @@ public class Main extends Sauvegarde {
 			for (int i = 0; i < nbPiegeurJ2; i++) {
 				p.ajouterListeRobot(new Piegeur(1));
 			}
+			
+			
+			if(nbrIA.equals("1")){
+				IA1 = new IntelligenceArtificielle(p, 1);
+				IA2 = null;
+				
+				for(Robot rob : IA1.getRobots()){
+					p.ajouterListeRobot(rob);
+				}
+				
+			}
+			
+			else if(nbrIA.equals("2")){
+				IA1 = new IntelligenceArtificielle(p, 0);
+				IA2 = new IntelligenceArtificielle(p, 1);
+				
+				for(Robot rob : IA1.getRobots()){
+					p.ajouterListeRobot(rob);
+				}
+				
+				for(Robot rob : IA2.getRobots()){
+					p.ajouterListeRobot(rob);
+				}
+			}
+			
+			else{
+				IA1 = null;
+				IA2 = null;
+			}
+			
+			
+
+
 		}
 		robotsInit = new ArrayList<Robot>(p.getListeRobot());
 
@@ -134,9 +197,9 @@ public class Main extends Sauvegarde {
 			} else {
 				joueurCourant = "J2";
 			}
-			if (joueur) {
+			if (joueur && (nbrIA.equals("0") || nbrIA.equals("1"))) {
 				System.out.println(vueJ1);
-			} else {
+			} else if(!joueur && nbrIA.equals("0")){
 				System.out.println(vueJ2);
 			}
 			p.afficherRobotsJ1();
@@ -149,7 +212,7 @@ public class Main extends Sauvegarde {
 				} else {
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
-								+ " a posé une mine en "
+								+ " a posï¿½ une mine en "
 								+ p.posToString(choixCible));
 					} else {
 						System.out.println("Le robot " + robotChoisi.getId()
@@ -158,57 +221,89 @@ public class Main extends Sauvegarde {
 					}
 				}
 			}
-			do {
-				try {
-					System.out
-
-							.println("C'est a  "
-									+ joueurCourant
-									+ " de jouer !\nselectionnez le numero du robot de votre équipe que vous souhaitez utiliser, ainsi que son action");
-					do {
-						robotChoisi = p.getListeRobot().get(s.nextInt());
-					} while ((robotChoisi.getEquipe() == 1 && joueur)
-							|| (robotChoisi.getEquipe() == 0 && !joueur));
-					if (robotChoisi instanceof Piegeur) {
+			
+			
+			
+			
+			if(isJoueur(joueurCourant,nbrIA)){
+				do {
+					try {
 						System.out
-								.println("\t1- Poser une mine\n\t2- Se deplacer");
-					} else {
-						System.out.println("\t1- Attaquer\n\t2- Se deplacer");
-					}
-					choixAction = s.nextInt();
-					System.out.println("Ou ?");
-					s.nextLine();
-					choixCible = p.stringToPos(s.nextLine());
-					if (choixAction == 1) {
-						try {
-							actions.add(new Attaque(robotChoisi, choixCible));
-							saisieOk = true;
-						} catch (Erreur e) {
-							System.out.println(e.getMessage());
-							saisieOk = false;
+	
+								.println("C'est aï¿½ "
+										+ joueurCourant
+										+ " de jouer !\nselectionnez le numero du robot de votre ï¿½quipe que vous souhaitez utiliser, ainsi que son action");
+						do {
+							robotChoisi = p.getListeRobot().get(s.nextInt());
+						} while ((robotChoisi.getEquipe() == 1 && joueur)
+								|| (robotChoisi.getEquipe() == 0 && !joueur));
+						if (robotChoisi instanceof Piegeur) {
+							System.out
+									.println("\t1- Poser une mine\n\t2- Se deplacer");
+						} else {
+							System.out.println("\t1- Attaquer\n\t2- Se deplacer");
 						}
-					} else {
-						try {
-							actions.add(new Deplacement(robotChoisi, choixCible));
-							saisieOk = true;
-						} catch (Erreur e) {
-							System.out.println(e.getMessage());
-							saisieOk = false;
+						choixAction = s.nextInt();
+						System.out.println("Ou ?");
+						s.nextLine();
+						choixCible = p.stringToPos(s.nextLine());
+						if (choixAction == 1) {
+							try {
+								actions.add(new Attaque(robotChoisi, choixCible));
+								saisieOk = true;
+							} catch (Erreur e) {
+								System.out.println(e.getMessage());
+								saisieOk = false;
+							}
+						} else {
+							try {
+								actions.add(new Deplacement(robotChoisi, choixCible));
+								saisieOk = true;
+							} catch (Erreur e) {
+								System.out.println(e.getMessage());
+								saisieOk = false;
+							}
 						}
+					} catch (Exception e) {
+						System.out.println("Erreur de saisie");
+						saisieOk = false;
 					}
-				} catch (Exception e) {
-					System.out.println("Erreur de saisie");
-					saisieOk = false;
-				}
-			} while (!saisieOk);
+				} while (!saisieOk);
 
-			joueur = !joueur;
-			p.recharges();
-			sauvegarde();
-			fin = checkFin();
 
+	
+			}
+		
+		else{
+			if(nbrIA.equals("1")){
+				Action act = IA1.Jouer();
+				actions.add(act);
+				robotChoisi = act.getRobot();
+				choixCible = act.getCible();
+			}
+			
+			if(nbrIA.equals("2") && joueurCourant == "J1"){
+				Action act = IA1.Jouer();
+				actions.add(act);
+				robotChoisi = act.getRobot();
+				choixCible = act.getCible();
+			}
+			
+			if(nbrIA.equals("2") && joueurCourant == "J2"){
+				Action act = IA2.Jouer();
+				actions.add(act);
+				robotChoisi = act.getRobot();
+				choixCible = act.getCible();
+			}
+			
+			
 		}
-
+			
+		joueur = !joueur;
+		p.recharges();
+		sauvegarde();
+		fin = checkFin();
+			
 		for (int i = 0; i < 20; i++) {
 			System.out.println("");
 		}
@@ -218,24 +313,25 @@ public class Main extends Sauvegarde {
 
 		case 1:
 			p.afficherRobotsJ2();
-			System.out.println("Joueur 2 a gagné !");
+			System.out.println("Joueur 2 a gagnï¿½ !");
 			break;
 
 		case 0:
 			p.afficherRobotsJ1();
-			System.out.println("Joueur 1 a gagné !");
+			System.out.println("Joueur 1 a gagnï¿½ !");
 			break;
 
 		case -1:
 			System.out.println("Match nul !");
 			break;
 		}
+		}
 	}
 
 	/**
-	 * Vérifie si la partie est finie
+	 * Vï¿½rifie si la partie est finie
 	 * 
-	 * @return int Entier correspondant à la situation
+	 * @return int Entier correspondant ï¿½ la situation
 	 */
 	private static int checkFin() {
 		int aliveJ1 = 0;
@@ -396,4 +492,21 @@ public class Main extends Sauvegarde {
 			e.printStackTrace();
 		}
 	}
+	
+	public static boolean isJoueur(String joueur, String nbrIA){
+		if(joueur == "J1" && (nbrIA.equals("1") || nbrIA.equals("0"))){
+			return true;
+		}
+		
+		else if(joueur == "J2" && nbrIA.equals("0")){
+			return true;
+		}
+		
+		else{
+			return false;
+		}
+	}
+	
+	
+	
 }
