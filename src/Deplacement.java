@@ -23,20 +23,33 @@ public class Deplacement extends Action {
 		super(robot, cible);
 		this.cible = Position.getPlateau().getCarte()
 				.get(Position.getPlateau().posToString(cible));
+		if (checkTotalRobots()) {
+			if (checkCoordonees()) {
+				if (checkObstacle()) {
+					if (!checkBase()) {
+						if (this.cible.estBase()) {
+							if (this.cible.getEquipe() != getRobot()
+									.getEquipe()) {
+								throw new Erreur("Ce n'est pas votre base");
+							}
+						} else {
+							getRobot().setPosition(cible);
 
-		if (checkCoordonees()) {
-			if (checkObstacle() && charPeutDeplacer()) {
-				deplacerRobot();
-				checkMine();
-			}else if(!checkObstacle() && super.getRobot() instanceof Char){
-				changerCibleChar();
-				deplacerRobot();
-				checkMine();
-			}else {
-				throw new Erreur("Obstacle sur la case");
+						}
+					}
+					deplacerRobot();
+					checkMine(this.cible);
+					this.cible = Position.getPlateau().getCarte()
+							.get(Position.getPlateau().posToString(cible));
+
+				} else {
+					throw new Erreur("Obstacle sur la case");
+				}
+			} else {
+				throw new Erreur("Case non atteignable");
 			}
 		} else {
-			throw new Erreur("Case non atteignable");
+			throw new Erreur("Au moins un robot hors de la base");
 		}
 
 	}
@@ -60,7 +73,26 @@ public class Deplacement extends Action {
 			getRobot().setPosition(cible);
 			return true;
 		}
+
 		return false;
+	}
+
+	private boolean checkTotalRobots() {
+		if (this.cible.estBase()) {
+			int equipe = this.getRobot().getEquipe();
+			int cpt = 0;
+
+			for (Robot r : Position.getPlateau().getListeRobot()) {
+				if (r.getEquipe() == equipe && !r.getPosition().estBase()) {
+					cpt++;
+				}
+			}
+			// if (cpt == 0) {
+			// return true;
+			// }
+			return cpt > 1;
+		}
+		return true;
 	}
 
 	/**
@@ -94,7 +126,9 @@ public class Deplacement extends Action {
 							.getRobot().getPosition().getY() == cible.getY()
 							+ Constantes.getPorteeDeplacementChar()) && this
 							.getRobot().getPosition().getX() == cible.getX()))
-				return true;
+				if (charPeutDeplacer()) {
+					return true;
+				}
 		}
 		return false;
 	}
@@ -105,14 +139,14 @@ public class Deplacement extends Action {
 	 * 
 	 * @return
 	 */
-	public boolean checkMine() {
-		if (!cible.estMine()) {
+	public boolean checkMine(Position p) {
+		if (!p.estMine()) {
 			return false;
 		} else {
 			getRobot().setEnergie(
 					getRobot().getEnergie() - Constantes.getDegatsPiegeur());
 			Position.getPlateau().getCarte()
-					.get(Position.getPlateau().posToString(cible)).flipMine(2);
+					.get(Position.getPlateau().posToString(p)).flipMine(2);
 			return true;
 		}
 	}
@@ -122,10 +156,6 @@ public class Deplacement extends Action {
 	}
 
 	public void deplacerRobot() {
-
-		if (!checkBase()) {
-			getRobot().setPosition(cible);
-		}
 
 		if (this.getRobot() instanceof Tireur) {
 			this.getRobot().setEnergie(
@@ -140,7 +170,7 @@ public class Deplacement extends Action {
 					this.getRobot().getEnergie()
 							- Constantes.getCoutDeplacementChar());
 		}
-
+		this.getRobot().setPosition(this.cible);
 	}
 
 	public String toString() {
@@ -149,97 +179,46 @@ public class Deplacement extends Action {
 	}
 
 	public boolean charPeutDeplacer() {
-		if (this.getRobot() instanceof Char) {
-			Position tmp;
-			if (cible.getX() == this.getRobot().getPosition().getX()) {
-				if (cible.getY() < this.getRobot().getPosition().getY()) {
-					for (int v = this.getRobot().getPosition().getY() + 1; v < cible
-							.getY(); v++) {
-						tmp = new Position(
-								this.getRobot().getPosition().getX(), v);
-						if (tmp.estRobot() || tmp.estBase()
-								|| tmp.estObstacle()) {
-							return false;
-						}
-					}
-				} else {
-					for (int v = this.getRobot().getPosition().getY() - 1; v > cible
-							.getY(); v--) {
-						tmp = new Position(
-								this.getRobot().getPosition().getX(), v);
-						if (tmp.estRobot() || tmp.estBase()
-								|| tmp.estObstacle()) {
-							return false;
-						}
-					}
-				}
-			} else if (cible.getY() == this.getRobot().getPosition().getY()) {
-				if (cible.getX() < this.getRobot().getPosition().getX()) {
-					for (int v = this.getRobot().getPosition().getX() + 1; v < cible
-							.getX(); v++) {
-						tmp = new Position(v, this.getRobot().getPosition()
-								.getX());
-						if (tmp.estRobot() || tmp.estBase()
-								|| tmp.estObstacle()) {
-							return false;
-						}
-					}
-				} else {
-					for (int v = this.getRobot().getPosition().getX() - 1; v > cible
-							.getX(); v--) {
-						tmp = new Position(v, this.getRobot().getPosition()
-								.getX());
-						if (tmp.estRobot() || tmp.estBase()
-								|| tmp.estObstacle()) {
-							return false;
-						}
-					}
-				}
+		boolean chgtCible = cible.estObstacle() || cible.estRobot();
+		Position tmp = null;
+		if (cible.getX() == this.getRobot().getPosition().getX()) {
+			if (cible.getY() < this.getRobot().getPosition().getY()) {
+				tmp = Position
+						.getPlateau()
+						.getCarte()
+						.get(Position.getPlateau().posToString(
+								new Position(cible.getX(), cible.getY() + 1)));
+			} else {
+				tmp = Position
+						.getPlateau()
+						.getCarte()
+						.get(Position.getPlateau().posToString(
+								new Position(cible.getX(), cible.getY() - 1)));
 			}
-			if (cible.getX() != this.getRobot().getPosition().getX()
-					&& cible.getY() == this.getRobot().getPosition().getY()) {
-				return false;
+		} else if (cible.getY() == this.getRobot().getPosition().getY()) {
+			if (cible.getX() < this.getRobot().getPosition().getX()) {
+				tmp = Position
+						.getPlateau()
+						.getCarte()
+						.get(Position.getPlateau().posToString(
+								new Position(cible.getX() + 1, cible.getY())));
+			} else {
+				tmp = Position
+						.getPlateau()
+						.getCarte()
+						.get(Position.getPlateau().posToString(
+								new Position(cible.getX() - 1, cible.getY())));
+
 			}
 		}
-		return true;
-	}
-
-	public void changerCibleChar() throws Erreur{
-		if(!checkObstacle()) {
-			if(super.getRobot().getPosition().getX() == cible.getX()) {
-				if(super.getRobot().getPosition().getY() < cible.getY()){
-					this.cible = Position.getPlateau().getCarte().get(
-					Position.getPlateau().posToString(
-					new Position(cible.getX(), cible.getY() + 1)));
-						if(cible.estRobot() || cible.estObstacle()){
-							throw new Erreur("Obstacle sur la case 1");
-						}
-				}else {
-					this.cible = Position.getPlateau().getCarte().get(
-					Position.getPlateau().posToString(
-					new Position(cible.getX(), cible.getY() + 1)));
-						if(cible.estRobot() || cible.estObstacle()){
-							throw new Erreur("Obstacle sur la case 2");
-						}
-				}
-			}else {
-				if(super.getRobot().getPosition().getX() < cible.getX()){
-					this.cible = Position.getPlateau().getCarte().get(
-					Position.getPlateau().posToString(
-					new Position(cible.getX() - 1, cible.getY())));
-					if(cible.estRobot() || cible.estObstacle()){
-						throw new Erreur("Obstacle sur la case 3");
-					}
-				}else {
-					this.cible = Position.getPlateau().getCarte().get(
-					Position.getPlateau().posToString(
-					new Position(cible.getX() + 1, cible.getY())));
-					if(cible.estRobot() || cible.estObstacle()){
-						throw new Erreur("Obstacle sur la case 4");
-					}
-				}
+		if (tmp != null) {
+			if (chgtCible) {
+				this.cible = tmp;
 			}
-	
+			checkMine(tmp);
+			return checkObstacle();
+		} else {
+			return false;
 		}
 	}
 }

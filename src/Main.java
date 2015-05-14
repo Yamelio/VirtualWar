@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author Les Quatre Cavaliers de l'Apocalypse
  */
 
-public class Main extends Sauvegarde {
+public class Main {
 
 	private static List<Action> actions;
 	private static Plateau p;
@@ -55,12 +55,18 @@ public class Main extends Sauvegarde {
 				nbrIA = s.next();
 			} while (!(nbrIA.equals("0") || nbrIA.equals("1") || nbrIA.equals("2")));
 
+
 			
 			int nbTireurJ1;
 			int nbPiegeurJ1;
 			int nbCharJ1;
 			if(nbrIA.equals("0") || nbrIA.equals("1")){
 
+
+			nbTireurJ1 = 10;
+			nbPiegeurJ1 = 10;
+			nbCharJ1 = 10;
+			try {
 				do {
 					System.out
 							.println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : ");
@@ -69,10 +75,16 @@ public class Main extends Sauvegarde {
 					nbCharJ1 = s.nextInt();
 					System.out.println("\n\tPiegeur : ");
 					nbPiegeurJ1 = s.nextInt();
+
 				} while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5
 						|| nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 <= 0);
-			}
-			else{
+				
+			} catch (Exception e) {
+				System.out.println("Erreur de saisie");
+				s.next();
+				}
+			
+			}else{
 				nbTireurJ1=0;
 				nbPiegeurJ1=0;
 				nbCharJ1=0;
@@ -84,6 +96,11 @@ public class Main extends Sauvegarde {
 			int nbPiegeurJ2;
 			if(nbrIA.equals("0")){
 
+			nbTireurJ2 = 10;
+			nbCharJ2 = 10;
+			nbPiegeurJ2 = 10;
+
+			try {
 				do {
 					System.out
 							.println("\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
@@ -92,32 +109,47 @@ public class Main extends Sauvegarde {
 					nbCharJ2 = s.nextInt();
 					System.out.println("\n\tPiegeur : ");
 					nbPiegeurJ2 = s.nextInt();
+
 				} while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5
 						|| nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 <= 0);
+			} catch (Exception e) {
+				System.out.println("Erreur de saisie");
+				s.next();
+				}
 			}
-			
 			else{
 				nbTireurJ2=0;
 				nbCharJ2=0;
 				nbPiegeurJ2=0;
 			}
 			
-	
-			
-			int largeur;
-			int hauteur;
+
+
+			int largeur = 0;
+			int hauteur = 0;
+
 			do {
-				System.out
-						.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
-				largeur = s.nextInt();
-				hauteur = s.nextInt();
+				try {
+					System.out
+							.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
+					largeur = s.nextInt();
+					hauteur = s.nextInt();
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					s.next();
+				}
 			} while (largeur < 5 || largeur > 26 || hauteur < 5 || hauteur > 26);
-			int obstacles;
+			int obstacles = -1;
 			do {
-				System.out
-						.println("\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)");
-				obstacles = s.nextInt();
-			} while (obstacles <= 0 && obstacles >= 50);
+				try {
+					System.out
+							.println("\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)");
+					obstacles = s.nextInt();
+				} catch (Exception e) {
+					System.out.println("Erreur de saisie");
+					s.next();
+				}
+			} while (!(obstacles > -1 && obstacles < 51));
 
 			p = new Plateau(largeur, hauteur, obstacles);
 			p.initObstacles();
@@ -212,8 +244,8 @@ public class Main extends Sauvegarde {
 				} else {
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
-								+ " a pos� une mine en "
-								+ p.posToString(choixCible));
+
+								+ " a pos� une mine");
 					} else {
 						System.out.println("Le robot " + robotChoisi.getId()
 								+ " a attaque le robot "
@@ -266,11 +298,11 @@ public class Main extends Sauvegarde {
 						}
 					} catch (Exception e) {
 						System.out.println("Erreur de saisie");
+						s.next();
 						saisieOk = false;
 					}
+
 				} while (!saisieOk);
-
-
 	
 			}
 		
