@@ -1,17 +1,24 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -19,66 +26,80 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class IHM {
 
 	protected int hauteurFenetre = 700;
 	protected int largeurFenetre = 900;
-	
 
+	private File currentFile = null;
+	private JTextArea historique;
+	private JFrame f;
+	
 	public IHM() {
-		JFrame f = new JFrame("VirtualWar");
+		f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
 		f.setMinimumSize(new Dimension(500, 400));
 		f.setJMenuBar(MenuBar());
-		
-		//Panel principale
+
+		// Panel principale
 		JPanel panelPrincipale = new JPanel();
-		
-		//Panel de gauche
+
+		// Panel de gauche
 		JScrollPane panelPlateau = new JScrollPane();
 		panelPlateau.setBorder(BorderFactory
 				.createTitledBorder("Plateau de Jeu"));
-		
-		//Panel de droite
+
+		// Panel de droite
 		JPanel panelInformation = new JPanel();
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				panelPlateau, panelInformation);
-		
-		//Panel d'information sur le robot
+
+		// Panel d'information sur le robot
 		JPanel panelRobot = new JPanel();
 		panelRobot.setBorder(BorderFactory.createTitledBorder("Robot"));
+		GridLayout gridLayoutRobot = new GridLayout(2, 1);
+		panelRobot.setLayout(gridLayoutRobot);
+		gridLayoutRobot.setVgap(10);
+
 		JProgressBar barDeVie = new JProgressBar();
-		barDeVie.setMaximum(10); //mettre ici la constante de vie max du robot
+		barDeVie.setForeground(Color.GREEN);
+		barDeVie.setBackground(Color.RED);
+		barDeVie.setMaximum(10); // mettre ici la constante de vie max du robot
 		barDeVie.setMinimum(0);
 		barDeVie.setBorderPainted(true);
 		barDeVie.setStringPainted(true);
 		barDeVie.setString("5/10"); // nombre de pv du robot / pv max du robot
-		barDeVie.setValue(5); //nombre de pv du robot
-		panelRobot.setLayout(new GridLayout(2,1));
+		barDeVie.setValue(5); // nombre de pv du robot
+
+		JLabel test = new JLabel("Hello");
+
 		panelRobot.add(barDeVie, BorderLayout.NORTH);
-		//panelRobot.add(null, BorderLayout.SOUTH);
-		
-		//Panel du choix d'action
+		panelRobot.add(test, BorderLayout.CENTER);
+
+		// Panel du choix d'action
 		JPanel panelAction = new JPanel();
 		panelAction.setBorder(BorderFactory.createTitledBorder("Action"));
 		JButton bouttonAttaquer = new JButton("Attaquer");
 		JButton bouttonMouvoir = new JButton("Mouvoir");
-		bouttonAttaquer.setPreferredSize(new Dimension(largeurFenetre / 9, hauteurFenetre / 10));
-		bouttonMouvoir.setPreferredSize(new Dimension(largeurFenetre / 9, hauteurFenetre / 10));
+		bouttonAttaquer.setPreferredSize(new Dimension(largeurFenetre / 9,
+				hauteurFenetre / 10));
+		bouttonMouvoir.setPreferredSize(new Dimension(largeurFenetre / 9,
+				hauteurFenetre / 10));
 		panelAction.add(bouttonAttaquer);
 		panelAction.add(bouttonMouvoir);
-		
-		//Panel historique
-		JTextArea display = new JTextArea();
-		display.setEditable(false);
-		JScrollPane panelHistorique = new JScrollPane(display);
+
+		// Panel historique
+		historique = new JTextArea();
+		historique.setEditable(false);
+		JScrollPane panelHistorique = new JScrollPane(historique);
 		panelHistorique.setBorder(BorderFactory
 				.createTitledBorder("Historique"));
 		panelHistorique
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		
-		//Le bordel pour tout disposer
+
+		// Le bordel pour tout disposer
 		panelPrincipale.setLayout(new GridLayout(1, 2));
 		panelInformation.setLayout(new GridLayout(3, 1));
 		splitPane.setDividerLocation((int) largeurFenetre * 70 / 100);
@@ -139,7 +160,21 @@ public class IHM {
 		menuOuvrir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// code pour ouvrir un fichier
+				JFileChooser fc = new JFileChooser();
+				File file = fc.getSelectedFile();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"Fichier de sauvegarde VirtualWar (.txt)", "txt",
+						"text");
+				fc.setFileFilter(filter);
+				File workingDirectory = new File(System.getProperty("user.dir")
+						+ "/save");
+				fc.setCurrentDirectory(workingDirectory);
+				int returnVal = fc.showOpenDialog(menuOuvrir);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					System.out.println("You chose to open this file: "
+							+ fc.getSelectedFile().getName());
+				}
+				currentFile = file;
 			}
 		});
 
@@ -168,6 +203,26 @@ public class IHM {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// code pour sauvegarder sous un fichier
+			}
+		});
+
+		// Build the item "plein ecran" in menu
+		Menu.addSeparator();
+		JMenuItem menuPleinEcran = new JMenuItem("Mode plein ecran");
+		menuPleinEcran.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
+				InputEvent.CTRL_DOWN_MASK));
+		GraphicsDevice device = GraphicsEnvironment
+				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		menuPleinEcran.getAccessibleContext().setAccessibleDescription(
+				"Ce bouton met je jeu en plein ecran");
+		Menu.add(menuPleinEcran);
+		menuPleinEcran.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					device.setFullScreenWindow(f);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Impossible de mettre le jeu en plein ecran", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
