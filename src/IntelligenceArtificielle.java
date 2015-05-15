@@ -1,6 +1,5 @@
 /**
- * @author Aurélien SVEVI
- * @author Nicolas MAUGER lol
+ * @author Les Quatre Cavaliers de l'Apocalypse
  */
 
 import java.util.ArrayList;
@@ -23,27 +22,29 @@ public class IntelligenceArtificielle {
 		this.equipe = equipe;
 		formation = choixFormation();
 		robots = creerRobots();
-		System.out.println(equipe);
 	}
 	
+	/**
+	 * Constructeur de l'IA durant un chargement de partie
+	 * @param p
+	 * @param equipe
+	 * @param formation
+	 */
+	public IntelligenceArtificielle(Plateau p, int equipe, String formation) {
+		this.plateau = p;
+		this.formation = formation;
+		this.equipe = equipe;
+		robots = creerRobots();
+	}
+	
+
 	/**
 	 * Méthode appelée pour générer le meilleur déplacement que l'IA a choisis de réaliser
 	 * @return Action (déplacement ou attaque)
 	 */
 	public Action Jouer(){
 		Robot r = choixRobotJoue();
-		if(r instanceof Char){
-			System.out.println('C');
-		}
-		
-		if(r instanceof Tireur){
-			System.out.println('T');
-		}
-		
-		if(r instanceof Piegeur){
-			System.out.println('P');
-		}
-		
+
 		String action = choixAction(r);
 		if(action == "Deplacement"){
 			try {
@@ -88,6 +89,7 @@ public class IntelligenceArtificielle {
 		for(Robot r : robots){
 			if(attribuerPoints(r) > attribuerPoints(robTemp)){
 				robTemp = r;
+				System.out.println(robTemp);
 			}
 		}
 		return robTemp;
@@ -171,7 +173,7 @@ public class IntelligenceArtificielle {
 				posTemp2 = plateau.getCarte().get(strTemp2);
 				
 				if(posTemp != null && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe())){
-					if(posTemp.estObstacle() && posTemp.estRobot()){
+					if(posTemp.estObstacle() && posTemp.estRobot() && (posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
 						Position temp = new Position(posTemp.getX() - 1,posTemp.getY());
 						String tempStr = plateau.posToString(temp);
 						temp = plateau.getCarte().get(tempStr);
@@ -179,13 +181,13 @@ public class IntelligenceArtificielle {
 							depPossible.add(posTemp);
 						}
 					}
-					else if (!posTemp.estObstacle() && !posTemp.estRobot()){
+					else if (!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
 						depPossible.add(posTemp);
 					}
 				}
 				
 				if(posTemp2 != null && (!posTemp2.estBase() && posTemp2.getEquipe() != robot.getEquipe())){
-					if(posTemp2.estObstacle() && posTemp2.estRobot()){
+					if(posTemp2.estObstacle() && posTemp2.estRobot() && (posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
 						Position temp = new Position(posTemp2.getX() - 1,posTemp2.getY());
 						String tempStr = plateau.posToString(temp);
 						temp = plateau.getCarte().get(tempStr);
@@ -193,7 +195,7 @@ public class IntelligenceArtificielle {
 							depPossible.add(posTemp2);
 						}
 					}
-					else if (!posTemp2.estObstacle() && !posTemp2.estRobot()){
+					else if (!posTemp2.estObstacle() && !posTemp2.estRobot() && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
 						depPossible.add(posTemp2);
 					}
 				}
@@ -228,7 +230,7 @@ public class IntelligenceArtificielle {
 					posTemp = new Position(robot.getPosition().getX() + i,robot.getPosition().getY()+j);
 					strTemp = plateau.posToString(posTemp);
 					posTemp = plateau.getCarte().get(strTemp);
-					if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe())){
+					if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe()) && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
 						depPossible.add(posTemp);
 					}
 				}
@@ -267,7 +269,8 @@ public class IntelligenceArtificielle {
 	 * @return int
 	 */
 	public int distancePosition(Position p, Position cible){
-		return Math.abs(cible.getX() - p.getX()) + Math.abs(cible.getY() - p.getY());
+		System.out.println(plateau.posToString(p) + " _ " + plateau.posToString(cible) + " : "+(int)Math.pow(Math.pow((double)cible.getX()-p.getX(),2) + Math.pow((double)cible.getY()-p.getY(),2),0.5));
+		return (int)Math.pow(Math.pow((double)cible.getX()-p.getX(),2) + Math.pow((double)cible.getY()-p.getY(),2),0.5); //racine((xb-xa)² + (yb-ya)²) : distance entre 2 points
 	}
 	
 	
@@ -318,7 +321,7 @@ public class IntelligenceArtificielle {
 		for (int i = -portee; i <= portee; i++) {
 			strTemp = plateau.posToString(new Position(PositionX + portee, PositionY));
 			posTemp = plateau.getCarte().get(strTemp);
-			if(posTemp != null && posTemp.getRobot() != null){
+			if(posTemp != null && posTemp.getRobot() != null && posTemp.getRobot().getEquipe() != robot.getEquipe()){
 				robotsPortee.add(posTemp.getRobot());
 			}
 		}
@@ -350,8 +353,8 @@ public class IntelligenceArtificielle {
 	 */
 	public Position robotPlusPres(Robot r){
 		Position pos = r.getPosition();
-		for(int i = -distanceBord(r)[0] ; i<= distanceBord(r)[0]; i++){
-			for (int j = -distanceBord(r)[1]; j <= distanceBord(r)[1]; j++) {
+		for(int i =0 ; i<= distanceBord(r)[0]; i++){
+			for (int j = 0; j <= distanceBord(r)[1]; j++) {
 				if(pos.getX() + i > 0  && pos.getX() + i < plateau.getLargeur() && pos.getY() + j > 0  && pos.getY() + j < plateau.getHauteur()){
 					Position temp = new Position(pos.getX()+i, pos.getY()+j);
 					String coordonnee = plateau.posToString(temp);
@@ -365,6 +368,7 @@ public class IntelligenceArtificielle {
 						return temp;
 					}
 				}
+				
 			}
 		}
 		return baseAdverse();
@@ -432,9 +436,8 @@ public class IntelligenceArtificielle {
 		List<Robot> r = new ArrayList<Robot>();
 		char c;
 		int compt;
-		int position = 0;
 		for(int i = 0;i<3;i++){
-			c = formation.charAt(position);
+			c = formation.charAt(i);
 			compt = (int)c -48; //car le chiffre 1 en ascii est codé par 48
 			for(int j = 0; j<compt;j++){
 
@@ -447,9 +450,7 @@ public class IntelligenceArtificielle {
 				else if(i == 2){
 					r.add(new Char(equipe));
 				}
-			}
-			position += compt + 1;
-			
+			}		
 		}
 		return r;
 	}
@@ -463,7 +464,6 @@ public class IntelligenceArtificielle {
 		int robotRestant = 5;
 		int nbrRobots;
 		String formationChoisis = "";
-		char[] typeFormation = new char[] { 'a', 'd', 'e' };
 		Random r = new Random();
 
 		for (int i = 0; i < 3; i++) {
@@ -474,9 +474,6 @@ public class IntelligenceArtificielle {
 			}
 			robotRestant -= nbrRobots;
 			formationChoisis += nbrRobots;
-			for (int j = 0; j < nbrRobots; j++) {
-				formationChoisis += typeFormation[r.nextInt(3)];
-			}
 		}
 
 		return formationChoisis;

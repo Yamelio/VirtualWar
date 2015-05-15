@@ -17,6 +17,9 @@ public class Main {
 	private static List<Action> actions;
 	private static Plateau p;
 	private static List<Robot> robotsInit;
+	private static String nbrIA = "0";
+	private static IntelligenceArtificielle IA1 = null;
+	private static IntelligenceArtificielle IA2 = null;
 
 	/**
 	 * C'est le main
@@ -25,9 +28,7 @@ public class Main {
 		Random r = new Random();
 		actions = new ArrayList<Action>();
 		Scanner s = new Scanner(System.in);
-		IntelligenceArtificielle IA1 = null;
-		IntelligenceArtificielle IA2 = null;
-		String nbrIA = "0";
+
 		boolean joueur = r.nextBoolean(); // J1=true, J2=false
 		Robot robotChoisi = null;
 		Position choixCible = null;
@@ -124,7 +125,6 @@ public class Main {
 			}
 			
 
-
 			int largeur = 0;
 			int hauteur = 0;
 
@@ -174,36 +174,8 @@ public class Main {
 			}
 			
 			
-			if(nbrIA.equals("1")){
-				IA1 = new IntelligenceArtificielle(p, 1);
-				IA2 = null;
-				
-				for(Robot rob : IA1.getRobots()){
-					p.ajouterListeRobot(rob);
-				}
-				
-			}
+			initIA(nbrIA);
 			
-			else if(nbrIA.equals("2")){
-				IA1 = new IntelligenceArtificielle(p, 0);
-				IA2 = new IntelligenceArtificielle(p, 1);
-				
-				for(Robot rob : IA1.getRobots()){
-					p.ajouterListeRobot(rob);
-				}
-				
-				for(Robot rob : IA2.getRobots()){
-					p.ajouterListeRobot(rob);
-				}
-			}
-			
-			else{
-				IA1 = null;
-				IA2 = null;
-			}
-			
-			
-
 
 		}
 		robotsInit = new ArrayList<Robot>(p.getListeRobot());
@@ -233,6 +205,8 @@ public class Main {
 				System.out.println(vueJ1);
 			} else if(!joueur && nbrIA.equals("0")){
 				System.out.println(vueJ2);
+			} else if(nbrIA.equals("2")){
+				System.out.println(p);
 			}
 			p.afficherRobotsJ1();
 			p.afficherRobotsJ2();
@@ -319,6 +293,11 @@ public class Main {
 				actions.add(act);
 				robotChoisi = act.getRobot();
 				choixCible = act.getCible();
+				try {
+				    Thread.sleep(2000);                 
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
 			}
 			
 			if(nbrIA.equals("2") && joueurCourant == "J2"){
@@ -326,6 +305,11 @@ public class Main {
 				actions.add(act);
 				robotChoisi = act.getRobot();
 				choixCible = act.getCible();
+				try {
+				    Thread.sleep(2000);                 
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
 			}
 			
 			
@@ -407,21 +391,37 @@ public class Main {
 			s.write(p.getLargeur() + " " + p.getHauteur() + " "
 					+ p.getPercentObstacle() + " ");
 
+			
 			int cptJ1 = 0;
 			int cptJ2 = 0;
 			for (Robot r : robotsInit) {
-				if (r.getEquipe() == 0) {
+				if (r.getEquipe() == 0 && (nbrIA.equals("0") || nbrIA.equals("1"))) {
 					cptJ1++;
-				} else {
+				} else if(r.getEquipe() == 1 && nbrIA.equals("0")){
 					cptJ2++;
 				}
 			}
 
 			s.write(cptJ1 + " " + cptJ2 + " ");
+			s.write(nbrIA + " ");
+
 
 			for (Robot r : robotsInit) {
-				s.write(r + " ");
+				if (r.getEquipe() == 0 && (nbrIA.equals("0") || nbrIA.equals("1")) || (r.getEquipe() == 1 && nbrIA.equals("0"))) {
+					s.write(r + " ");
+				}
 			}
+			
+			if(nbrIA.equals("1") || nbrIA.equals("2")){
+				s.write(IA1.getFormation() + " ");
+			}
+			
+			if(nbrIA.equals("2")){
+				s.write(IA2.getFormation() + " ");
+			}	
+			
+			
+			
 			for (int i = 1; i <= p.getLargeur(); i++) {
 				for (int k = 1; k <= p.getHauteur(); k++) {
 					if (p.getCarte().get(p.posToString(new Position(i, k)))
@@ -454,30 +454,50 @@ public class Main {
 			int nbRobotsJ1 = s.nextInt();
 			int nbRobotsJ2 = s.nextInt();
 
-			p = new Plateau(largeur, hauteur, obstacles);
-
-			for (int i = 0; i < nbRobotsJ1; i++) {
-				char tmp = s.next().charAt(0);
-				if (tmp == 'C') {
-					p.ajouterListeRobot(new Char(0));
-				} else if (tmp == 'T') {
-					p.ajouterListeRobot(new Tireur(0));
-
-				} else {
-					p.ajouterListeRobot(new Piegeur(0));
+			
+			p = new Plateau(largeur, hauteur, obstacles);	
+			nbrIA =Integer.toString(s.nextInt());
+			
+			if(nbrIA.equals("0") || nbrIA.equals("1")){
+				for (int i = 0; i < nbRobotsJ1; i++) {
+					char tmp = s.next().charAt(0);
+					if (tmp == 'C') {
+						p.ajouterListeRobot(new Char(0));
+					} else if (tmp == 'T') {
+						p.ajouterListeRobot(new Tireur(0));
+	
+					} else {
+						p.ajouterListeRobot(new Piegeur(0));
+					}
 				}
 			}
-			for (int i = 0; i < nbRobotsJ2; i++) {
-				char tmp = s.next().charAt(0);
-				if (tmp == 'C') {
-					p.ajouterListeRobot(new Char(1));
-				} else if (tmp == 'T') {
-					p.ajouterListeRobot(new Tireur(1));
-
-				} else {
-					p.ajouterListeRobot(new Piegeur(1));
+			
+			if(nbrIA.equals("0")){
+				for (int i = 0; i < nbRobotsJ2; i++) {
+					char tmp = s.next().charAt(0);
+					if (tmp == 'C') {
+						p.ajouterListeRobot(new Char(1));
+					} else if (tmp == 'T') {
+						p.ajouterListeRobot(new Tireur(1));
+	
+					} else {
+						p.ajouterListeRobot(new Piegeur(1));
+					}
 				}
 			}
+			
+
+			if(nbrIA.equals("1")){
+				String form1 = Integer.toString(s.nextInt());
+				initIA(nbrIA,form1,null);
+			}
+			if(nbrIA.equals("2")){
+				String form1 = Integer.toString(s.nextInt());
+				String form2 = Integer.toString(s.nextInt());
+				initIA(nbrIA,form1,form2);
+			}
+			
+			
 
 			// int nbObstacle = (int) ((largeur * hauteur) * (obstacles /
 			// 100.0));
@@ -522,6 +542,66 @@ public class Main {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static void initIA(String nbrIA, String form1, String form2){
+		if(nbrIA.equals("1")){
+			IA1 = new IntelligenceArtificielle(p, 1,form1);
+			IA2 = null;
+			
+			for(Robot rob : IA1.getRobots()){
+				p.ajouterListeRobot(rob);
+			}
+			
+		}
+		
+		else if(nbrIA.equals("2")){
+			IA1 = new IntelligenceArtificielle(p, 0, form1);
+			IA2 = new IntelligenceArtificielle(p, 1, form2);
+			
+			for(Robot rob : IA1.getRobots()){
+				p.ajouterListeRobot(rob);
+			}
+			
+			for(Robot rob : IA2.getRobots()){
+				p.ajouterListeRobot(rob);
+			}
+		}
+		
+		else{
+			IA1 = null;
+			IA2 = null;
+		}
+	}
+	
+	public static void initIA(String nbrIA){
+		if(nbrIA.equals("1")){
+			IA1 = new IntelligenceArtificielle(p, 1);
+			IA2 = null;
+			
+			for(Robot rob : IA1.getRobots()){
+				p.ajouterListeRobot(rob);
+			}
+			
+		}
+		
+		else if(nbrIA.equals("2")){
+			IA1 = new IntelligenceArtificielle(p, 0);
+			IA2 = new IntelligenceArtificielle(p, 1);
+			
+			for(Robot rob : IA1.getRobots()){
+				p.ajouterListeRobot(rob);
+			}
+			
+			for(Robot rob : IA2.getRobots()){
+				p.ajouterListeRobot(rob);
+			}
+		}
+		
+		else{
+			IA1 = null;
+			IA2 = null;
 		}
 	}
 	
