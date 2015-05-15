@@ -342,17 +342,29 @@ public class Attaque extends Action {
 		Position tmp;
 		if (cible.getX() == this.getRobot().getPosition().getX()) {
 			if (cible.getY() < this.getRobot().getPosition().getY()) {
-				for (int v = this.getRobot().getPosition().getY() + 1; v < cible
-						.getY(); v++) {
+				for (int v = this.getRobot().getPosition().getY() - 1; v > cible
+						.getY(); v--) {
 					tmp = new Position(this.getRobot().getPosition().getX(), v);
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
 				}
 			} else {
-				for (int v = this.getRobot().getPosition().getY() - 1; v > cible
-						.getY(); v--) {
+				for (int v = this.getRobot().getPosition().getY() + 1; v < cible
+						.getY(); v++) {
 					tmp = new Position(this.getRobot().getPosition().getX(), v);
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
@@ -360,26 +372,34 @@ public class Attaque extends Action {
 			}
 		} else if (cible.getY() == this.getRobot().getPosition().getY()) {
 			if (cible.getX() < this.getRobot().getPosition().getX()) {
-				for (int v = this.getRobot().getPosition().getX() + 1; v < cible
-						.getX(); v++) {
-					tmp = new Position(v, this.getRobot().getPosition().getX());
+				for (int v = this.getRobot().getPosition().getX() - 1; v > cible
+						.getX(); v--) {
+					tmp = new Position(v, this.getRobot().getPosition().getY());
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
 				}
 			} else {
-				for (int v = this.getRobot().getPosition().getX() - 1; v > cible
-						.getX(); v--) {
-					tmp = new Position(v, this.getRobot().getPosition().getX());
+				for (int v = this.getRobot().getPosition().getX() + 1; v < cible
+						.getX(); v++) {
+					tmp = new Position(v, this.getRobot().getPosition().getY());
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
 				}
 			}
-		}
-		if (cible.getX() != this.getRobot().getPosition().getX()
-				&& cible.getY() == this.getRobot().getPosition().getY()) {
-			return false;
 		}
 		return true;
 	}
