@@ -269,7 +269,6 @@ public class IntelligenceArtificielle {
 	 * @return int
 	 */
 	public int distancePosition(Position p, Position cible){
-		System.out.println(plateau.posToString(p) + " _ " + plateau.posToString(cible) + " : "+(int)Math.pow(Math.pow((double)cible.getX()-p.getX(),2) + Math.pow((double)cible.getY()-p.getY(),2),0.5));
 		return (int)Math.pow(Math.pow((double)cible.getX()-p.getX(),2) + Math.pow((double)cible.getY()-p.getY(),2),0.5); //racine((xb-xa)² + (yb-ya)²) : distance entre 2 points
 	}
 	
