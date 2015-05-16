@@ -286,8 +286,9 @@ public class Main {
 					actions.add(act);
 					robotChoisi = act.getRobot();
 					choixCible = act.getCible();
-					robotCible = robotsInit.get(choixCible
-							.getRobot().getId());
+					if(act instanceof Attaque && !(robotChoisi instanceof Piegeur)){
+						robotCible = robotsInit.get(choixCible.getRobot().getId());
+					}
 				}
 
 				if (nbrIA.equals("2") && joueurCourant == "J1") {
@@ -295,7 +296,9 @@ public class Main {
 					actions.add(act);
 					robotChoisi = act.getRobot();
 					choixCible = act.getCible();
-					robotCible = robotsInit.get(choixCible.getRobot().getId());
+					if(act instanceof Attaque && !(robotChoisi instanceof Piegeur)){
+						robotCible = robotsInit.get(choixCible.getRobot().getId());
+					}
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException ex) {
@@ -308,8 +311,9 @@ public class Main {
 					actions.add(act);
 					robotChoisi = act.getRobot();
 					choixCible = act.getCible();
-					robotCible = robotsInit.get(choixCible
-							.getRobot().getId());
+					if(act instanceof Attaque && !(robotChoisi instanceof Piegeur)){
+						robotCible = robotsInit.get(choixCible.getRobot().getId());
+					}
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException ex) {
@@ -365,8 +369,7 @@ public class Main {
 					aliveJ2++;
 				}
 			} else {
-				toRemove.add(Position.getPlateau().getListeRobot()
-						.get(r.getId()));
+				toRemove.add(r);
 			}
 		}
 

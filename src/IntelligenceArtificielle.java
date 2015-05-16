@@ -47,7 +47,6 @@ public class IntelligenceArtificielle {
 		String action = choixAction(r);
 		if(action == "Deplacement"){
 			try {
-				System.out.println(r);
 				return new Deplacement(r, choixCibleDeplacement(r));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -173,42 +172,34 @@ public class IntelligenceArtificielle {
 				strTemp2 = plateau.posToString(posTemp2);
 				posTemp = plateau.getCarte().get(strTemp);
 				posTemp2 = plateau.getCarte().get(strTemp2);
+				int decalage;
+				
+				if(i == -2){
+					decalage = -1;
+				}
+				else{
+					decalage = 1;
+				}
+				
 				
 				if(posTemp != null){
-					Position temp = new Position(posTemp.getX()+(i/2),posTemp.getY());
+					Position temp = new Position(posTemp.getX()-decalage,posTemp.getY());
 					String tempStr = plateau.posToString(temp);
 					temp = plateau.getCarte().get(tempStr);
-					if(temp != null && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe())&& !temp.estObstacle() && !temp.estRobot()){
-						if(posTemp.estObstacle() && posTemp.estRobot() && (posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
-	
-							if(!temp.estObstacle() && !temp.estRobot()){
-								depPossible.add(posTemp);
-							}
-						}
-						else if (!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
+					if(!temp.estObstacle() && !temp.estRobot()){
 							depPossible.add(posTemp);
 						}
 					}
-				}
 				
 				if(posTemp2 != null){
-					Position temp = new Position(posTemp2.getX() ,posTemp2.getY()+(i/2));
+					Position temp = new Position(posTemp2.getX() ,posTemp2.getY()-decalage);
 					String tempStr = plateau.posToString(temp);
 					temp = plateau.getCarte().get(tempStr);
-					if(temp != null && (!posTemp2.estBase() && posTemp2.getEquipe() != robot.getEquipe()) && !temp.estObstacle() && ! temp.estRobot()){
-						if(posTemp2.estObstacle() && posTemp2.estRobot() && (posTemp2.estMine() && posTemp2.getEquipe() != robot.getEquipe())){
-							if(!temp.estObstacle() && !temp.estRobot()){
-								depPossible.add(posTemp2);
-							}
-						}
-						else if (!posTemp2.estObstacle() && !posTemp2.estRobot() && (!posTemp2.estMine() && posTemp2.getEquipe() != robot.getEquipe())){
+					if(!temp.estObstacle() && !temp.estRobot()){
 							depPossible.add(posTemp2);
 						}
-					}
+					}	
 				}
-			
-		
-			}
 			Position depPlusProche;
 
 			try {
