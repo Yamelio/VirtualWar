@@ -1,3 +1,10 @@
+/**
+ * 
+ * @author Les Quatre Cavaliers de l'Apocalypse
+ * Cette classe représente un objet vue définit par son plateau et son équipe
+ *
+ */
+
 public class Vue {
 
 	private Plateau plateau;

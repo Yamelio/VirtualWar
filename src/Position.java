@@ -10,7 +10,7 @@ public class Position {
 	/** L'ordonnée de la position */
 	private int y;
 
-	/* L'équipe d'une position, si cette case est une base ou une mine */
+	/** L'équipe d'une position, si cette case est une base ou une mine */
 	private int equipe = 2;
 
 	/** Si la position est une base */

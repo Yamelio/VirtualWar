@@ -1,5 +1,18 @@
-public class Attaque extends Action {
+/**
+ * 
+ * @author Les Quatre Cavaliers de l'Apocalypse et leur Majordome
+ *
+ * Cette classe représente un objet Attaque définit par son robot et sa cible
+ */
 
+public class Attaque extends Action {
+	/**
+	 * Construit un objet Attaque à partir d'un robot et de sa cible 
+	 * tout en vérifiant les contraintes de portée et d'énergie
+	 * @param robot le robot qui attaque
+	 * @param cible la cible de cette attaque
+	 * @throws Erreur si une attaque est invalide
+	 */
 	public Attaque(Robot robot, Position cible) throws Erreur {
 		super(robot, cible);
 		this.cible = Position.getPlateau().getCarte()
@@ -336,7 +349,7 @@ public class Attaque extends Action {
 	/**
 	 * verifie si il y a un obstacle sur la trajectoire du tir
 	 * 
-	 * @return
+	 * @return vrai si il n'y a pas d'obstacle faux si non
 	 */
 	public boolean tireSansEntrave() {
 		Position tmp;
@@ -404,6 +417,10 @@ public class Attaque extends Action {
 		return true;
 	}
 
+	/**
+	 * Retourne la cible de l'attaque
+	 * @return la cible de l'attaque
+	 */
 	public Position getCible() {
 		return this.cible;
 	}
