@@ -216,14 +216,16 @@ public class Main {
 					System.out.println("Le robot " + robotChoisi.getId()
 							+ " s'est deplace en " + p.posToString(choixCible));
 				} else {
+
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
 
 								+ " a pos� une mine");
 					} else {
+						int IdRobot = p.getCarte().get(p.posToString(choixCible)).getRobot().getId();
 						System.out.println("Le robot " + robotChoisi.getId()
 								+ " a attaque le robot "
-								+ choixCible.getRobot().getId());
+								+ IdRobot);
 					}
 				}
 			}
