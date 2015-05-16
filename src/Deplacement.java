@@ -5,9 +5,6 @@
  */
 
 public class Deplacement extends Action {
-
-	/** La cible du déplacement */
-
 	/**
 	 * 
 	 * Constructeur de la classe Deplacement
@@ -53,7 +50,10 @@ public class Deplacement extends Action {
 		}
 
 	}
-
+	/**
+	 * Retourne la cible du déplacement
+	 * @return la cible du déplacement
+	 */
 	public Position getCible() {
 		return this.cible;
 	}
@@ -77,6 +77,10 @@ public class Deplacement extends Action {
 		return false;
 	}
 
+	/**
+	 * Fonction qui vérifie si un robot est au moins en dehors de sa base
+	 * @return vrai si oui, faux si non
+	 */
 	private boolean checkTotalRobots() {
 		if (this.cible.estBase()) {
 			int equipe = this.getRobot().getEquipe();
@@ -137,7 +141,7 @@ public class Deplacement extends Action {
 	 * Fonction qui vérifie si la cible est une mine et enlève l'énergie en
 	 * conséquant
 	 * 
-	 * @return
+	 * @return vrai si oui, faux si non
 	 */
 	public boolean checkMine(Position p) {
 		if (!p.estMine()) {
@@ -151,10 +155,17 @@ public class Deplacement extends Action {
 		}
 	}
 
+	/**
+	 * Fonction qui vérifie si la cible est un occupée
+	 * @return vrai si non, faux si oui
+	 */
 	public boolean checkObstacle() {
 		return !(cible.estRobot() || cible.estObstacle());
 	}
 
+	/**
+	 * Fonction qui déplace le robot
+	 */
 	public void deplacerRobot() {
 
 		if (this.getRobot() instanceof Tireur) {
@@ -178,6 +189,10 @@ public class Deplacement extends Action {
 				+ " " + 0 + " " + Position.getPlateau().posToString(cible);
 	}
 
+	/**
+	 * Fonction qui vérifie si un char n'as pas d'obstacle le long du trajet
+	 * @return vrai si oui, faux si non
+	 */
 	public boolean charPeutDeplacer() {
 		boolean chgtCible = cible.estObstacle() || cible.estRobot();
 		Position tmp = null;

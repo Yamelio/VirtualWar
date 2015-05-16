@@ -1,5 +1,23 @@
-public class Attaque extends Action {
+/**
+ * 
+ * @author Les Quatre Cavaliers de l'Apocalypse et leur Majordome
+ *
+ *         Cette classe représente un objet Attaque définit par son robot et sa
+ *         cible
+ */
 
+public class Attaque extends Action {
+	/**
+	 * Construit un objet Attaque à partir d'un robot et de sa cible tout en
+	 * vérifiant les contraintes de portée et d'énergie
+	 * 
+	 * @param robot
+	 *            le robot qui attaque
+	 * @param cible
+	 *            la cible de cette attaque
+	 * @throws Erreur
+	 *             si une attaque est invalide
+	 */
 	public Attaque(Robot robot, Position cible) throws Erreur {
 		super(robot, cible);
 		this.cible = Position.getPlateau().getCarte()
@@ -25,23 +43,10 @@ public class Attaque extends Action {
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsTireur());
 						}
 					} else if (cible.getX() > this.getRobot().getPosition()
 							.getX()) {
@@ -51,23 +56,10 @@ public class Attaque extends Action {
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsTireur());
 						}
 					}
 				} else if (this.getRobot().getPosition().getX() == cible.getX()) {
@@ -78,23 +70,9 @@ public class Attaque extends Action {
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsTireur());
 						}
 					} else if (cible.getY() > this.getRobot().getPosition()
 							.getY()) {
@@ -104,23 +82,9 @@ public class Attaque extends Action {
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirTireur());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsTireur());
 						}
 					}
 				}
@@ -130,27 +94,13 @@ public class Attaque extends Action {
 						if ((this.getRobot().getPosition().getX()
 								- cible.getX() <= Constantes.getPorteeChar())
 								&& tireSansEntrave()) {
-							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirChar());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsChar());
 						}
 					} else if (cible.getX() > this.getRobot().getPosition()
 							.getX()) {
@@ -160,23 +110,10 @@ public class Attaque extends Action {
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirChar());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsChar());
 						}
 					}
 				} else if (this.getRobot().getPosition().getX() == cible.getX()) {
@@ -184,27 +121,12 @@ public class Attaque extends Action {
 						if ((this.getRobot().getPosition().getY()
 								- cible.getY() <= Constantes.getPorteeChar())
 								&& tireSansEntrave()) {
-							this.cible = cible;
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirChar());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsChar());
 						}
 					} else if (cible.getY() > this.getRobot().getPosition()
 							.getY()) {
@@ -214,23 +136,9 @@ public class Attaque extends Action {
 							this.getRobot().setEnergie(
 									this.getRobot().getEnergie()
 											- Constantes.getCoutTirChar());
-							if (this.cible.getRobot() instanceof Tireur) {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsTireur());
-							} else if (this.cible.getRobot() instanceof Piegeur) {
-								this.cible
-										.getRobot()
-										.setEnergie(
-												this.cible.getRobot()
-														.getEnergie()
-														- Constantes
-																.getDegatsPiegeur());
-							} else {
-								this.cible.getRobot().setEnergie(
-										this.cible.getRobot().getEnergie()
-												- Constantes.getDegatsChar());
-							}
+							this.cible.getRobot().setEnergie(
+									this.cible.getRobot().getEnergie()
+											- Constantes.getDegatsChar());
 						}
 					}
 				}
@@ -336,23 +244,35 @@ public class Attaque extends Action {
 	/**
 	 * verifie si il y a un obstacle sur la trajectoire du tir
 	 * 
-	 * @return
+	 * @return vrai si il n'y a pas d'obstacle faux si non
 	 */
 	public boolean tireSansEntrave() {
 		Position tmp;
 		if (cible.getX() == this.getRobot().getPosition().getX()) {
 			if (cible.getY() < this.getRobot().getPosition().getY()) {
-				for (int v = this.getRobot().getPosition().getY() + 1; v < cible
-						.getY(); v++) {
+				for (int v = this.getRobot().getPosition().getY() - 1; v > cible
+						.getY(); v--) {
 					tmp = new Position(this.getRobot().getPosition().getX(), v);
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
 				}
 			} else {
-				for (int v = this.getRobot().getPosition().getY() - 1; v > cible
-						.getY(); v--) {
+				for (int v = this.getRobot().getPosition().getY() + 1; v < cible
+						.getY(); v++) {
 					tmp = new Position(this.getRobot().getPosition().getX(), v);
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
@@ -360,30 +280,43 @@ public class Attaque extends Action {
 			}
 		} else if (cible.getY() == this.getRobot().getPosition().getY()) {
 			if (cible.getX() < this.getRobot().getPosition().getX()) {
-				for (int v = this.getRobot().getPosition().getX() + 1; v < cible
-						.getX(); v++) {
-					tmp = new Position(v, this.getRobot().getPosition().getX());
+				for (int v = this.getRobot().getPosition().getX() - 1; v > cible
+						.getX(); v--) {
+					tmp = new Position(v, this.getRobot().getPosition().getY());
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
 				}
 			} else {
-				for (int v = this.getRobot().getPosition().getX() - 1; v > cible
-						.getX(); v--) {
-					tmp = new Position(v, this.getRobot().getPosition().getX());
+				for (int v = this.getRobot().getPosition().getX() + 1; v < cible
+						.getX(); v++) {
+					tmp = new Position(v, this.getRobot().getPosition().getY());
+					tmp = Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(tmp.getX(), tmp.getY())));
+
 					if (tmp.estRobot() || tmp.estBase() || tmp.estObstacle()) {
 						return false;
 					}
 				}
 			}
 		}
-		if (cible.getX() != this.getRobot().getPosition().getX()
-				&& cible.getY() == this.getRobot().getPosition().getY()) {
-			return false;
-		}
 		return true;
 	}
 
+	/**
+	 * Retourne la cible de l'attaque
+	 * 
+	 * @return la cible de l'attaque
+	 */
 	public Position getCible() {
 		return this.cible;
 	}

@@ -1,6 +1,14 @@
+/**
+ * 
+ * @author Nicolas Mauger
+ * Cette classe représente un objet Base définit par sa position et son équipe
+ */
+
 import java.util.ArrayList;
 
 public class Base extends Position {
+	
+	/** La liste des robots présents en base */
 	private ArrayList<Robot> robots;
 
 	/**
@@ -53,7 +61,11 @@ public class Base extends Position {
 			robots.remove(t);
 		}
 	}
-
+	
+	/**
+	 * Retourne la liste des robots présents en base
+	 * @return la liste des robots présents en base
+	 */
 	public ArrayList<Robot> getRobotsInBase() {
 		return robots;
 	}
