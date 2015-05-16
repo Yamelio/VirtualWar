@@ -44,10 +44,10 @@ public class IntelligenceArtificielle {
 	 */
 	public Action Jouer(){
 		Robot r = choixRobotJoue();
-
 		String action = choixAction(r);
 		if(action == "Deplacement"){
 			try {
+				System.out.println(r);
 				return new Deplacement(r, choixCibleDeplacement(r));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -89,7 +89,6 @@ public class IntelligenceArtificielle {
 		for(Robot r : robots){
 			if(attribuerPoints(r) > attribuerPoints(robTemp)){
 				robTemp = r;
-				System.out.println(robTemp);
 			}
 		}
 		return robTemp;
@@ -98,7 +97,7 @@ public class IntelligenceArtificielle {
 	
 	
 	/**
-	 * fonction attribuant des points à un robot par raapoort à son positionnement et son énergie afin de trouver le meilleur robot à jouer
+	 * fonction attribuant des points à un robot par rapport à son positionnement et son énergie afin de trouver le meilleur robot à jouer
 	 * @param Robot
 	 * @return points
 	 */
@@ -111,12 +110,16 @@ public class IntelligenceArtificielle {
 			points += 200;
 		}
 		
-		if(robotAPortee(r) != null){
-			points += 150;
+		if(r instanceof Piegeur){
+			points -= 20;
 		}
 		
 		if(choixCibleDeplacement(r) == null){
 			points = 0;
+		}
+		
+		if(robotAPortee(r) != null && r.getEnergie()>=constantes.getCoutAttaque(r)){
+			points += 300;
 		}
 			
 		return points;
@@ -134,12 +137,11 @@ public class IntelligenceArtificielle {
 			return "Deplacement";
 		}
 		
-		else if(robotAPortee(robot) != null && constantes.getCoutAttaque(robot) >= robot.getEnergie()){
+		else if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie() >= constantes.getCoutMine() && distancePosition(robot.getPosition(), robotPlusPres(robot))<= 5 && distanceBase(robot)>= 2){ 
 			return "Attaque";
 		}
 		
-		else if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie() > constantes.getCoutMine() && distancePosition(robot.getPosition(), robotPlusPres(robot))<= 5){ 
-			System.out.println(distancePosition(robot.getPosition(), robotPlusPres(robot)));
+		else if(robotAPortee(robot) != null && constantes.getCoutAttaque(robot) <= robot.getEnergie()){
 			return "Attaque";
 		}
 		
@@ -172,31 +174,36 @@ public class IntelligenceArtificielle {
 				posTemp = plateau.getCarte().get(strTemp);
 				posTemp2 = plateau.getCarte().get(strTemp2);
 				
-				if(posTemp != null && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe())){
-					if(posTemp.estObstacle() && posTemp.estRobot() && (posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
-						Position temp = new Position(posTemp.getX() - 1,posTemp.getY());
-						String tempStr = plateau.posToString(temp);
-						temp = plateau.getCarte().get(tempStr);
-						if(!temp.estObstacle() && !temp.estRobot()){
+				if(posTemp != null){
+					Position temp = new Position(posTemp.getX()+(i/2),posTemp.getY());
+					String tempStr = plateau.posToString(temp);
+					temp = plateau.getCarte().get(tempStr);
+					if(temp != null && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe())&& !temp.estObstacle() && !temp.estRobot()){
+						if(posTemp.estObstacle() && posTemp.estRobot() && (posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
+	
+							if(!temp.estObstacle() && !temp.estRobot()){
+								depPossible.add(posTemp);
+							}
+						}
+						else if (!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
 							depPossible.add(posTemp);
 						}
 					}
-					else if (!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
-						depPossible.add(posTemp);
-					}
 				}
 				
-				if(posTemp2 != null && (!posTemp2.estBase() && posTemp2.getEquipe() != robot.getEquipe())){
-					if(posTemp2.estObstacle() && posTemp2.estRobot() && (posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
-						Position temp = new Position(posTemp2.getX() - 1,posTemp2.getY());
-						String tempStr = plateau.posToString(temp);
-						temp = plateau.getCarte().get(tempStr);
-						if(!temp.estObstacle() && !temp.estRobot()){
+				if(posTemp2 != null){
+					Position temp = new Position(posTemp2.getX() ,posTemp2.getY()+(i/2));
+					String tempStr = plateau.posToString(temp);
+					temp = plateau.getCarte().get(tempStr);
+					if(temp != null && (!posTemp2.estBase() && posTemp2.getEquipe() != robot.getEquipe()) && !temp.estObstacle() && ! temp.estRobot()){
+						if(posTemp2.estObstacle() && posTemp2.estRobot() && (posTemp2.estMine() && posTemp2.getEquipe() != robot.getEquipe())){
+							if(!temp.estObstacle() && !temp.estRobot()){
+								depPossible.add(posTemp2);
+							}
+						}
+						else if (!posTemp2.estObstacle() && !posTemp2.estRobot() && (!posTemp2.estMine() && posTemp2.getEquipe() != robot.getEquipe())){
 							depPossible.add(posTemp2);
 						}
-					}
-					else if (!posTemp2.estObstacle() && !posTemp2.estRobot() && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
-						depPossible.add(posTemp2);
 					}
 				}
 			
@@ -212,7 +219,7 @@ public class IntelligenceArtificielle {
 
 			int distance = distancePosition(depPossible.get(0), cible);
 			for (Position p : depPossible) {
-				if (distancePosition(p, cible) > distance) {
+				if (distancePosition(p, cible) < distance) {
 					depPlusProche = p;
 					distance = distancePosition(p, cible);
 				}
@@ -249,13 +256,13 @@ public class IntelligenceArtificielle {
 				
 			int distance = distancePosition(depPossible.get(0), cible);
 			for(Position p:depPossible){
-				if(distancePosition(p, cible) > distance){
+				if(distancePosition(p, cible) < distance){
 					depPlusProche = p;
 					distance = distancePosition(p, cible);
 				}
 			}
 			
-			
+
 			return depPlusProche;
 
 		}
@@ -288,6 +295,55 @@ public class IntelligenceArtificielle {
 		}
 	}
 	
+	
+	/**
+	 * Vérifie si il y a un ostacle entre 2 robots
+	 * @param robot
+	 * @param cible
+	 * @return boolean
+	 */
+	public boolean champDegage(Robot r, Robot cible){
+		Position posTemp;
+		String strTemp;
+		if(r.getPosition().getX() == cible.getPosition().getX()){
+			for(int i =1; i < Math.abs(r.getPosition().getY() - cible.getPosition().getY());i++){
+				if(r.getPosition().getY() < cible.getPosition().getY()){
+					posTemp = new Position(r.getPosition().getX(), r.getPosition().getY() + i);
+				}
+				else{
+					posTemp = new Position(r.getPosition().getX(), cible.getPosition().getY() + i);
+				}
+				strTemp = plateau.posToString(posTemp);
+				posTemp = plateau.getCarte().get(strTemp);
+				if(posTemp.estObstacle() || posTemp.estRobot()){
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		else if(r.getPosition().getY() == cible.getPosition().getY()){
+			for(int i =1; i < Math.abs(r.getPosition().getX() - cible.getPosition().getX());i++){
+				if(r.getPosition().getX() < cible.getPosition().getX()){
+					posTemp = new Position(r.getPosition().getX() + i, r.getPosition().getY());
+				}
+				else{
+					posTemp = new Position(cible.getPosition().getX() + i, r.getPosition().getY());
+				}
+				strTemp = plateau.posToString(posTemp);
+				posTemp = plateau.getCarte().get(strTemp);
+				if(posTemp.estObstacle() || posTemp.estRobot()){
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		else{ // si ni les X, ni les Y sont egaux alors les robots ne sont pas sur la même ligne
+			return false;
+		}
+	}
+
 
 
 	/**
@@ -296,7 +352,6 @@ public class IntelligenceArtificielle {
 	 * @return le robot le plus utile à viser
 	 */
 	public Robot robotAPortee(Robot robot){
-		
 		int portee;
 		List<Robot> robotsPortee = new ArrayList<Robot>();
 		
@@ -318,16 +373,33 @@ public class IntelligenceArtificielle {
 		Position posTemp;
 		
 		for (int i = -portee; i <= portee; i++) {
-			strTemp = plateau.posToString(new Position(PositionX + portee, PositionY));
+			posTemp = new Position(PositionX + i, PositionY);
+			strTemp = plateau.posToString(posTemp);
 			posTemp = plateau.getCarte().get(strTemp);
-			if(posTemp != null && posTemp.getRobot() != null && posTemp.getRobot().getEquipe() != robot.getEquipe()){
+			
+			
+			
+			
+			if(posTemp != null && posTemp.estRobot()&& posTemp.getRobot().getEquipe() != robot.getEquipe()&& champDegage(robot, posTemp.getRobot())){
+				robotsPortee.add(posTemp.getRobot());
+			}
+			
+			posTemp = new Position(PositionX, PositionY+ i);
+			strTemp = plateau.posToString(posTemp);
+			posTemp = plateau.getCarte().get(strTemp);
+			
+			
+
+			if(posTemp != null && posTemp.estRobot()&& posTemp.getRobot().getEquipe() != robot.getEquipe()&& champDegage(robot, posTemp.getRobot())){
 				robotsPortee.add(posTemp.getRobot());
 			}
 		}
 		
+		
 		if(robotsPortee.size() == 0){
 			return null;
 		}
+		
 		
 		else if(robotsPortee.size() == 1){
 			return robotsPortee.get(0);
@@ -352,23 +424,36 @@ public class IntelligenceArtificielle {
 	 */
 	public Position robotPlusPres(Robot r){
 		Position pos = r.getPosition();
-		for(int i =0 ; i<= distanceBord(r)[0]; i++){
-			for (int j = 0; j <= distanceBord(r)[1]; j++) {
-				if(pos.getX() + i > 0  && pos.getX() + i < plateau.getLargeur() && pos.getY() + j > 0  && pos.getY() + j < plateau.getHauteur()){
-					Position temp = new Position(pos.getX()+i, pos.getY()+j);
+		int max;
+		if(plateau.getLargeur() >= plateau.getHauteur()){
+			max = plateau.getLargeur();
+		}
+		
+		else{
+			max = plateau.getHauteur();
+		}
+		
+		int i =0;
+		
+		while(i < max){
+			for(int x = -i; x <= i; x++){
+				for(int y = -i; y <= i; y++){
+				
+					Position temp = new Position(pos.getX()+x, pos.getY()+y);
 					String coordonnee = plateau.posToString(temp);
 					temp = plateau.getCarte().get(coordonnee);
-					if(temp.estRobot()){
+					if(temp != null && temp.estRobot()){
 						if(temp.getRobot().getEquipe() != r.getEquipe()){
 							return temp;
 						}
 					}
-					if(temp.estBase() && temp.getEquipe() != r.getEquipe()){
+					if(temp != null && temp.estBase() && temp.getEquipe() != r.getEquipe()){
 						return temp;
 					}
+					
 				}
-				
 			}
+		i++;
 		}
 		return baseAdverse();
 	}
@@ -393,9 +478,6 @@ public class IntelligenceArtificielle {
 		strTemp = plateau.posToString(posTemp);
 		return plateau.getCarte().get(strTemp);
 	}
-	
-	
-	
 	
 	
 	
