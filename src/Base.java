@@ -1,14 +1,14 @@
 /**
  * 
  * @author Nicolas Mauger
- * Cette classe représente un objet Base définit par sa position et son équipe
+ * Cette classe represente un objet Base definit par sa position et son equipe
  */
 
 import java.util.ArrayList;
 
 public class Base extends Position {
 	
-	/** La liste des robots présents en base */
+	/** La liste des robots presents en base */
 	private ArrayList<Robot> robots;
 
 	/**
@@ -28,27 +28,27 @@ public class Base extends Position {
 	}
 
 	/**
-	 * Procedure qui déplace le robot pris en paramètre dans la base
+	 * Procedure qui deplace le robot pris en parametre dans la base
 	 * 
 	 * @param robot
-	 *            Le robot qui doit être déplacer sur la base
+	 *            Le robot qui doit etre deplacer sur la base
 	 */
 	public void deplaceSur(Robot robot) {
 		robots.add(robot);
 	}
 
 	/**
-	 * Retire le robot prit en paramétre de la base
+	 * Retire le robot prit en parametre de la base
 	 * 
 	 * @param robot
-	 *            Le robot qui doit être retirer
+	 *            Le robot qui doit etre retirer
 	 */
 	public void quitteBase(Robot robot) {
 		robots.remove(robot);
 	}
 
 	/**
-	 * Procedure qui retire tout les robots présent dans la base
+	 * Procedure qui retire tout les robots present dans la base
 	 */
 	public void videCase() {
 		ArrayList<Robot> toRemove = new ArrayList<Robot>();
@@ -63,8 +63,8 @@ public class Base extends Position {
 	}
 	
 	/**
-	 * Retourne la liste des robots présents en base
-	 * @return la liste des robots présents en base
+	 * Retourne la liste des robots presents en base
+	 * @return la liste des robots presents en base
 	 */
 	public ArrayList<Robot> getRobotsInBase() {
 		return robots;
@@ -75,8 +75,8 @@ public class Base extends Position {
 	}
 
 	/**
-	 * Procédure qui recharge en énergie les robots présent dans la base, et
-	 * remplie le stock de mine si c'est un piègeur
+	 * Procedure qui recharge en energie les robots present dans la base, et
+	 * remplie le stock de mine si c'est un piegeur
 	 */
 	public void recharge() {
 		for (Robot r : robots) {

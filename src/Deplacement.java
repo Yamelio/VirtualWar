@@ -1,7 +1,7 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représent une
- *         Action Déplacement définit à partir de sa cible
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe represent une
+ *         Action Deplacement definit a partir de sa cible
  */
 
 public class Deplacement extends Action {
@@ -10,9 +10,9 @@ public class Deplacement extends Action {
 	 * Constructeur de la classe Deplacement
 	 * 
 	 * @param robot
-	 *            Robot qui se déplace
+	 *            Robot qui se deplace
 	 * @param cible
-	 *            Cible vers laquelle il se déplace
+	 *            Cible vers laquelle il se deplace
 	 * @throws Erreur
 	 *             Erreur en cas de cible incorrecte
 	 */
@@ -51,15 +51,15 @@ public class Deplacement extends Action {
 
 	}
 	/**
-	 * Retourne la cible du déplacement
-	 * @return la cible du déplacement
+	 * Retourne la cible du deplacement
+	 * @return la cible du deplacement
 	 */
 	public Position getCible() {
 		return this.cible;
 	}
 
 	/**
-	 * Fonction qui vérifie si la cible est une base ou si le robot est dans sa
+	 * Fonction qui verifie si la cible est une base ou si le robot est dans sa
 	 * base et le fait rentrer ou sortir
 	 */
 	public boolean checkBase() {
@@ -78,7 +78,7 @@ public class Deplacement extends Action {
 	}
 
 	/**
-	 * Fonction qui vérifie si un robot est au moins en dehors de sa base
+	 * Fonction qui verifie si un robot est au moins en dehors de sa base
 	 * @return vrai si oui, faux si non
 	 */
 	private boolean checkTotalRobots() {
@@ -100,7 +100,7 @@ public class Deplacement extends Action {
 	}
 
 	/**
-	 * Fonction qui vérifie que la cible du déplacement est bien à portée du
+	 * Fonction qui verifie que la cible du deplacement est bien a portee du
 	 * robot
 	 */
 	public boolean checkCoordonees() {
@@ -138,8 +138,8 @@ public class Deplacement extends Action {
 	}
 
 	/**
-	 * Fonction qui vérifie si la cible est une mine et enlève l'énergie en
-	 * conséquant
+	 * Fonction qui verifie si la cible est une mine et enleve l'energie en
+	 * consequant
 	 * 
 	 * @return vrai si oui, faux si non
 	 */
@@ -156,7 +156,7 @@ public class Deplacement extends Action {
 	}
 
 	/**
-	 * Fonction qui vérifie si la cible est un occupée
+	 * Fonction qui verifie si la cible est un occupee
 	 * @return vrai si non, faux si oui
 	 */
 	public boolean checkObstacle() {
@@ -164,7 +164,7 @@ public class Deplacement extends Action {
 	}
 
 	/**
-	 * Fonction qui déplace le robot
+	 * Fonction qui deplace le robot
 	 */
 	public void deplacerRobot() {
 
@@ -190,7 +190,7 @@ public class Deplacement extends Action {
 	}
 
 	/**
-	 * Fonction qui vérifie si un char n'as pas d'obstacle le long du trajet
+	 * Fonction qui verifie si un char n'as pas d'obstacle le long du trajet
 	 * @return vrai si oui, faux si non
 	 */
 	public boolean charPeutDeplacer() {

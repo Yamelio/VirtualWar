@@ -1,13 +1,13 @@
 /**
  * 
  * @author Matthieu Gaillard
- * Cette classe représente un objet char définit par son équipe
+ * Cette classe represente un objet char definit par son equipe
  */
 public class Char extends Robot {
 
 	/**
-	 * Construit un objet char en fonction de son équipe et lui applique son énergie initiale
-	 * @param equipe l'équipe du char
+	 * Construit un objet char en fonction de son equipe et lui applique son energie initiale
+	 * @param equipe l'equipe du char
 	 */
 	public Char(int equipe) {
 		super(equipe);

@@ -1,7 +1,7 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représente un Robot
- *         Tireur, définit à partir de son équipe
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe represente un Robot
+ *         Tireur, definit a partir de son equipe
  */
 public class Tireur extends Robot {
 
@@ -9,7 +9,7 @@ public class Tireur extends Robot {
 	 * Constructeur de la classe Tireur
 	 * 
 	 * @param equipe
-	 *            Son équipe
+	 *            Son equipe
 	 */
 	public Tireur(int equipe) {
 		super(equipe);

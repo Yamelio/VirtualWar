@@ -1,7 +1,7 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représente un objet
- *         vue définit par son plateau et son équipe
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe represente un objet
+ *         vue definit par son plateau et son equipe
  *
  */
 
@@ -26,7 +26,7 @@ public class Vue {
 	/**
 	 * Verifie si la coordonnee donnee sont libre
 	 * 
-	 * @param coord
+	 * @param p
 	 *            Coordonnee a verifier
 	 * @return true si libre
 	 */
@@ -52,7 +52,7 @@ public class Vue {
 
 	/**
 	 * 
-	 * @return une représentation texte de la vue
+	 * @return une representation texte de la vue
 	 */
 	public String toString() {
 		String s = "\t";

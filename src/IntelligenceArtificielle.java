@@ -98,7 +98,7 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * fonction attribuant des points à un robot par rapport à son positionnement et son énergie afin de trouver le meilleur robot à jouer
-	 * @param Robot
+	 * @param r Robot a teste
 	 * @return points
 	 */
 	public int attribuerPoints(Robot r){
@@ -158,7 +158,7 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * Verfie si il y a une mine visible pour l'IA sur une case (une mine de son équip)
-	 * @param Position a tester
+	 * @param p Position a tester
 	 * @return boolean
 	 */
 	public boolean contientMine(Position p){
@@ -354,8 +354,8 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * Calcul la distance entre 2 case du plateau
-	 * @param première position
-	 * @param deuxième position
+	 * @param p première position
+	 * @param cible deuxième position
 	 * @return int
 	 */
 	public int distancePosition(Position p, Position cible){
@@ -365,7 +365,7 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * Calcul la distance entre un Robot et une base
-	 * @param Robot
+	 * @param r Robot
 	 * @return int
 	 */
 	public int distanceBase(Robot r){
@@ -381,7 +381,7 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * Vérifie si il y a un ostacle entre 2 robots
-	 * @param robot
+	 * @param r Robot
 	 * @param cible
 	 * @return boolean
 	 */
@@ -431,7 +431,7 @@ public class IntelligenceArtificielle {
 
 	/**
 	 * Verifie si le robot fournit en paramètre a un robot ennemi à portée
-	 * @param robot a tester
+	 * @param robot robot a tester
 	 * @return le robot le plus utile à viser
 	 */
 	public Robot robotAPortee(Robot robot){
@@ -502,7 +502,7 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * Renvoi la position du robot le plus prêt du robot en paramètre
-	 * @param robot
+	 * @param r robot
 	 * @return Position
 	 */
 	public Position robotPlusPres(Robot r){
@@ -566,7 +566,7 @@ public class IntelligenceArtificielle {
 	
 	/**
 	 * Renvoi la distance du bord le plus éloigné d'un robot
-	 * @param robot
+	 * @param r robot
 	 * @return int
 	 */
 	public int[] distanceBord(Robot r){
@@ -620,7 +620,7 @@ public class IntelligenceArtificielle {
 
 
 	/**
-	 * Génère la formation que l'IA va adopter de manière aléatoire et sous la forme d'un String
+	 * Genere la formation que l'IA va adopter de manière aléatoire et sous la forme d'un String
 	 * @return Un String contenant le nombre de chaques types de robots avec leurs types de formations
 	 */
 	public String choixFormation() {

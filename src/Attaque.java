@@ -2,14 +2,14 @@
  * 
  * @author Les Quatre Cavaliers de l'Apocalypse et leur Majordome
  *
- *         Cette classe représente un objet Attaque définit par son robot et sa
+ *         Cette classe represente un objet Attaque definit par son robot et sa
  *         cible
  */
 
 public class Attaque extends Action {
 	/**
-	 * Construit un objet Attaque à partir d'un robot et de sa cible tout en
-	 * vérifiant les contraintes de portée et d'énergie
+	 * Construit un objet Attaque a partir d'un robot et de sa cible tout en
+	 * verifiant les contraintes de portee et d'energie
 	 * 
 	 * @param robot
 	 *            le robot qui attaque

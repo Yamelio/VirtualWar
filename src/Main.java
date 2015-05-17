@@ -216,7 +216,7 @@ public class Main {
 					if (robotChoisi instanceof Piegeur) {
 						System.out.println("Le robot " + robotChoisi.getId()
 
-						+ " a posï¿½ une mine");
+						+ " a pose une mine");
 					} else {
 						if (robotCible != null) {
 							System.out.println("Le robot "
@@ -234,9 +234,9 @@ public class Main {
 					try {
 						System.out
 
-								.println("C'est aï¿½ "
+								.println("C'est a "
 										+ joueurCourant
-										+ " de jouer !\nselectionnez le numero du robot de votre ï¿½quipe que vous souhaitez utiliser, ainsi que son action");
+										+ " de jouer !\nselectionnez le numero du robot de votre equipe que vous souhaitez utiliser, ainsi que son action");
 						do {
 							String saisie = s.next();
 							saisie = saisie.charAt(saisie.length() - 1) + "";
@@ -350,12 +350,12 @@ public class Main {
 
 			case 1:
 				p.afficherRobotsJ2();
-				System.out.println("Joueur 2 a gagnï¿½ !");
+				System.out.println("Joueur 2 a gagne !");
 				break;
 
 			case 0:
 				p.afficherRobotsJ1();
-				System.out.println("Joueur 1 a gagnï¿½ !");
+				System.out.println("Joueur 1 a gagne !");
 				break;
 
 			case -1:
@@ -366,9 +366,9 @@ public class Main {
 	}
 
 	/**
-	 * Vï¿½rifie si la partie est finie
+	 * Verifie si la partie est finie
 	 * 
-	 * @return int Entier correspondant ï¿½ la situation
+	 * @return int Entier correspondant a la situation
 	 */
 	private static int checkFin() {
 		int aliveJ1 = 0;
@@ -406,7 +406,7 @@ public class Main {
 	}
 
 	/**
-	 * Vérifie que le robot en paramètre peut faire quelque chose
+	 * Verifie que le robot en parametre peut faire quelque chose
 	 * 
 	 * @return boolean true si peut agir, false si non
 	 */
@@ -431,7 +431,7 @@ public class Main {
 	}
 
 	/**
-	 * Vérifie si le robot a un autre robot en vue
+	 * Verifie si le robot a un autre robot en vue
 	 * 
 	 * @return boolean true si au moins un robot en vue
 	 */
@@ -480,7 +480,7 @@ public class Main {
 	}
 
 	/**
-	 * Vérifie si le robot a le champ libre pour tirer sur un autre robot
+	 * Verifie si le robot a le champ libre pour tirer sur un autre robot
 	 * 
 	 * @return boolean true si le champ est libre
 	 */
@@ -532,9 +532,9 @@ public class Main {
 	}
 
 	/**
-	 * Vérifie si le robot peut se déplacer sur au moins une case
+	 * Verifie si le robot peut se deplacer sur au moins une case
 	 * 
-	 * @return boolean true si il y a au moins un déplacement possible
+	 * @return boolean true si il y a au moins un deplacement possible
 	 */
 	private static boolean deplacementPossible(Robot r) {
 		Position tmp = r.getPosition();
@@ -622,8 +622,8 @@ public class Main {
 	}
 
 	/**
-	 * Vérifie le nombre total de robots en dehors de la base pour l'équipe du
-	 * robot passé en paramètre.
+	 * Verifie le nombre total de robots en dehors de la base pour l'equipe du
+	 * robot passe en parametre.
 	 * 
 	 * @return boolean true si il y a au moins 2 robots hors de la base
 	 */
@@ -701,7 +701,7 @@ public class Main {
 	}
 
 	/**
-	 * Charge la partie à partir du fichier save/sauvegarde.txt
+	 * Charge la partie a partir du fichier save/sauvegarde.txt
 	 */
 	public static void chargement() {
 		try {
@@ -839,7 +839,7 @@ public class Main {
 	}
 
 	/**
-	 * Créé une ou plusieurs composition(s) pour l'intelligence artificielle
+	 * Cree une ou plusieurs composition(s) pour l'intelligence artificielle
 	 */
 	public static void initIA(String nbrIA) {
 		if (nbrIA.equals("1")) {
@@ -872,7 +872,7 @@ public class Main {
 	}
 
 	/**
-	 * Vérifie que le joueur passé en paramètre est humain
+	 * Verifie que le joueur passe en parametre est humain
 	 * 
 	 * @return boolean true si le joueur est humain
 	 */

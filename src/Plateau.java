@@ -59,7 +59,7 @@ public class Plateau {
 	/**
 	 * Fonction pour convertir la String en position
 	 * 
-	 * @param Position
+	 * @param p
 	 *            La position ÃƒÂ  convertir
 	 * @return La String sous la forme "B11"
 	 */
@@ -78,8 +78,8 @@ public class Plateau {
 	/**
 	 * Fonction pour convertir la Position en String
 	 * 
-	 * @param String
-	 *            La String ÃƒÂ  convertir, sous la forme "C4"
+	 * @param s String
+	 *            La String aÂ  convertir, sous la forme "C4"
 	 * @return La Position voulu
 	 */
 	public Position stringToPos(String s) {
@@ -227,10 +227,10 @@ public class Plateau {
 	}
 
 	/**
-	 * Procedure qui ajoute le robot entré en paramètre à la liste des robots
-	 * présent sur le plateau
+	 * Procedure qui ajoute le robot entre en parametre a la liste des robots
+	 * present sur le plateau
 	 * 
-	 * @param Robot
+	 * @param r Robot
 	 */
 	public void ajouterListeRobot(Robot r) {
 		this.robots.add(r);
@@ -243,10 +243,10 @@ public class Plateau {
 	}
 
 	/**
-	 * Procedure qui retire le robot entrée en paramètre de la liste des robots
-	 * présent sur le plateau
+	 * Procedure qui retire le robot entree en parametre de la liste des robots
+	 * present sur le plateau
 	 * 
-	 * @param Robot
+	 * @param r Robot
 	 */
 	public void retirerListeRobot(Robot r) {
 		this.robots.remove(r);
@@ -257,7 +257,7 @@ public class Plateau {
 	}
 
 	/**
-	 * Procedure qui affiche les robots de l'équipe 1
+	 * Procedure qui affiche les robots de l'equipe 1
 	 */
 	public void afficherRobotsJ1() {
 		String res = "Equipe 1 :\t";
@@ -319,7 +319,7 @@ public class Plateau {
 	}
 
 	/**
-	 * Procedure qui affiche les robots de l'équipe 2
+	 * Procedure qui affiche les robots de l'equipe 2
 	 */
 	public void afficherRobotsJ2() {
 		String res = "Equipe 2 :\t";
@@ -381,7 +381,7 @@ public class Plateau {
 	}
 
 	/**
-	 * Procedure qui recharges les robots présent sur les bases
+	 * Procedure qui recharges les robots present sur les bases
 	 */
 	public void recharges() {
 		((Base) carte.get("A1")).recharge();

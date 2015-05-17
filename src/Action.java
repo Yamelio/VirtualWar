@@ -1,7 +1,7 @@
 /**
  * 
  * @author Matthieu Gaillard
- * Cette classe abstraite représente un objet action définit par le robot qui réalise cette action et la cible
+ * Cette classe abstraite represente un objet action definit par le robot qui realise cette action et la cible
  *
  */
 public abstract class Action {
@@ -14,7 +14,7 @@ public abstract class Action {
 	
 	/**
 	 * Construit un objet action en fonction de son robot et de sa cible
-	 * @param robot le robot qui réalise l'action
+	 * @param robot le robot qui realise l'action
 	 * @param cible la cible de cette action
 	 */
 	public Action(Robot robot, Position cible) {
@@ -23,8 +23,8 @@ public abstract class Action {
 	}
 
 	/**
-	 * Retourne le robot concerné par l'action
-	 * @return le robot concerné par l'action
+	 * Retourne le robot concerne par l'action
+	 * @return le robot concerne par l'action
 	 */
 	public Robot getRobot() {
 		return this.robot;

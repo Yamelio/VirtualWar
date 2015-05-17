@@ -1,7 +1,7 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représente un Robot
- *         Piegeur définit par son équipe
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe represente un Robot
+ *         Piegeur definit par son equipe
  */
 
 public class Piegeur extends Robot {
@@ -14,7 +14,7 @@ public class Piegeur extends Robot {
 	 * Constructeur de la classe Piegeur
 	 * 
 	 * @param equipe
-	 *            l'équipe du Piegeur
+	 *            l'equipe du Piegeur
 	 */
 	public Piegeur(int equipe) {
 		super(equipe);

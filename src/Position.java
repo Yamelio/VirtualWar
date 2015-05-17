@@ -7,10 +7,10 @@ public class Position {
 	/** L'abscisse de la position */
 	private int x;
 
-	/** L'ordonnée de la position */
+	/** L'ordonnee de la position */
 	private int y;
 
-	/** L'équipe d'une position, si cette case est une base ou une mine */
+	/** L'equipe d'une position, si cette case est une base ou une mine */
 	private int equipe = 2;
 
 	/** Si la position est une base */

@@ -1,31 +1,31 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représente un objet
- *         Robot définit par son équipe
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe represente un objet
+ *         Robot definit par son equipe
  */
 
 public abstract class Robot {
 
-	/** L'énergie du robot */
+	/** L'energie du robot */
 	private int energie;
 
-	/** l'équipe du robot */
+	/** l'equipe du robot */
 	private int equipe;
 
 	/** la position du robot */
 	private Position pos;
 
-	/** le compteur servant à définir l'ID du robot */
+	/** le compteur servant a definir l'ID du robot */
 	public static int cpt = 0;
 
 	/** l'ID du robot */
 	private int id;
 
 	/**
-	 * Construit un Robot à partir de son équipe
+	 * Construit un Robot a partir de son equipe
 	 * 
 	 * @param equipe
-	 *            l'équipe du robot
+	 *            l'equipe du robot
 	 */
 	public Robot(int equipe) {
 		this.equipe = equipe;
