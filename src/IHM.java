@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -36,7 +38,7 @@ public class IHM {
 	private File currentFile = null;
 	private JTextArea historique;
 	private JFrame f;
-	
+
 	public IHM() {
 		f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
@@ -74,6 +76,8 @@ public class IHM {
 		barDeVie.setValue(5); // nombre de pv du robot
 
 		JLabel test = new JLabel("Hello");
+		
+		// BufferedImage imageRobot = ImageIO.read(new File("robot.jpg"));
 
 		panelRobot.add(barDeVie, BorderLayout.NORTH);
 		panelRobot.add(test, BorderLayout.CENTER);
@@ -188,7 +192,51 @@ public class IHM {
 		menuSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// code pour sauvegarder un fichier
+				if (currentFile == null) {
+					JFileChooser fc = new JFileChooser();
+					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					File workingDirectory = new File(System
+							.getProperty("user.dir") + "/save");
+					fc.setCurrentDirectory(workingDirectory);
+					int returnVal = fc.showSaveDialog(menuSave);
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						// on ecrit dans le fichier comme pour un save as
+						FileWriter writer = null;
+						try {
+							writer = new FileWriter(fc.getSelectedFile());
+							writer.write(historique.getText());
+						} catch (Exception e3) {
+							JOptionPane.showMessageDialog(null,
+									"Imbossible de sauvegarder le fichier",
+									"Erreur", JOptionPane.ERROR_MESSAGE);
+						} finally {
+							try {
+								writer.close();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					}
+				} else {
+					// ecriture dans le fichier
+					FileWriter writer = null;
+					try {
+						writer = new FileWriter(currentFile);
+						writer.write(historique.getText());
+					} catch (Exception e3) {
+						JOptionPane.showMessageDialog(null,
+								"Imbossible de sauvegarder le fichier",
+								"Erreur", JOptionPane.ERROR_MESSAGE);
+					} finally {
+						try {
+							writer.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
 			}
 		});
 
@@ -202,7 +250,30 @@ public class IHM {
 		menuSaveAs.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// code pour sauvegarder sous un fichier
+				JFileChooser fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				File workingDirectory = new File(System.getProperty("user.dir")
+						+ "/save");
+				fc.setCurrentDirectory(workingDirectory);
+				int returnVal = fc.showSaveDialog(menuSaveAs);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					FileWriter writer = null;
+					try {
+						writer = new FileWriter(fc.getSelectedFile());
+						writer.write(historique.getText());
+					} catch (Exception e3) {
+						JOptionPane.showMessageDialog(null,
+								"Imbossible de sauvegarder le fichier",
+								"Erreur", JOptionPane.ERROR_MESSAGE);
+					} finally {
+						try {
+							writer.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
 			}
 		});
 
@@ -221,7 +292,9 @@ public class IHM {
 				try {
 					device.setFullScreenWindow(f);
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Impossible de mettre le jeu en plein ecran", "Erreur", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Impossible de mettre le jeu en plein ecran",
+							"Erreur", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
