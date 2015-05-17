@@ -294,7 +294,6 @@ public class IntelligenceArtificielle {
 			}
 			
 			else{
-				System.out.println("dep avec mines");
 				liste = depPossible;
 			}
 			
