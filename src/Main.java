@@ -218,10 +218,11 @@ public class Main {
 
 						+ " a pos� une mine");
 					} else {
-						//int IdRobot = p.getCarte().get(p.posToString(choixCible)).getRobot().getId();
+						// int IdRobot =
+						// p.getCarte().get(p.posToString(choixCible)).getRobot().getId();
 						System.out.println("Le robot " + robotChoisi.getId()
 
-								+ " a attaque le robot " + robotCible.getId());
+						+ " a attaque le robot " + robotCible.getId());
 
 					}
 				}
@@ -236,7 +237,11 @@ public class Main {
 										+ joueurCourant
 										+ " de jouer !\nselectionnez le numero du robot de votre �quipe que vous souhaitez utiliser, ainsi que son action");
 						do {
-							robotChoisi = p.getListeRobot().get(s.nextInt());
+							String saisie = s.next();
+							saisie = saisie.charAt(saisie.length() - 1) + "";
+							int nbrSaisi = Integer.parseInt(saisie);
+							robotChoisi = p.getListeRobot().get(nbrSaisi);
+
 						} while ((robotChoisi.getEquipe() == 1 && joueur)
 								|| (robotChoisi.getEquipe() == 0 && !joueur));
 						if (robotChoisi instanceof Piegeur) {
@@ -253,8 +258,10 @@ public class Main {
 						if (choixAction == 1) {
 							try {
 								actions.add(new Attaque(robotChoisi, choixCible));
-								robotCible = robotsInit.get(choixCible
-										.getRobot().getId());
+								if (!(robotChoisi instanceof Piegeur)) {
+									robotCible = robotsInit.get(choixCible
+											.getRobot().getId());
+								}
 								saisieOk = true;
 							} catch (Erreur e) {
 								System.out.println(e.getMessage());
@@ -266,7 +273,6 @@ public class Main {
 										choixCible));
 								saisieOk = true;
 							} catch (Erreur e) {
-								System.out.println(e.getMessage());
 								saisieOk = false;
 							}
 						}
@@ -286,8 +292,10 @@ public class Main {
 					actions.add(act);
 					robotChoisi = act.getRobot();
 					choixCible = act.getCible();
-					if(act instanceof Attaque && !(robotChoisi instanceof Piegeur)){
-						robotCible = robotsInit.get(choixCible.getRobot().getId());
+					if (act instanceof Attaque
+							&& !(robotChoisi instanceof Piegeur)) {
+						robotCible = robotsInit.get(choixCible.getRobot()
+								.getId());
 					}
 				}
 
@@ -296,8 +304,10 @@ public class Main {
 					actions.add(act);
 					robotChoisi = act.getRobot();
 					choixCible = act.getCible();
-					if(act instanceof Attaque && !(robotChoisi instanceof Piegeur)){
-						robotCible = robotsInit.get(choixCible.getRobot().getId());
+					if (act instanceof Attaque
+							&& !(robotChoisi instanceof Piegeur)) {
+						robotCible = robotsInit.get(choixCible.getRobot()
+								.getId());
 					}
 					try {
 						Thread.sleep(2000);
@@ -311,8 +321,10 @@ public class Main {
 					actions.add(act);
 					robotChoisi = act.getRobot();
 					choixCible = act.getCible();
-					if(act instanceof Attaque && !(robotChoisi instanceof Piegeur)){
-						robotCible = robotsInit.get(choixCible.getRobot().getId());
+					if (act instanceof Attaque
+							&& !(robotChoisi instanceof Piegeur)) {
+						robotCible = robotsInit.get(choixCible.getRobot()
+								.getId());
 					}
 					try {
 						Thread.sleep(2000);
@@ -363,10 +375,12 @@ public class Main {
 		List<Robot> toRemove = new ArrayList<Robot>();
 		for (Robot r : Position.getPlateau().getListeRobot()) {
 			if (r.getEnergie() > 0) {
-				if (r.getEquipe() == 0) {
-					aliveJ1++;
-				} else {
-					aliveJ2++;
+				if (isNotLegume(r)) {
+					if (r.getEquipe() == 0) {
+						aliveJ1++;
+					} else {
+						aliveJ2++;
+					}
 				}
 			} else {
 				toRemove.add(r);
@@ -376,6 +390,8 @@ public class Main {
 		for (Robot r : toRemove) {
 			Position.getPlateau().getListeRobot().remove(r);
 		}
+		System.out.println("AliveJ1 :" + aliveJ1);
+		System.out.println("AliveJ2 :" + aliveJ2);
 
 		if (aliveJ1 == 0 && aliveJ2 == 0) {
 			return -1;
@@ -388,6 +404,214 @@ public class Main {
 			return 0;
 		}
 		return 2;
+	}
+
+	private static boolean isNotLegume(Robot r) {
+		if (deplacementPossible(r) || robotAPortee(r)) {
+			if (r instanceof Tireur) {
+				return (r.getEnergie() >= Constantes.getCoutDeplacementTireur() || r
+						.getEnergie() >= Constantes.getCoutTirTireur());
+			}
+			if (r instanceof Char) {
+				return r.getEnergie() >= Constantes.getCoutDeplacementChar()
+						|| r.getEnergie() >= Constantes.getCoutTirChar();
+			}
+			if (r instanceof Piegeur) {
+				return r.getEnergie() >= Constantes.getCoutDeplacementPiegeur()
+						|| r.getEnergie() >= Constantes.getCoutMine();
+			}
+
+		}
+
+		return false;
+	}
+
+	public static boolean robotAPortee(Robot robot) {
+		int portee;
+		List<Robot> robotsPortee = new ArrayList<Robot>();
+
+		if (robot instanceof Tireur) {
+			portee = Constantes.getPorteeTireur();
+		}
+
+		else if (robot instanceof Char) {
+			portee = Constantes.getPorteeChar();
+		}
+
+		else {
+			return false;
+		}
+
+		int PositionX = robot.getPosition().getX();
+		int PositionY = robot.getPosition().getY();
+		String strTemp;
+		Position posTemp;
+
+		for (int i = -portee; i <= portee; i++) {
+			posTemp = new Position(PositionX + i, PositionY);
+			strTemp = p.posToString(posTemp);
+			posTemp = p.getCarte().get(strTemp);
+
+			if (posTemp != null && posTemp.estRobot()
+					&& champDegage(robot, posTemp.getRobot())) {
+				robotsPortee.add(posTemp.getRobot());
+			}
+
+			posTemp = new Position(PositionX, PositionY + i);
+			strTemp = p.posToString(posTemp);
+			posTemp = p.getCarte().get(strTemp);
+
+			if (posTemp != null && posTemp.estRobot()
+					&& champDegage(robot, posTemp.getRobot())) {
+				robotsPortee.add(posTemp.getRobot());
+			}
+		}
+
+		return robotsPortee.size() == 0;
+	}
+
+	public static boolean champDegage(Robot r, Robot cible) {
+		Position posTemp;
+		String strTemp;
+		if (r.getPosition().getX() == cible.getPosition().getX()) {
+			for (int i = 1; i < Math.abs(r.getPosition().getY()
+					- cible.getPosition().getY()); i++) {
+				if (r.getPosition().getY() < cible.getPosition().getY()) {
+					posTemp = new Position(r.getPosition().getX(), r
+							.getPosition().getY() + i);
+				} else {
+					posTemp = new Position(r.getPosition().getX(), cible
+							.getPosition().getY() + i);
+				}
+				strTemp = p.posToString(posTemp);
+				posTemp = p.getCarte().get(strTemp);
+				if (posTemp.estObstacle() || posTemp.estRobot()) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		else if (r.getPosition().getY() == cible.getPosition().getY()) {
+			for (int i = 1; i < Math.abs(r.getPosition().getX()
+					- cible.getPosition().getX()); i++) {
+				if (r.getPosition().getX() < cible.getPosition().getX()) {
+					posTemp = new Position(r.getPosition().getX() + i, r
+							.getPosition().getY());
+				} else {
+					posTemp = new Position(cible.getPosition().getX() + i, r
+							.getPosition().getY());
+				}
+				strTemp = p.posToString(posTemp);
+				posTemp = p.getCarte().get(strTemp);
+				if (posTemp.estObstacle() || posTemp.estRobot()) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		else { // si ni les X, ni les Y sont egaux alors les robots ne sont pas
+				// sur la même ligne
+			return false;
+		}
+	}
+
+	private static boolean deplacementPossible(Robot r) {
+		Position tmp = r.getPosition();
+
+		if (r instanceof Piegeur || r instanceof Tireur) {
+			for (int i = -1; i <= 1; i++) {
+				for (int j = -1; j <= 1; j++) {
+					tmp = p.getCarte().get(
+							p.posToString(new Position(r.getPosition().getX()
+									+ i, r.getPosition().getY() + j)));
+					if (tmp != null) {
+						if ((tmp.estBase() && tmp.getEquipe() == r.getEquipe() && checkTotalRobots(r))
+								|| !(tmp.estObstacle() || tmp.estRobot() || tmp
+										.estBase())) {
+							return true;
+						}
+					}
+				}
+			}
+		} else {
+			tmp = p.getCarte().get(
+					p.posToString(new Position(r.getPosition().getX() + 1, r
+							.getPosition().getY())));
+			if (tmp != null) {
+				if (!(tmp.estObstacle() || tmp.estRobot())) {
+					tmp = p.getCarte().get(
+							p.posToString(new Position(
+									r.getPosition().getX() + 2, r.getPosition()
+											.getY())));
+					if (tmp != null) {
+						if (!(tmp.estObstacle() || tmp.estRobot())) {
+							return true;
+						}
+					}
+				}
+			}
+			tmp = p.getCarte().get(
+					p.posToString(new Position(r.getPosition().getX() - 1, r
+							.getPosition().getY())));
+			if (tmp != null) {
+				if (!(tmp.estObstacle() || tmp.estRobot())) {
+					tmp = p.getCarte().get(
+							p.posToString(new Position(
+									r.getPosition().getX() - 2, r.getPosition()
+											.getY())));
+					if (tmp != null) {
+						if (!(tmp.estObstacle() || tmp.estRobot())) {
+							return true;
+						}
+					}
+				}
+			}
+			tmp = p.getCarte().get(
+					p.posToString(new Position(r.getPosition().getX(), r
+							.getPosition().getY() + 1)));
+			if (tmp != null) {
+				if (!(tmp.estObstacle() || tmp.estRobot())) {
+					tmp = p.getCarte().get(
+							p.posToString(new Position(r.getPosition().getX(),
+									r.getPosition().getY() + 2)));
+					if (tmp != null) {
+						if (!(tmp.estObstacle() || tmp.estRobot())) {
+							return true;
+						}
+					}
+				}
+			}
+			tmp = p.getCarte().get(
+					p.posToString(new Position(r.getPosition().getX(), r
+							.getPosition().getY() - 1)));
+			if (tmp != null) {
+				if (!(tmp.estObstacle() || tmp.estRobot())) {
+					tmp = p.getCarte().get(
+							p.posToString(new Position(r.getPosition().getX(),
+									r.getPosition().getY() - 2)));
+					if (tmp != null) {
+						if (!(tmp.estObstacle() || tmp.estRobot())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean checkTotalRobots(Robot rob) {
+		int equipe = rob.getEquipe();
+		int cpt = 0;
+
+		for (Robot r : Position.getPlateau().getListeRobot()) {
+			if (r.getEquipe() == equipe && !r.getPosition().estBase()) {
+				cpt++;
+			}
+		}
+		return cpt > 1;
 	}
 
 	public static void sauvegarde() {
@@ -540,6 +764,7 @@ public class Main {
 					actions.add(new Attaque(p.getRobot(robot), p
 							.stringToPos(cible)));
 				}
+				p.recharges();
 			}
 
 		} catch (Exception e) {
