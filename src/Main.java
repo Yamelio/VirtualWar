@@ -206,7 +206,7 @@ public class Main {
 			p.afficherRobotsJ1();
 			p.afficherRobotsJ2();
 
-			if (!actions.isEmpty()) {
+			if (!actions.isEmpty() && robotCible != null) {
 
 				if (actions.get(actions.size() - 1) instanceof Deplacement) {
 					System.out.println("Le robot " + robotChoisi.getId()
@@ -766,7 +766,9 @@ public class Main {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out
+					.println("Sauvegarde corrompue, veuillez redemarrer le jeu");
+			System.exit(0);
 		}
 	}
 
