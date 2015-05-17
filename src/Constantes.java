@@ -1,7 +1,9 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse Cette classe repr�sente un objet
- *         Constantes contenant toutes les constantes de base au niveau du jeu
+ * @author Les Quatre Cavaliers de l'Apocalypse
+ * 
+ *         Cette classe repr�sente un objet Constantes contenant toutes les
+ *         constantes de base au niveau du jeu
  */
 public class Constantes {
 
@@ -53,13 +55,13 @@ public class Constantes {
 	/** Le cout en �nergie d'un d�placement de char */
 	private final static int COUT_DEPLACEMENT_CHAR = 5;
 
-	/** Les d�gats subits par le tireur */
+	/** Les d�gats infliges par le tireur */
 	private final static int DEGATS_TIREUR = 3;
 
-	/** Les d�gats subits par le piegeur */
+	/** Les d�gats infliges par le piegeur */
 	private final static int DEGATS_PIEGEUR = 2;
 
-	/** Les d�gats subits par le char */
+	/** Les d�gats infliges par le char */
 	private final static int DEGATS_CHAR = 6;
 
 	private static final int MINES_INIT = 10;
@@ -115,38 +117,35 @@ public class Constantes {
 	public static int getCoutTirChar() {
 		return COUT_CHAR;
 	}
-	
-	
-	public int getCoutAttaque(Robot r){
-		if(r instanceof Tireur){
+
+	public int getCoutAttaque(Robot r) {
+		if (r instanceof Tireur) {
 			return COUT_TIR;
 		}
-		
-		else if(r instanceof Piegeur){
+
+		else if (r instanceof Piegeur) {
 			return COUT_MINE;
 		}
-		
+
 		else {
 			return COUT_CHAR;
 		}
-		
+
 	}
-		
-	
-	public int getCoutDeplacement(Robot r){
-		if(r instanceof Tireur){
+
+	public int getCoutDeplacement(Robot r) {
+		if (r instanceof Tireur) {
 			return COUT_DEPLACEMENT_TIREUR;
 		}
-		
-		else if(r instanceof Piegeur){
+
+		else if (r instanceof Piegeur) {
 			return COUT_DEPLACEMENT_PIEGEUR;
 		}
-		
+
 		else {
 			return COUT_DEPLACEMENT_CHAR;
 		}
-		
-		
+
 	}
 
 	public static int getCoutDeplacementTireur() {
