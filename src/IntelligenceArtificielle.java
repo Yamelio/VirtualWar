@@ -43,6 +43,7 @@ public class IntelligenceArtificielle {
 	 * @return Action (déplacement ou attaque)
 	 */
 	public Action Jouer(){
+		checkMorts();
 		Robot r = choixRobotJoue();
 		String action = choixAction(r);
 		if(action == "Deplacement"){
@@ -113,8 +114,8 @@ public class IntelligenceArtificielle {
 			points -= 20;
 		}
 		
-		if(r instanceof Piegeur && choixCibleMine(r) == null){
-			points -= 50;
+		if(r instanceof Piegeur && choixCibleMine(r) == null && choixCibleDeplacement(r) == null){
+			points =0;
 		}
 		
 		if(choixCibleDeplacement(r) == null){
@@ -140,7 +141,8 @@ public class IntelligenceArtificielle {
 			return "Deplacement";
 		}
 		
-		else if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie() >= constantes.getCoutMine() && distancePosition(robot.getPosition(), robotPlusPres(robot))<= 5 && distanceBase(robot)>= 2){ 
+		else if(robot instanceof Piegeur && robot.getNbMines() > 0 && robot.getEnergie() >= constantes.getCoutMine() && 
+				distancePosition(robot.getPosition(), robotPlusPres(robot))<= 5 && distanceBase(robot)>= 2 && choixCibleMine(robot) != null){ 
 			return "Attaque";
 		}
 		
@@ -232,7 +234,7 @@ public class IntelligenceArtificielle {
 
 			
 			List<Position> depSansMines = new ArrayList<Position>();
-			List<Position> liste = new ArrayList<Position>();
+			List<Position> liste;
 			
 			for(Position p :depPossible){
 				if(!contientMine(p)){
@@ -242,9 +244,7 @@ public class IntelligenceArtificielle {
 			
 			if(depSansMines.size()>0){
 				liste = depSansMines;
-			}
-			
-			else{
+			}else{
 				liste = depPossible;
 			}
 			
@@ -281,7 +281,7 @@ public class IntelligenceArtificielle {
 
 			
 			List<Position> depSansMines = new ArrayList<Position>();
-			List<Position> liste = new ArrayList<Position>();
+			List<Position> liste;
 			
 			for(Position p :depPossible){
 				if(!contientMine(p)){
@@ -294,6 +294,7 @@ public class IntelligenceArtificielle {
 			}
 			
 			else{
+				System.out.println("dep avec mines");
 				liste = depPossible;
 			}
 			
@@ -308,7 +309,6 @@ public class IntelligenceArtificielle {
 			return depPlusProche;
 
 		}
-
 	}
 	
 	public Position choixCibleMine(Robot robot){
@@ -656,6 +656,18 @@ public class IntelligenceArtificielle {
 		return this.equipe;
 	}
 	
+	public void checkMorts(){
+		List<Robot> toRemove = new ArrayList<Robot>();
+		for(Robot r:robots){
+			if(r.getEnergie()<=0){
+				toRemove.add(r);
+			}
+		}
+		for(Robot r : toRemove){
+			retirerRobot(r);
+		}
+	}
+	
 	public void retirerRobot(Robot robot){
 		int idx = -1;
 		for(int i = 0; i<robots.size();i++){
@@ -666,5 +678,5 @@ public class IntelligenceArtificielle {
 		robots.remove(idx);
 	}
 
-
+	
 }

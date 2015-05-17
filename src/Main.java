@@ -390,8 +390,6 @@ public class Main {
 		for (Robot r : toRemove) {
 			Position.getPlateau().getListeRobot().remove(r);
 		}
-		System.out.println("AliveJ1 :" + aliveJ1);
-		System.out.println("AliveJ2 :" + aliveJ2);
 
 		if (aliveJ1 == 0 && aliveJ2 == 0) {
 			return -1;
