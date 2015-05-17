@@ -310,7 +310,7 @@ public class Main {
 								.getId());
 					}
 					try {
-						Thread.sleep(500);
+						Thread.sleep(2000);
 					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}
@@ -327,7 +327,7 @@ public class Main {
 								.getId());
 					}
 					try {
-						Thread.sleep(500);
+						Thread.sleep(2000);
 					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}
@@ -683,7 +683,7 @@ public class Main {
 			int nbRobotsJ2 = s.nextInt();
 
 			p = new Plateau(largeur, hauteur, obstacles);
-			nbrIA = Integer.toString(s.nextInt());
+			nbrIA = s.next();
 
 			if (nbrIA.equals("0") || nbrIA.equals("1")) {
 				for (int i = 0; i < nbRobotsJ1; i++) {
@@ -714,12 +714,12 @@ public class Main {
 			}
 
 			if (nbrIA.equals("1")) {
-				String form1 = Integer.toString(s.nextInt());
+				String form1 = s.next();
 				initIA(nbrIA, form1, null);
 			}
 			if (nbrIA.equals("2")) {
-				String form1 = Integer.toString(s.nextInt());
-				String form2 = Integer.toString(s.nextInt());
+				String form1 = s.next();
+				String form2 = s.next();
 				initIA(nbrIA, form1, form2);
 			}
 

@@ -604,7 +604,6 @@ public class IntelligenceArtificielle {
 			c = formation.charAt(i);
 			compt = (int)c -48; //car le chiffre 1 en ascii est codé par 48
 			for(int j = 0; j<compt;j++){
-
 				if(i == 0){
 					r.add(new Tireur(equipe));
 				}
