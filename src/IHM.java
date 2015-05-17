@@ -52,6 +52,8 @@ public class IHM {
 		JScrollPane panelPlateau = new JScrollPane();
 		panelPlateau.setBorder(BorderFactory
 				.createTitledBorder("Plateau de Jeu"));
+		//Ajout du truc du chef de projet
+		panelPlateau.add(TestIHM.start());
 
 		// Panel de droite
 		JPanel panelInformation = new JPanel();
