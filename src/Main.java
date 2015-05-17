@@ -300,7 +300,7 @@ public class Main {
 						robotCible = robotsInit.get(choixCible.getRobot().getId());
 					}
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(500);
 					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}
@@ -315,7 +315,7 @@ public class Main {
 						robotCible = robotsInit.get(choixCible.getRobot().getId());
 					}
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(500);
 					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}

@@ -66,7 +66,7 @@ public class IntelligenceArtificielle {
 		
 		else if(action == "Attaque" && r instanceof Piegeur){
 			try {
-				return new Attaque(r, choixCibleDeplacement(r)); // utilise choixCibleDeplacement() pour poser la mine au plus près du robot adverse
+				return new Attaque(r, choixCibleMine(r)); 
 			} catch (Erreur e) {
 				e.printStackTrace();
 			}
@@ -113,6 +113,10 @@ public class IntelligenceArtificielle {
 			points -= 20;
 		}
 		
+		if(r instanceof Piegeur && choixCibleMine(r) == null){
+			points -= 50;
+		}
+		
 		if(choixCibleDeplacement(r) == null){
 			points = 0;
 		}
@@ -149,6 +153,26 @@ public class IntelligenceArtificielle {
 		}
 	}
 	
+	
+	/**
+	 * Verfie si il y a une mine visible pour l'IA sur une case (une mine de son équip)
+	 * @param Position a tester
+	 * @return boolean
+	 */
+	public boolean contientMine(Position p){
+		if(p.estMine()){
+			if(p.getEquipe() == this.getEquipe()){
+				return true;
+			}
+			else{
+				return false;
+			}			
+		}
+		else{
+			return false;
+		}		
+	}
+
 
 	/**
 	 * Choisit la meilleur case où déplacer le robot
@@ -200,16 +224,33 @@ public class IntelligenceArtificielle {
 						}
 					}	
 				}
-			Position depPlusProche;
-
-			try {
-				depPlusProche = depPossible.get(0);
-			} catch (IndexOutOfBoundsException e) {
+			
+			
+			if(depPossible.size() == 0){
 				return null;
 			}
 
-			int distance = distancePosition(depPossible.get(0), cible);
-			for (Position p : depPossible) {
+			
+			List<Position> depSansMines = new ArrayList<Position>();
+			List<Position> liste = new ArrayList<Position>();
+			
+			for(Position p :depPossible){
+				if(!contientMine(p)){
+					depSansMines.add(p);
+				}
+			}
+			
+			if(depSansMines.size()>0){
+				liste = depSansMines;
+			}
+			
+			else{
+				liste = depPossible;
+			}
+			
+			Position depPlusProche = liste.get(0);
+			int distance = distancePosition(liste.get(0), cible);
+			for (Position p : liste) {
 				if (distancePosition(p, cible) < distance) {
 					depPlusProche = p;
 					distance = distancePosition(p, cible);
@@ -228,37 +269,89 @@ public class IntelligenceArtificielle {
 					posTemp = new Position(robot.getPosition().getX() + i,robot.getPosition().getY()+j);
 					strTemp = plateau.posToString(posTemp);
 					posTemp = plateau.getCarte().get(strTemp);
-					if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && (!posTemp.estBase() && posTemp.getEquipe() != robot.getEquipe()) && (!posTemp.estMine() && posTemp.getEquipe() != robot.getEquipe())){
+					if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && !posTemp.estBase()){
 						depPossible.add(posTemp);
 					}
 				}
 			}
 			
-			Position depPlusProche;
-			
-			try{
-				depPlusProche = depPossible.get(0);
-			} catch (IndexOutOfBoundsException e){
+			if(depPossible.size() == 0){
 				return null;
 			}
-				
-				
-				
-				
-			int distance = distancePosition(depPossible.get(0), cible);
-			for(Position p:depPossible){
-				if(distancePosition(p, cible) < distance){
+
+			
+			List<Position> depSansMines = new ArrayList<Position>();
+			List<Position> liste = new ArrayList<Position>();
+			
+			for(Position p :depPossible){
+				if(!contientMine(p)){
+					depSansMines.add(p);
+				}
+			}
+			
+			if(depSansMines.size()>0){
+				liste = depSansMines;
+			}
+			
+			else{
+				liste = depPossible;
+			}
+			
+			Position depPlusProche = liste.get(0);
+			int distance = distancePosition(liste.get(0), cible);
+			for (Position p : liste) {
+				if (distancePosition(p, cible) < distance) {
 					depPlusProche = p;
 					distance = distancePosition(p, cible);
 				}
 			}
-			
-
 			return depPlusProche;
 
 		}
 
 	}
+	
+	public Position choixCibleMine(Robot robot){
+		Position posTemp;
+		String strTemp;
+		Position cible = robotPlusPres(robot);
+		
+		List<Position> depPossible = new ArrayList<Position>();
+		
+		for(int i = -1; i <= 1;i++){
+			for(int j = -1; j <= 1;j++){
+				posTemp = new Position(robot.getPosition().getX() + i,robot.getPosition().getY()+j);
+				strTemp = plateau.posToString(posTemp);
+				posTemp = plateau.getCarte().get(strTemp);
+				if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && !posTemp.estBase() && !posTemp.estMine()){
+					depPossible.add(posTemp);
+				}
+			}
+		}
+		
+		if(depPossible.size() == 0){
+			return null;
+		}
+
+		
+		
+		Position depPlusProche = depPossible.get(0);
+		int distance = distancePosition(depPossible.get(0), cible);
+		for (Position p : depPossible) {
+			if (distancePosition(p, cible) < distance) {
+				depPlusProche = p;
+				distance = distancePosition(p, cible);
+			}
+		}
+		return depPlusProche;
+
+	}
+
+	
+	
+	
+	
+	
 	
 	/**
 	 * Calcul la distance entre 2 case du plateau
@@ -557,6 +650,20 @@ public class IntelligenceArtificielle {
 	
 	public List<Robot> getRobots(){
 		return this.robots;
+	}
+	
+	public int getEquipe(){
+		return this.equipe;
+	}
+	
+	public void retirerRobot(Robot robot){
+		int idx = -1;
+		for(int i = 0; i<robots.size();i++){
+			if(robot.equals(robots.get(i))){
+				idx = i;
+			}
+		}
+		robots.remove(idx);
 	}
 
 
