@@ -381,7 +381,7 @@ public class IHM {
 			JFrame back = new JFrame("");
 			back.getContentPane().add(this);
 			back.setLocation(0, 0);
-			back.setSize(500, 500);
+			back.setSize(700, 700);
 			back.setVisible(true);
 			back.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.addMouseMotionListener(new MouseMotionListener() {
