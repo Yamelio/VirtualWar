@@ -177,8 +177,10 @@ public class TestIHM extends JPanel {
 		 * catch (InterruptedException e) { e.printStackTrace(); } }
 		 */
 	}
-
-	public static void main(String[] args) {
+		
+	
+	//Cette procedure remplace le main initial
+	public static TestIHM start() {
 		p = new Plateau(5, 5, 0);
 		p.initObstacles();
 		p.ajouterListeRobot(new Tireur(0));
@@ -197,6 +199,6 @@ public class TestIHM extends JPanel {
 		} catch (Erreur e) {
 			e.printStackTrace();
 		}
-		new TestIHM();
+		return new TestIHM();
 	}
 }
