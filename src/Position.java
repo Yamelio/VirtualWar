@@ -117,6 +117,11 @@ public class Position {
 		return false;
 	}
 
+	/**
+	 * Fonction qui retourne le robot se trouvant sur cette position, null si il n'y en a pas
+	 * 
+	 * @return boolean Retourne le robot sur la pos, null s'il n'y en a pas
+	 */
 	public Robot getRobot() {
 		for (int i = 0; i < p.getListeRobot().size(); i++) {
 			if (p.getListeRobot().get(i).getPosition().equals(this))

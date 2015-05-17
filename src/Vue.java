@@ -1,7 +1,7 @@
 /**
  * 
- * @author Les Quatre Cavaliers de l'Apocalypse
- * Cette classe représente un objet vue définit par son plateau et son équipe
+ * @author Les Quatre Cavaliers de l'Apocalypse Cette classe représente un objet
+ *         vue définit par son plateau et son équipe
  *
  */
 
@@ -42,10 +42,18 @@ public class Vue {
 		return this.plateau;
 	}
 
+	/**
+	 * 
+	 * @return l'equipe de la vue
+	 */
 	public int getEquipe() {
 		return this.equipe;
 	}
 
+	/**
+	 * 
+	 * @return une représentation texte de la vue
+	 */
 	public String toString() {
 		String s = "\t";
 		for (int k = 0; k < plateau.getLargeur(); k++) {

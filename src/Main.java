@@ -206,7 +206,7 @@ public class Main {
 			p.afficherRobotsJ1();
 			p.afficherRobotsJ2();
 
-			if (!actions.isEmpty() && robotCible != null) {
+			if (!actions.isEmpty()) {
 
 				if (actions.get(actions.size() - 1) instanceof Deplacement) {
 					System.out.println("Le robot " + robotChoisi.getId()
@@ -218,12 +218,13 @@ public class Main {
 
 						+ " a posï¿½ une mine");
 					} else {
-						// int IdRobot =
-						// p.getCarte().get(p.posToString(choixCible)).getRobot().getId();
-						System.out.println("Le robot " + robotChoisi.getId()
+						if (robotCible != null) {
+							System.out.println("Le robot "
+									+ robotChoisi.getId()
 
-						+ " a attaque le robot " + robotCible.getId());
-
+									+ " a attaque le robot "
+									+ robotCible.getId());
+						}
 					}
 				}
 			}
@@ -404,6 +405,11 @@ public class Main {
 		return 2;
 	}
 
+	/**
+	 * Vérifie que le robot en paramètre peut faire quelque chose
+	 * 
+	 * @return boolean true si peut agir, false si non
+	 */
 	private static boolean isNotLegume(Robot r) {
 		if (deplacementPossible(r) || robotAPortee(r)) {
 			if (r instanceof Tireur) {
@@ -424,6 +430,11 @@ public class Main {
 		return false;
 	}
 
+	/**
+	 * Vérifie si le robot a un autre robot en vue
+	 * 
+	 * @return boolean true si au moins un robot en vue
+	 */
 	public static boolean robotAPortee(Robot robot) {
 		int portee;
 		List<Robot> robotsPortee = new ArrayList<Robot>();
@@ -461,13 +472,18 @@ public class Main {
 
 			if (posTemp != null && posTemp.estRobot()
 					&& champDegage(robot, posTemp.getRobot())) {
-				robotsPortee.add(posTemp.getRobot());
+				return true;
 			}
 		}
 
 		return robotsPortee.size() == 0;
 	}
 
+	/**
+	 * Vérifie si le robot a le champ libre pour tirer sur un autre robot
+	 * 
+	 * @return boolean true si le champ est libre
+	 */
 	public static boolean champDegage(Robot r, Robot cible) {
 		Position posTemp;
 		String strTemp;
@@ -515,6 +531,11 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Vérifie si le robot peut se déplacer sur au moins une case
+	 * 
+	 * @return boolean true si il y a au moins un déplacement possible
+	 */
 	private static boolean deplacementPossible(Robot r) {
 		Position tmp = r.getPosition();
 
@@ -600,6 +621,12 @@ public class Main {
 		return false;
 	}
 
+	/**
+	 * Vérifie le nombre total de robots en dehors de la base pour l'équipe du
+	 * robot passé en paramètre.
+	 * 
+	 * @return boolean true si il y a au moins 2 robots hors de la base
+	 */
 	private static boolean checkTotalRobots(Robot rob) {
 		int equipe = rob.getEquipe();
 		int cpt = 0;
@@ -612,6 +639,9 @@ public class Main {
 		return cpt > 1;
 	}
 
+	/**
+	 * Sauvegarde la partie dans le fichier save/sauvegarte.txt
+	 */
 	public static void sauvegarde() {
 		try {
 			File save = new File("save/sauvegarde.txt");
@@ -670,6 +700,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Charge la partie à partir du fichier save/sauvegarde.txt
+	 */
 	public static void chargement() {
 		try {
 
@@ -772,6 +805,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Charge une ou deux composition(s) pour l'intelligence artificielle
+	 */
 	public static void initIA(String nbrIA, String form1, String form2) {
 		if (nbrIA.equals("1")) {
 			IA1 = new IntelligenceArtificielle(p, 1, form1);
@@ -802,6 +838,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Créé une ou plusieurs composition(s) pour l'intelligence artificielle
+	 */
 	public static void initIA(String nbrIA) {
 		if (nbrIA.equals("1")) {
 			IA1 = new IntelligenceArtificielle(p, 1);
@@ -832,6 +871,11 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Vérifie que le joueur passé en paramètre est humain
+	 * 
+	 * @return boolean true si le joueur est humain
+	 */
 	public static boolean isJoueur(String joueur, String nbrIA) {
 		if (joueur == "J1" && (nbrIA.equals("1") || nbrIA.equals("0"))) {
 			return true;

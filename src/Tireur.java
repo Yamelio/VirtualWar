@@ -16,7 +16,6 @@ public class Tireur extends Robot {
 		setEnergie(Constantes.getEnergieInitialeTireur());
 	}
 
-	@Override
 	public int getNbMines() {
 		return 0;
 	}

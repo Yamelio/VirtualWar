@@ -227,7 +227,7 @@ public class Plateau {
 	}
 
 	/**
-	 * Procedure qui ajoute le robot entrée en paramètre à la liste des robots
+	 * Procedure qui ajoute le robot entré en paramètre à la liste des robots
 	 * présent sur le plateau
 	 * 
 	 * @param Robot

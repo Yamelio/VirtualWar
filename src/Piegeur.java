@@ -26,7 +26,7 @@ public class Piegeur extends Robot {
 	 */
 	public void recharger() {
 		super.recharger();
-		this.nbMines = 10;
+		this.nbMines = Constantes.getMinesInit();
 	}
 
 	public int getNbMines() {

@@ -68,7 +68,7 @@ public abstract class Robot {
 	}
 
 	/**
-	 * Recharge en vie, et en mine le cas échéant, le robot
+	 * Recharge en vie le robot
 	 */
 	public void recharger() {
 		this.energie += Constantes.getRecharge();
