@@ -29,6 +29,8 @@ public class Attaque extends Action {
 			if (this.cible.estObstacle()) {
 				throw new Erreur("Cible occupee");
 			}
+		} else if (!cible.estRobot()) {
+			throw new Erreur("Cible vide");
 		}
 		int energieInit = getRobot().getEnergie();
 		if (robot.getPosition().estBase()) {

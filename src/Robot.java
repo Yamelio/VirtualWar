@@ -84,4 +84,17 @@ public abstract class Robot {
 
 	public abstract String toString();
 
+	public int getEnergieMax() {
+		if (this instanceof Piegeur) {
+			return Constantes.getEnergieInitialePiegeur();
+		}
+		if (this instanceof Char) {
+			return Constantes.getEnergieInitialeChar();
+		}
+		if (this instanceof Tireur) {
+			return Constantes.getEnergieInitialeTireur();
+		}
+		return 0;
+	}
+
 }
