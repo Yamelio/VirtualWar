@@ -46,7 +46,7 @@ public class IHM {
 
 	protected int hauteurFenetre = 700;
 	protected int largeurFenetre = 900;
-
+	static int debugCpt = 0;
 	private File currentFile = null;
 	private static JTextArea historique = new JTextArea(" ");
 	private JFrame f;
@@ -59,6 +59,9 @@ public class IHM {
 	static JLabel affJoueurCourant = new JLabel(" ");
 	static JPanel panelRobot = new JPanel();
 	static boolean tactique = false;
+	static JScrollPane panelPlateau = new JScrollPane();
+	static int largeurDispo = 0;
+	static int hauteurDispo = 0;
 
 	public IHM() {
 		f = new JFrame("VirtualWar");
@@ -70,7 +73,6 @@ public class IHM {
 		JPanel panelPrincipale = new JPanel();
 
 		// Panel de gauche
-		JScrollPane panelPlateau = new JScrollPane();
 		panelPlateau.setBorder(BorderFactory
 				.createTitledBorder("Plateau de Jeu"));
 		// Ajout du truc du chef de projet
@@ -173,7 +175,6 @@ public class IHM {
 		});
 		JButton boutonTactique = new JButton("Mode tactique");
 		boutonTactique.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				tactique = !tactique;
@@ -451,8 +452,7 @@ public class IHM {
 
 		List<Case> liste = new ArrayList<Case>();
 		private Case survol;
-		private int hauteur = 100;
-		private int largeur = 100;
+		private int taille = 100;
 		private static List<Action> actions = new ArrayList<Action>();
 		private static Plateau p;
 		private static Robot robotChoisi = null;
@@ -465,31 +465,15 @@ public class IHM {
 		public PlateauIHM() {
 			super();
 
-			for (int i = 1; i <= Position.getPlateau().getLargeur(); i++) {
-				for (int k = 1; k <= Position.getPlateau().getHauteur(); k++) {
-					int isoX = i * hauteur / 2 - k * largeur / 2;
-					int isoY = (i * hauteur / 2 + k * largeur / 2) / 2;
-					liste.add(new Case(
-							(new Polygon(new int[] { isoX + 250,
-									isoX + 250 + (largeur / 2),
-									isoX + 250 + largeur,
-									isoX + 250 + (largeur / 2) }, new int[] {
-									isoY + (3 * hauteur) / 4, isoY + hauteur,
-									isoY + (3 * hauteur) / 4,
-									isoY + (hauteur / 2) }, 4)), Position
-									.getPlateau()
-									.getCarte()
-									.get(Position.getPlateau().posToString(
-											new Position(i, k)))));
-				}
-			}
+			setCoordCases();
+
 			JFrame back = new JFrame("");
 			back.getContentPane().add(this);
 			back.setLocation(0, 0);
-			back.setSize(700, 700);
+			back.setSize(2000, 2000);
 			back.setVisible(true);
 			back.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			this.setVisible(true);
+			// this.setVisible(true);
 
 			this.addMouseMotionListener(new MouseMotionListener() {
 
@@ -499,6 +483,7 @@ public class IHM {
 
 				public void mouseMoved(MouseEvent e) {
 					survol = null;
+					setCoordCases();
 					for (Case c : liste) {
 						if (c.contains(e.getX(), e.getY())) {
 							survol = c;
@@ -663,6 +648,53 @@ public class IHM {
 			});
 		}
 
+		private void setCoordCases() {
+			largeurDispo = panelPlateau.getWidth();
+			hauteurDispo = panelPlateau.getHeight();
+			int hauteur = (Position.getPlateau().getHauteur());
+			int largeur = (Position.getPlateau().getLargeur());
+			int decalageX = 0;
+			int decalageY = 0;
+			taille = 0;
+			while (true) {
+				if ((taille * (hauteur + largeur - 1) > largeurDispo)
+						|| (taille * (hauteur + largeur - 1) > (hauteurDispo * 4) / 3)) {
+					taille = taille - 1;
+					break;
+				}
+				taille++;
+			}
+			taille = taille * 2;
+			decalageX = (taille * (hauteur - 1)) / 2;
+			int hauteurOccupee = hauteurDispo - ((largeur + hauteur) / 2)
+					* ((4 * taille) / 3);
+			if (hauteurOccupee >= (largeurDispo - taille)) {
+				decalageY = (hauteurOccupee) / 2;
+			}
+			if (taille <= 0) {
+				taille = 1;
+			}
+			liste = new ArrayList<>();
+			for (int i = 1; i <= Position.getPlateau().getLargeur(); i++) {
+				for (int k = 1; k <= Position.getPlateau().getHauteur(); k++) {
+					int isoX = i * taille / 2 - k * taille / 2;
+					int isoY = (i * taille / 2 + k * taille / 2) / 2;
+					liste.add(new Case((new Polygon(new int[] {
+							isoX + decalageX, isoX + decalageX + (taille / 2),
+							isoX + decalageX + taille,
+							isoX + decalageX + (taille / 2) }, new int[] {
+							isoY + decalageY + (3 * taille) / 4,
+							isoY + decalageY + taille,
+							isoY + decalageY + (3 * taille) / 4,
+							isoY + decalageY + (taille / 2) }, 4)), Position
+							.getPlateau()
+							.getCarte()
+							.get(Position.getPlateau().posToString(
+									new Position(i, k)))));
+				}
+			}
+		}
+
 		public void paint(Graphics g) {
 			super.paintComponent(g);
 			final Image base1 = Toolkit.getDefaultToolkit().getImage(
@@ -674,20 +706,19 @@ public class IHM {
 			final Image tireur2 = Toolkit.getDefaultToolkit().getImage(
 					"img/tireur2.png");
 			final Image char1 = Toolkit.getDefaultToolkit().getImage(
-					"img/3.png");
+					"img/char1.png");
 			final Image char2 = Toolkit.getDefaultToolkit().getImage(
-					"img/1.png");
+					"img/char2.png");
 			final Image piegeur1 = Toolkit.getDefaultToolkit().getImage(
 					"img/piegeur1.png");
 			final Image piegeur2 = Toolkit.getDefaultToolkit().getImage(
 					"img/piegeur2.png");
 			final Image obstacle1 = Toolkit.getDefaultToolkit().getImage(
 					"img/obstacle1.png");
-			final Image obstacle2 = Toolkit.getDefaultToolkit().getImage(
-					"img/obstacle2.png");
 			final Image fond = Toolkit.getDefaultToolkit().getImage(
 					"img/fond1.jpg");
-			g.drawImage(fond, 10, 10, 700, 700, this);
+			g.drawImage(fond, 10, 10, largeurDispo - 10, hauteurDispo - 10,
+					this);
 			g.setColor(Color.BLACK);
 			for (Case c : liste) {
 				if (survol != null) {
@@ -707,11 +738,11 @@ public class IHM {
 			for (Case c : liste) {
 				if (c.getPosition().estBase()) {
 					if (c.getPosition().getEquipe() == 0) {
-						g.drawImage(base1, c.xpoints[0],
-								c.ypoints[1] - hauteur, hauteur, largeur, this);
+						g.drawImage(base1, c.xpoints[0], c.ypoints[1] - taille,
+								taille, taille, this);
 					} else {
-						g.drawImage(base2, c.xpoints[0],
-								c.ypoints[1] - hauteur, hauteur, largeur, this);
+						g.drawImage(base2, c.xpoints[0], c.ypoints[1] - taille,
+								taille, taille, this);
 					}
 				} else {
 					if (c.getPosition().estRobot()) {
@@ -719,31 +750,31 @@ public class IHM {
 						if (r instanceof Char) {
 							if (r.getEquipe() == 0) {
 								g.drawImage(char1, c.xpoints[0], c.ypoints[1]
-										- hauteur, hauteur, largeur, this);
+										- taille, taille, taille, this);
 							} else {
 								g.drawImage(char2, c.xpoints[0], c.ypoints[1]
-										- hauteur, hauteur, largeur, this);
+										- taille, taille, taille, this);
 							}
 						} else if (r instanceof Piegeur) {
 							if (r.getEquipe() == 0) {
 								g.drawImage(piegeur1, c.xpoints[0],
-										c.ypoints[1] - hauteur, hauteur,
-										largeur, this);
+										c.ypoints[1] - taille, taille, taille,
+										this);
 							} else {
 								g.drawImage(piegeur2, c.xpoints[0],
-										c.ypoints[1] - hauteur, hauteur,
-										largeur, this);
+										c.ypoints[1] - taille, taille, taille,
+										this);
 							}
 						} else {
 							if (r instanceof Tireur) {
 								if (r.getEquipe() == 0) {
 									g.drawImage(tireur1, c.xpoints[0],
-											c.ypoints[1] - hauteur, hauteur,
-											largeur, this);
+											c.ypoints[1] - taille, taille,
+											taille, this);
 								} else {
 									g.drawImage(tireur2, c.xpoints[0],
-											c.ypoints[1] - hauteur, hauteur,
-											largeur, this);
+											c.ypoints[1] - taille, taille,
+											taille, this);
 								}
 							}
 						}
@@ -751,7 +782,7 @@ public class IHM {
 					} else if (c.getPosition().estObstacle()) {
 						if (!tactique) {
 							g.drawImage(obstacle1, c.xpoints[0], c.ypoints[1]
-									- hauteur, hauteur, largeur, this);
+									- taille, taille, taille, this);
 						} else {
 							g.setColor(Color.GRAY);
 							g.fillPolygon(c);
@@ -1413,7 +1444,8 @@ public class IHM {
 					}
 					p.recharges();
 				}
-				joueur = actions.get(actions.size() - 1).getRobot().getEquipe() == 0;
+				joueur = !(actions.get(actions.size() - 1).getRobot()
+						.getEquipe() == 0);
 
 			} catch (Exception e) {
 				e.printStackTrace();
