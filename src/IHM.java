@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
@@ -23,12 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -39,8 +43,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import sun.security.util.Length;
 
 public class IHM {
 
@@ -448,6 +455,11 @@ public class IHM {
 			public Position getPosition() {
 				return p;
 			}
+
+			public Component getRobotsInBase() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		}
 
 		List<Case> liste = new ArrayList<Case>();
@@ -455,6 +467,7 @@ public class IHM {
 		private int taille = 100;
 		private static List<Action> actions = new ArrayList<Action>();
 		private static Plateau p;
+		private static Base baseSelectionne;
 		private static Robot robotChoisi = null;
 		private static Robot robotCible = null;
 		private static List<Robot> robotsInit;
@@ -468,6 +481,10 @@ public class IHM {
 			setCoordCases();
 
 			JFrame back = new JFrame("");
+			JScrollPane sp = new JScrollPane();
+			JDialog dial = new JDialog();
+			String[] listNomRobot;
+			JList listeRobotDansLaBase = null;
 			back.getContentPane().add(this);
 			back.setLocation(0, 0);
 			back.setSize(2000, 2000);
@@ -515,8 +532,8 @@ public class IHM {
 				}
 
 				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
+				public void mouseEntered(MouseEvent e){
+					
 
 				}
 
@@ -542,7 +559,19 @@ public class IHM {
 									panelRobot.setBorder(BorderFactory
 											.createTitledBorder("Robot "
 													+ robotChoisi.getId()));
-
+								}else if (c.getPosition().estBase()){
+									String[] listNomRobot = new String[((Base) survol.getPosition()).getRobotsInBase().size()];
+									for(int i=0; i<listNomRobot.length;i++){
+										listNomRobot[i] = "" + ((Base) survol.getPosition()).getRobotsInBase().get(i).toString();
+										
+									}
+									JList listeRobotDansLaBase = new JList(listNomRobot);
+									if(dial.isVisible()){
+										dial.setVisible(false);
+									}else{
+										dial.setVisible(true);
+									}
+									
 								} else {
 									choixCible = c.getPosition();
 								}
@@ -624,6 +653,11 @@ public class IHM {
 							joueur = !joueur;
 							PlateauIHM.p.recharges();
 							PlateauIHM.sauvegarde();
+							sp.add(listeRobotDansLaBase);
+							dial.add(sp);
+							dial.setLocationRelativeTo(back);
+							dial.setUndecorated(true);
+							dial.pack();
 							repaint();
 							fin = PlateauIHM.checkFin();
 							switch (fin) {
