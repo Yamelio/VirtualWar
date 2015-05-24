@@ -7,7 +7,7 @@
 import java.util.ArrayList;
 
 public class Base extends Position {
-	
+
 	/** La liste des robots presents en base */
 	private ArrayList<Robot> robots;
 
@@ -61,9 +61,10 @@ public class Base extends Position {
 			robots.remove(t);
 		}
 	}
-	
+
 	/**
 	 * Retourne la liste des robots presents en base
+	 * 
 	 * @return la liste des robots presents en base
 	 */
 	public ArrayList<Robot> getRobotsInBase() {
@@ -97,5 +98,13 @@ public class Base extends Position {
 				}
 			}
 		}
+	}
+
+	public String getDescriptionRobots() {
+		String res = "/// ";
+		for (Robot r : robots) {
+			res +=(r.getDescription(false))+ " /// ";
+		}
+		return res;
 	}
 }
