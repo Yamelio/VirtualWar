@@ -49,9 +49,9 @@ public class IHM {
 	protected int hauteurFenetre = 700;
 	protected int largeurFenetre = 900;
 	static int debugCpt = 0;
-	private File currentFile = null;
-	private static JTextArea historique = new JTextArea(" ");
-	private JFrame f;
+	public File currentFile = null;
+	public static JTextArea historique = new JTextArea(" ");
+	public JFrame f;
 	static int choixAction = 0;
 	public static Position choixCible;
 	public static boolean joueur = false;
@@ -66,12 +66,13 @@ public class IHM {
 	static int hauteurDispo = 0;
 	static Vue vueJ1;
 	static Vue vueJ2;
+	public Menu menu = new Menu();
 
 	public IHM() {
 		f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
 		f.setMinimumSize(new Dimension(500, 400));
-		f.setJMenuBar(MenuBar());
+		f.setJMenuBar(menu.menuBar);
 
 		// Panel principale
 		JPanel panelPrincipale = new JPanel();
@@ -239,205 +240,12 @@ public class IHM {
 		panelInformation.add(panelAction, BorderLayout.CENTER);
 		panelInformation.add(panelHistorique, BorderLayout.SOUTH);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.pack();
 		f.setVisible(true);
+		f.pack();
+		
 	}
 
-	public JMenuBar MenuBar() {
-		// Build the menu bar
-		JMenuBar menuBar = new JMenuBar();
-
-		// Build new tab "Menu"
-		JMenu Menu = new JMenu("Menu");
-		Menu.getAccessibleContext().setAccessibleDescription(
-				"The principal menu in this program");
-		menuBar.add(Menu);
-
-		// Build new tab "Help"
-		JMenu Help = new JMenu("Aide");
-		Menu.getAccessibleContext().setAccessibleDescription(
-				"The help menu in this program");
-		menuBar.add(Help);
-
-		// Build new tab "About us"
-		JMenu AboutUs = new JMenu("A propos de nous");
-		Menu.getAccessibleContext().setAccessibleDescription(
-				"The link to developper page");
-		menuBar.add(AboutUs);
-
-		// Build the item "Nouveau" in "menu"
-		JMenuItem menuNouveau = new JMenuItem("Nouveau");
-		menuNouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-				InputEvent.CTRL_DOWN_MASK));
-		menuNouveau.getAccessibleContext().setAccessibleDescription(
-				"Open a new windows");
-		Menu.add(menuNouveau);
-		menuNouveau.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new IHM();
-			}
-		});
-
-		// Build the item "Ouvrir" in "menu"
-		JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
-		menuOuvrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-				InputEvent.CTRL_DOWN_MASK));
-		menuOuvrir.getAccessibleContext().setAccessibleDescription(
-				"Open a pevious game");
-		Menu.add(menuOuvrir);
-		menuOuvrir.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser();
-				File file = fc.getSelectedFile();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"Fichier de sauvegarde VirtualWar (.txt)", "txt",
-						"text");
-				fc.setFileFilter(filter);
-				File workingDirectory = new File(System.getProperty("user.dir")
-						+ "/save");
-				fc.setCurrentDirectory(workingDirectory);
-				int returnVal = fc.showOpenDialog(menuOuvrir);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					System.out.println("You chose to open this file: "
-							+ fc.getSelectedFile().getName());
-				}
-				currentFile = file;
-			}
-		});
-
-		// Build the item "Save" in "menu"
-		JMenuItem menuSave = new JMenuItem("Sauvegarder");
-		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				InputEvent.CTRL_DOWN_MASK));
-		menuSave.getAccessibleContext().setAccessibleDescription(
-				"Open current game");
-		Menu.add(menuSave);
-		menuSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (currentFile == null) {
-					JFileChooser fc = new JFileChooser();
-					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-					File workingDirectory = new File(System
-							.getProperty("user.dir") + "/save");
-					fc.setCurrentDirectory(workingDirectory);
-					int returnVal = fc.showSaveDialog(menuSave);
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						// on ecrit dans le fichier comme pour un save as
-						FileWriter writer = null;
-						try {
-							writer = new FileWriter(fc.getSelectedFile());
-							writer.write(historique.getText());
-						} catch (Exception e3) {
-							JOptionPane.showMessageDialog(null,
-									"Imbossible de sauvegarder le fichier",
-									"Erreur", JOptionPane.ERROR_MESSAGE);
-						} finally {
-							try {
-								writer.close();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
-					}
-				} else {
-					// ecriture dans le fichier
-					FileWriter writer = null;
-					try {
-						writer = new FileWriter(currentFile);
-						writer.write(historique.getText());
-					} catch (Exception e3) {
-						JOptionPane.showMessageDialog(null,
-								"Imbossible de sauvegarder le fichier",
-								"Erreur", JOptionPane.ERROR_MESSAGE);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-		});
-
-		// Build the item "SaveAs" in "menu"
-		JMenuItem menuSaveAs = new JMenuItem("Sauvegarder sous");
-		menuSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-				InputEvent.CTRL_DOWN_MASK));
-		menuSave.getAccessibleContext().setAccessibleDescription(
-				"Open current game as");
-		Menu.add(menuSaveAs);
-		menuSaveAs.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser();
-				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				File workingDirectory = new File(System.getProperty("user.dir")
-						+ "/save");
-				fc.setCurrentDirectory(workingDirectory);
-				int returnVal = fc.showSaveDialog(menuSaveAs);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					FileWriter writer = null;
-					try {
-						writer = new FileWriter(fc.getSelectedFile());
-						writer.write(historique.getText());
-					} catch (Exception e3) {
-						JOptionPane.showMessageDialog(null,
-								"Imbossible de sauvegarder le fichier",
-								"Erreur", JOptionPane.ERROR_MESSAGE);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException e1) {
-
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-		});
-
-		// Build the item "plein ecran" in menu
-		Menu.addSeparator();
-		JMenuItem menuPleinEcran = new JMenuItem("Mode plein ecran");
-		menuPleinEcran.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-				InputEvent.CTRL_DOWN_MASK));
-		GraphicsDevice device = GraphicsEnvironment
-				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		menuPleinEcran.getAccessibleContext().setAccessibleDescription(
-				"Ce bouton met je jeu en plein ecran");
-		Menu.add(menuPleinEcran);
-		menuPleinEcran.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					device.setFullScreenWindow(f);
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null,
-							"Impossible de mettre le jeu en plein ecran",
-							"Erreur", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-
-		// Build the item "Exit" in "menu"
-		Menu.addSeparator();
-		JMenuItem menuExit = new JMenuItem("Quitter");
-		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				InputEvent.CTRL_DOWN_MASK));
-		menuExit.getAccessibleContext().setAccessibleDescription(
-				"Ce bouton quitte le programme");
-		Menu.add(menuExit);
-		menuExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-
-		return menuBar;
-	}
+	
 
 	@SuppressWarnings("serial")
 	public static class PlateauIHM extends JPanel {
@@ -477,6 +285,7 @@ public class IHM {
 
 			setCoordCases();
 			JFrame back = new JFrame("");
+			//back.setJMenuBar(menu.getMenu());
 			back.getContentPane().add(this);
 			back.setLocation(0, 0);
 			back.setSize(2000, 2000);
@@ -1695,4 +1504,5 @@ public class IHM {
 			};
 		});
 	}
+	
 }
