@@ -16,6 +16,7 @@ import javax.swing.event.ChangeListener;
 
 public class Parametrage {
 
+	private JPanel panelReglage = new JPanel();
 	private JPanel panelPrincipale = new JPanel();
 	private GridBagConstraints gridConstraint = new GridBagConstraints();
 	private int largeurPlateau = 10;
@@ -29,7 +30,8 @@ public class Parametrage {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
 
-		panelPrincipale.setLayout(new GridLayout(3, 3));
+		panelPrincipale.setLayout(new GridLayout(3, 1));
+		panelReglage.setLayout(new GridLayout(3, 3));
 
 		JLabel labelParametrage = new JLabel("Paramétrage");
 		Font titre = new Font("Arial", Font.PLAIN, 42);
@@ -104,18 +106,21 @@ public class Parametrage {
 		gridConstraint.anchor = GridBagConstraints.LINE_END;
 		gridConstraint.ipadx = 50;
 		gridConstraint.ipady = 50;
-		panelPrincipale.add(labelHauteur, gridConstraint);
-		panelPrincipale.add(sliderHauteur, gridConstraint);
-		panelPrincipale.add(labelValueH, gridConstraint);
-		panelPrincipale.add(labelLargeur, gridConstraint);
-		panelPrincipale.add(sliderLargeur, gridConstraint);
-		panelPrincipale.add(labelValueL, gridConstraint);
-		panelPrincipale.add(labelObstacle, gridConstraint);
-		panelPrincipale.add(sliderObstacle, gridConstraint);
-		panelPrincipale.add(labelValueO, gridConstraint);
+		panelReglage.add(labelHauteur, gridConstraint);
+		panelReglage.add(sliderHauteur, gridConstraint);
+		panelReglage.add(labelValueH, gridConstraint);
+		panelReglage.add(labelLargeur, gridConstraint);
+		panelReglage.add(sliderLargeur, gridConstraint);
+		panelReglage.add(labelValueL, gridConstraint);
+		panelReglage.add(labelObstacle, gridConstraint);
+		panelReglage.add(sliderObstacle, gridConstraint);
+		panelReglage.add(labelValueO, gridConstraint);
+		
 
-		f.getContentPane().add(panelPrincipale, BorderLayout.CENTER);
-		f.add(labelParametrage, BorderLayout.NORTH);
+		panelPrincipale.add(labelParametrage);
+		panelPrincipale.add(panelReglage);
+		panelPrincipale.add(valider);
+		f.getContentPane().add(panelPrincipale);
 		f.setVisible(true);
 		f.pack();
 	}
