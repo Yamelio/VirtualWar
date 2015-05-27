@@ -25,16 +25,20 @@ public class Accueil extends JFrame{
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		GridLayout g = new GridLayout(7, 1);
-		Font titre = new Font("Arial", Font.PLAIN, 42);	
+		Font titre = new Font("Arial", Font.PLAIN, 42);
+		JPanel p = new JPanel();
+		JPanel empty1 = new JPanel();
+		JPanel empty2 = new JPanel();
+		JPanel empty3 = new JPanel();
+		JPanel empty4 = new JPanel();
+		JPanel empty5 = new JPanel();
 		
-		f.setLayout(g);
+		p.setLayout(g);
 		
 		JLabel vw = new JLabel("VirtualWar");
-		vw.setBorder(BorderFactory.createEmptyBorder(30, 30, 30,30));
 		vw.setFont(titre);
 		
 		JButton jouer = new JButton("Jouer");
-		jouer.setBorder(BorderFactory.createEmptyBorder(30, 30, 30,30));
 		jouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Parametrage();
@@ -43,7 +47,6 @@ public class Accueil extends JFrame{
 		});
 		
 		JButton charger = new JButton("Charger");
-		charger.setBorder(BorderFactory.createEmptyBorder(30, 30, 30,30));
 		charger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Main().chargement();
@@ -51,7 +54,6 @@ public class Accueil extends JFrame{
 		});
 		
 		JButton credit = new JButton("Credit");
-		credit.setBorder(BorderFactory.createEmptyBorder(30, 30, 30,30));
 		credit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -67,10 +69,16 @@ public class Accueil extends JFrame{
 			}}
 		});
 		
-		f.add(vw);
-		f.add(jouer);
-		f.add(charger);
-		f.add(credit);
+		p.add(vw);
+		p.add(empty1);
+		p.add(jouer);
+		p.add(empty2);
+		p.add(charger);
+		p.add(empty3);
+		p.add(credit);
+		f.add(empty4, BorderLayout.EAST);
+		f.add(empty5, BorderLayout.WEST);
+		f.getContentPane().add(p);
 		f.setVisible(true);
 		f.pack();
 		
