@@ -229,7 +229,7 @@ public class Main {
 				}
 			}
 
-			if (isJoueur(joueurCourant, nbrIA)) {
+			if (isJoueur(joueurCourant)) {
 				do {
 					try {
 						System.out
@@ -393,13 +393,31 @@ public class Main {
 		}
 
 		if (aliveJ1 == 0 && aliveJ2 == 0) {
+			if(!isJoueur("J1")){
+				IA1.sauvegarderResultat(false);
+			}
+			if(!isJoueur("J2")){
+				IA2.sauvegarderResultat(false);
+			}
 			return -1;
 		}
 
 		if (aliveJ1 == 0) {
+			if(!isJoueur("J1")){
+				IA1.sauvegarderResultat(false);
+			}
+			if(!isJoueur("J2")){
+				IA2.sauvegarderResultat(true);
+			}
 			return 1;
 		}
 		if (aliveJ2 == 0) {
+			if(!isJoueur("J1")){
+				IA1.sauvegarderResultat(true);
+			}
+			if(!isJoueur("J2")){
+				IA2.sauvegarderResultat(false);
+			}
 			return 0;
 		}
 		return 2;
@@ -876,7 +894,7 @@ public class Main {
 	 * 
 	 * @return boolean true si le joueur est humain
 	 */
-	public static boolean isJoueur(String joueur, String nbrIA) {
+	public static boolean isJoueur(String joueur) {
 		if (joueur == "J1" && (nbrIA.equals("1") || nbrIA.equals("0"))) {
 			return true;
 		}

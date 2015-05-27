@@ -2,9 +2,18 @@
  * @author Les Quatre Cavaliers de l'Apocalypse
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.HashMap;
+import java.util.Scanner;
+
+import sun.print.resources.serviceui;
 
 public class IntelligenceArtificielle {
 
@@ -175,6 +184,26 @@ public class IntelligenceArtificielle {
 		}		
 	}
 
+	
+	/**
+	 * Verifie si la case p contient une base advers
+	 * @param p la case testé
+	 * @return boolean
+	 */
+	public boolean estBaseAdverse(Position p){
+		if(p.estBase()){
+			if(p.getEquipe() == this.getEquipe()){
+				return false;
+			}
+			else{
+				return true;
+			}			
+		}
+		else{
+			return false;
+		}		
+	}
+	
 
 	/**
 	 * Choisit la meilleur case où déplacer le robot
@@ -208,16 +237,16 @@ public class IntelligenceArtificielle {
 				}
 				
 				
-				if(posTemp != null){
+				if(posTemp != null && !estBaseAdverse(posTemp)){
 					Position temp = new Position(posTemp.getX()-decalage,posTemp.getY());
 					String tempStr = plateau.posToString(temp);
 					temp = plateau.getCarte().get(tempStr);
-					if(!temp.estObstacle() && !temp.estRobot()){
+					if(!temp.estObstacle() && !temp.estRobot() && !estBaseAdverse(temp)){
 							depPossible.add(posTemp);
 						}
 					}
 				
-				if(posTemp2 != null){
+				if(posTemp2 != null && !estBaseAdverse(posTemp2)){
 					Position temp = new Position(posTemp2.getX() ,posTemp2.getY()-decalage);
 					String tempStr = plateau.posToString(temp);
 					temp = plateau.getCarte().get(tempStr);
@@ -269,7 +298,7 @@ public class IntelligenceArtificielle {
 					posTemp = new Position(robot.getPosition().getX() + i,robot.getPosition().getY()+j);
 					strTemp = plateau.posToString(posTemp);
 					posTemp = plateau.getCarte().get(strTemp);
-					if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && !posTemp.estBase()){
+					if(posTemp != null &&!posTemp.estObstacle() && !posTemp.estRobot() && !posTemp.estBase() && !estBaseAdverse(posTemp)){
 						depPossible.add(posTemp);
 					}
 				}
@@ -346,11 +375,6 @@ public class IntelligenceArtificielle {
 
 	}
 
-	
-	
-	
-	
-	
 	
 	/**
 	 * Calcul la distance entre 2 case du plateau
@@ -623,25 +647,139 @@ public class IntelligenceArtificielle {
 	 * Genere la formation que l'IA va adopter de manière aléatoire et sous la forme d'un String
 	 * @return Un String contenant le nombre de chaques types de robots avec leurs types de formations
 	 */
-	public String choixFormation() {
-		int robotRestant = 5;
-		int nbrRobots;
-		String formationChoisis = "";
+	public String choixFormation(){
+		Map<String,Double> listeFormation = new HashMap<String,Double>();
+		List<String> formationsNul = new ArrayList<String>();
+		String[] meilleursFormation = new String[3];
+		File formations = new File("save/formationIA.txt");
+		Scanner s;
 		Random r = new Random();
-
-		for (int i = 0; i < 3; i++) {
-			if (i < 2) {
-				nbrRobots = r.nextInt(robotRestant + 1);
-			} else {
-				nbrRobots = robotRestant;
+		try{
+			try {
+				s = new Scanner(formations);
+			} catch (FileNotFoundException e) {
+				initFormation();
+				s = new Scanner(formations);
 			}
-			robotRestant -= nbrRobots;
-			formationChoisis += nbrRobots;
+			if(!s.hasNext()){
+				initFormation();
+			}
+			int ratioMax = 0;
+			while(s.hasNext()){
+				String formation = s.next();
+				int nbrVictoire = s.nextInt();
+				int nbrPartie = s.nextInt();
+				if(nbrVictoire != 0){
+					listeFormation.put(formation, ((double)nbrPartie/nbrVictoire));
+				}
+				else{
+					listeFormation.put(formation, 0.0);
+				}
+				if(nbrPartie < 5){
+					formationsNul.add(formation);
+				}
+				else{
+					if(meilleursFormation[3] == null){
+						meilleursFormation[3] = formation;
+					}
+					else if(listeFormation.get(meilleursFormation[3]) < listeFormation.get(formation)){
+						meilleursFormation[3] = formation;
+					}
+				}
+			}
+			if(formationsNul.size() == 0){
+				return meilleursFormation[r.nextInt(meilleursFormation.length)];
+			}
+			else{
+				return formationsNul.get(r.nextInt(formationsNul.size()));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
 		}
+	}
+		
 
-		return formationChoisis;
+	
+	/**
+	 * Initialise le fichier de sauvegarde des statistiques de l'IA
+	 */
+	public void initFormation(){
+		try {
+			File formations = new File("save/formationIA.txt");
+			formations.createNewFile();
+			FileWriter f = new FileWriter(formations);
+			
+			for(int tireur = 0; tireur <=5;tireur ++){
+				for(int piegeur = 0 ; piegeur + tireur <= 5; piegeur ++){
+					for(int tank = 0; tank+piegeur+tireur <=5; tank++){
+						if(tireur + piegeur +tank == 5){
+							f.write(Integer.toString(tireur) + Integer.toString(piegeur) + Integer.toString(tank));
+							f.write(" " + 0 + " " + 0 + " ");
+						}
+					}
+				}
+			}
+			f.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sauvegarderResultat(boolean victoire){
+		try{
+			File entree = new File("save/formationIA.txt");
+			File sortie = new File("save/temp.txt");
+			sortie.createNewFile();
+			FileWriter wSortie = new FileWriter(sortie);
+			Scanner sEntree =  new Scanner(entree);
+			
+			while(sEntree.hasNext()){
+				String formation = sEntree.next();
+				int nbrVictoire = sEntree.nextInt();
+				int nbrPartie = sEntree.nextInt();
+				wSortie.write(formation + " ");
+				System.out.println(formation + "/" + this.formation);
+				if(formation.equals(this.formation)){
+					System.out.println("formation trouvé");
+					if(victoire){
+						wSortie.write((nbrVictoire+1) + " ");
+						System.out.println("victoire");
+					}
+					else{
+						wSortie.write(nbrVictoire + " ");
+					}
+					wSortie.write((nbrPartie +1) + " ");
+				}
+				else{
+					wSortie.write(nbrVictoire + " ");
+					wSortie.write(nbrPartie + " ");
+				}
+			}
+			
+			sEntree.close();
+			wSortie.close();
+			entree.delete();
+			sortie.renameTo(new File("save/formationIA.txt"));
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
+	
+	
 	public String getFormation() {
 		return this.formation;
 	}
