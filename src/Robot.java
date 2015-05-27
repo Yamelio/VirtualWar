@@ -97,4 +97,36 @@ public abstract class Robot {
 		return 0;
 	}
 
+	public String getDescription(boolean estReduite) {
+		String type = "";
+		if (this instanceof Piegeur) {
+			type = "Piegeur";
+		}
+		if (this instanceof Char) {
+			type = "Char";
+		}
+		if (this instanceof Tireur) {
+			type = "Tireur";
+		}
+		if (estReduite) {
+			if (!(this instanceof Piegeur)) {
+				return type + " " + getId();
+
+			} else {
+				return type + " " + getId() + " | Mines : " + getNbMines() + "/"
+						+ Constantes.getMinesInit();
+			}
+		} else {
+			if (!(this instanceof Piegeur)) {
+				return type + " " + getId() + " " + getEnergie() + "/"
+						+ getEnergieMax();
+
+			} else {
+				return type + " " + getId() + " " + getEnergie() + "/"
+						+ getEnergieMax() + " | Mines : " + this.getNbMines()
+						+ "/" + Constantes.getMinesInit();
+			}
+		}
+	}
+
 }

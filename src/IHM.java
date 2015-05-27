@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
@@ -24,15 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -42,21 +38,20 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
+import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
-import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import sun.security.util.Length;
 
 public class IHM {
 
 	protected int hauteurFenetre = 700;
 	protected int largeurFenetre = 900;
 	static int debugCpt = 0;
-	private File currentFile = null;
-	private static JTextArea historique = new JTextArea(" ");
-	private JFrame f;
+	public File currentFile = null;
+	public static JTextArea historique = new JTextArea(" ");
+	public JFrame f;
 	static int choixAction = 0;
 	public static Position choixCible;
 	public static boolean joueur = false;
@@ -69,12 +64,15 @@ public class IHM {
 	static JScrollPane panelPlateau = new JScrollPane();
 	static int largeurDispo = 0;
 	static int hauteurDispo = 0;
+	static Vue vueJ1;
+	static Vue vueJ2;
+	public Menu menu = new Menu();
 
 	public IHM() {
 		f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
 		f.setMinimumSize(new Dimension(500, 400));
-		f.setJMenuBar(MenuBar());
+		f.setJMenuBar(menu.menuBar);
 
 		// Panel principale
 		JPanel panelPrincipale = new JPanel();
@@ -180,11 +178,16 @@ public class IHM {
 				choixAction = 2;
 			}
 		});
-		JButton boutonTactique = new JButton("Mode tactique");
+		JToggleButton boutonTactique = new JToggleButton("Mode tactique");
 		boutonTactique.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				tactique = !tactique;
+				if (tactique) {
+					boutonTactique.setSelected(true);
+				} else {
+					boutonTactique.setSelected(false);
+				}
 			}
 
 			@Override
@@ -237,205 +240,12 @@ public class IHM {
 		panelInformation.add(panelAction, BorderLayout.CENTER);
 		panelInformation.add(panelHistorique, BorderLayout.SOUTH);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.pack();
 		f.setVisible(true);
+		f.pack();
+		
 	}
 
-	public JMenuBar MenuBar() {
-		// Build the menu bar
-		JMenuBar menuBar = new JMenuBar();
-
-		// Build new tab "Menu"
-		JMenu Menu = new JMenu("Menu");
-		Menu.getAccessibleContext().setAccessibleDescription(
-				"The principal menu in this program");
-		menuBar.add(Menu);
-
-		// Build new tab "Help"
-		JMenu Help = new JMenu("Aide");
-		Menu.getAccessibleContext().setAccessibleDescription(
-				"The help menu in this program");
-		menuBar.add(Help);
-
-		// Build new tab "About us"
-		JMenu AboutUs = new JMenu("A propos de nous");
-		Menu.getAccessibleContext().setAccessibleDescription(
-				"The link to developper page");
-		menuBar.add(AboutUs);
-
-		// Build the item "Nouveau" in "menu"
-		JMenuItem menuNouveau = new JMenuItem("Nouveau");
-		menuNouveau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-				InputEvent.CTRL_DOWN_MASK));
-		menuNouveau.getAccessibleContext().setAccessibleDescription(
-				"Open a new windows");
-		Menu.add(menuNouveau);
-		menuNouveau.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new IHM();
-			}
-		});
-
-		// Build the item "Ouvrir" in "menu"
-		JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
-		menuOuvrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-				InputEvent.CTRL_DOWN_MASK));
-		menuOuvrir.getAccessibleContext().setAccessibleDescription(
-				"Open a pevious game");
-		Menu.add(menuOuvrir);
-		menuOuvrir.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser();
-				File file = fc.getSelectedFile();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"Fichier de sauvegarde VirtualWar (.txt)", "txt",
-						"text");
-				fc.setFileFilter(filter);
-				File workingDirectory = new File(System.getProperty("user.dir")
-						+ "/save");
-				fc.setCurrentDirectory(workingDirectory);
-				int returnVal = fc.showOpenDialog(menuOuvrir);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					System.out.println("You chose to open this file: "
-							+ fc.getSelectedFile().getName());
-				}
-				currentFile = file;
-			}
-		});
-
-		// Build the item "Save" in "menu"
-		JMenuItem menuSave = new JMenuItem("Sauvegarder");
-		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				InputEvent.CTRL_DOWN_MASK));
-		menuSave.getAccessibleContext().setAccessibleDescription(
-				"Open current game");
-		Menu.add(menuSave);
-		menuSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (currentFile == null) {
-					JFileChooser fc = new JFileChooser();
-					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-					File workingDirectory = new File(System
-							.getProperty("user.dir") + "/save");
-					fc.setCurrentDirectory(workingDirectory);
-					int returnVal = fc.showSaveDialog(menuSave);
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						// on ecrit dans le fichier comme pour un save as
-						FileWriter writer = null;
-						try {
-							writer = new FileWriter(fc.getSelectedFile());
-							writer.write(historique.getText());
-						} catch (Exception e3) {
-							JOptionPane.showMessageDialog(null,
-									"Imbossible de sauvegarder le fichier",
-									"Erreur", JOptionPane.ERROR_MESSAGE);
-						} finally {
-							try {
-								writer.close();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
-					}
-				} else {
-					// ecriture dans le fichier
-					FileWriter writer = null;
-					try {
-						writer = new FileWriter(currentFile);
-						writer.write(historique.getText());
-					} catch (Exception e3) {
-						JOptionPane.showMessageDialog(null,
-								"Imbossible de sauvegarder le fichier",
-								"Erreur", JOptionPane.ERROR_MESSAGE);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-		});
-
-		// Build the item "SaveAs" in "menu"
-		JMenuItem menuSaveAs = new JMenuItem("Sauvegarder sous");
-		menuSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-				InputEvent.CTRL_DOWN_MASK));
-		menuSave.getAccessibleContext().setAccessibleDescription(
-				"Open current game as");
-		Menu.add(menuSaveAs);
-		menuSaveAs.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser();
-				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				File workingDirectory = new File(System.getProperty("user.dir")
-						+ "/save");
-				fc.setCurrentDirectory(workingDirectory);
-				int returnVal = fc.showSaveDialog(menuSaveAs);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					FileWriter writer = null;
-					try {
-						writer = new FileWriter(fc.getSelectedFile());
-						writer.write(historique.getText());
-					} catch (Exception e3) {
-						JOptionPane.showMessageDialog(null,
-								"Imbossible de sauvegarder le fichier",
-								"Erreur", JOptionPane.ERROR_MESSAGE);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException e1) {
-
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-		});
-
-		// Build the item "plein ecran" in menu
-		Menu.addSeparator();
-		JMenuItem menuPleinEcran = new JMenuItem("Mode plein ecran");
-		menuPleinEcran.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-				InputEvent.CTRL_DOWN_MASK));
-		GraphicsDevice device = GraphicsEnvironment
-				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		menuPleinEcran.getAccessibleContext().setAccessibleDescription(
-				"Ce bouton met je jeu en plein ecran");
-		Menu.add(menuPleinEcran);
-		menuPleinEcran.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					device.setFullScreenWindow(f);
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null,
-							"Impossible de mettre le jeu en plein ecran",
-							"Erreur", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-
-		// Build the item "Exit" in "menu"
-		Menu.addSeparator();
-		JMenuItem menuExit = new JMenuItem("Quitter");
-		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				InputEvent.CTRL_DOWN_MASK));
-		menuExit.getAccessibleContext().setAccessibleDescription(
-				"Ce bouton quitte le programme");
-		Menu.add(menuExit);
-		menuExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-
-		return menuBar;
-	}
+	
 
 	@SuppressWarnings("serial")
 	public static class PlateauIHM extends JPanel {
@@ -455,11 +265,6 @@ public class IHM {
 			public Position getPosition() {
 				return p;
 			}
-
-			public Component getRobotsInBase() {
-				// TODO Auto-generated method stub
-				return null;
-			}
 		}
 
 		List<Case> liste = new ArrayList<Case>();
@@ -467,31 +272,26 @@ public class IHM {
 		private int taille = 100;
 		private static List<Action> actions = new ArrayList<Action>();
 		private static Plateau p;
-		private static Base baseSelectionne;
 		private static Robot robotChoisi = null;
 		private static Robot robotCible = null;
 		private static List<Robot> robotsInit;
 		private static String nbrIA = "0";
 		private static IntelligenceArtificielle IA1 = null;
 		private static IntelligenceArtificielle IA2 = null;
+		private static int indiceRobotBase = 0;
 
 		public PlateauIHM() {
 			super();
 
 			setCoordCases();
-
 			JFrame back = new JFrame("");
-			JScrollPane sp = new JScrollPane();
-			JDialog dial = new JDialog();
-			String[] listNomRobot;
-			JList listeRobotDansLaBase = null;
+			//back.setJMenuBar(menu.getMenu());
 			back.getContentPane().add(this);
 			back.setLocation(0, 0);
 			back.setSize(2000, 2000);
 			back.setVisible(true);
 			back.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			// this.setVisible(true);
-
 			this.addMouseMotionListener(new MouseMotionListener() {
 
 				public void mouseDragged(MouseEvent e) {
@@ -501,12 +301,27 @@ public class IHM {
 				public void mouseMoved(MouseEvent e) {
 					survol = null;
 					setCoordCases();
+
 					for (Case c : liste) {
 						if (c.contains(e.getX(), e.getY())) {
 							survol = c;
 							break;
 						}
 					}
+					if (nbrIA.equals("2")) {
+						if (survol.getPosition().estRobot()) {
+							robotChoisi = survol.getPosition().getRobot();
+							barDeVie.setMaximum(robotChoisi.getEnergieMax());
+							barDeVie.setValue(robotChoisi.getEnergie());
+							barDeVie.setString(robotChoisi.getEnergie() + "/"
+									+ robotChoisi.getEnergieMax());
+							panelRobot.setBorder(BorderFactory
+									.createTitledBorder(robotChoisi
+											.getDescription(true)));
+
+						}
+					}
+					checkToolTip();
 					repaint();
 				}
 
@@ -527,159 +342,251 @@ public class IHM {
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
 
 				}
 
 				@Override
-				public void mouseEntered(MouseEvent e){
-					
+				public void mouseEntered(MouseEvent e) {
 
 				}
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (joueur) {
-						affJoueurCourant.setText("Joueur courant : J1");
-					} else {
-						affJoueurCourant.setText("Joueur courant : J2");
-					}
-					int bouton = e.getButton();
 					boolean saisieOk = false;
-					for (Case c : liste) {
-						if (c.contains(e.getX(), e.getY())) {
-							if (bouton == 1) {
-								if (c.getPosition().estRobot()) {
-									robotChoisi = c.getPosition().getRobot();
-									barDeVie.setMaximum(robotChoisi
-											.getEnergieMax());
-									barDeVie.setValue(robotChoisi.getEnergie());
-									barDeVie.setString(robotChoisi.getEnergie()
-											+ "/" + robotChoisi.getEnergieMax());
-									panelRobot.setBorder(BorderFactory
-											.createTitledBorder("Robot "
-													+ robotChoisi.getId()));
-								}else if (c.getPosition().estBase()){
-									String[] listNomRobot = new String[((Base) survol.getPosition()).getRobotsInBase().size()];
-									for(int i=0; i<listNomRobot.length;i++){
-										listNomRobot[i] = "" + ((Base) survol.getPosition()).getRobotsInBase().get(i).toString();
-										
+					if (joueur) {
+						joueurCourant = "J1";
+						affJoueurCourant.setText("Joueur courant : Bleu");
+					} else {
+						joueurCourant = "J2";
+						affJoueurCourant.setText("Joueur courant : Rouge");
+					}
+					if (isJoueur(joueurCourant, nbrIA)) {
+						int bouton = e.getButton();
+						for (Case c : liste) {
+							if (c.contains(e.getX(), e.getY())) {
+								if (bouton == 1) {
+									if (c.getPosition().estRobot()) {
+										robotChoisi = c.getPosition()
+												.getRobot();
+										barDeVie.setMaximum(robotChoisi
+												.getEnergieMax());
+										barDeVie.setValue(robotChoisi
+												.getEnergie());
+										barDeVie.setString(robotChoisi
+												.getEnergie()
+												+ "/"
+												+ robotChoisi.getEnergieMax());
+										panelRobot.setBorder(BorderFactory
+												.createTitledBorder(robotChoisi
+														.getDescription(true)));
+
+									} else if (c.getPosition().estBase()) {
+										List<Robot> robotsInBase = ((Base) c
+												.getPosition())
+												.getRobotsInBase();
+										if (robotsInBase.size() > 0) {
+											if (indiceRobotBase >= robotsInBase
+													.size()) {
+												indiceRobotBase = 0;
+											}
+
+											robotChoisi = robotsInBase
+													.get(indiceRobotBase);
+											barDeVie.setMaximum(robotChoisi
+													.getEnergieMax());
+											barDeVie.setValue(robotChoisi
+													.getEnergie());
+											barDeVie.setString(robotChoisi
+													.getEnergie()
+													+ "/"
+													+ robotChoisi
+															.getEnergieMax());
+											panelRobot.setBorder(BorderFactory
+													.createTitledBorder(robotChoisi
+															.getDescription(true)));
+											indiceRobotBase++;
+										}
+
+									} else {
+										choixCible = c.getPosition();
 									}
-									JList listeRobotDansLaBase = new JList(listNomRobot);
-									if(dial.isVisible()){
-										dial.setVisible(false);
-									}else{
-										dial.setVisible(true);
-									}
-									
 								} else {
-									choixCible = c.getPosition();
+									if (bouton == 3) {
+										if (robotChoisi instanceof Piegeur) {
+											choixCible = c.getPosition();
+										} else {
+											robotCible = c.getPosition()
+													.getRobot();
+										}
+									}
 								}
-							} else {
-								if (bouton == 3) {
-									robotCible = c.getPosition().getRobot();
-								}
-							}
-							if (robotChoisi != null) {
-								if ((robotChoisi.getEquipe() == 0 && joueur)
-										|| (robotChoisi.getEquipe() == 1 && !joueur)) {
-									if (choixAction == 1) {
-										try {
-											if (robotCible != null) {
-												actions.add(new Attaque(
-														robotChoisi, robotCible
-																.getPosition()));
-												if (!(robotChoisi instanceof Piegeur)) {
+								if (robotChoisi != null) {
+									if ((robotChoisi.getEquipe() == 0 && joueur)
+											|| (robotChoisi.getEquipe() == 1 && !joueur)) {
+										if (choixAction == 1) {
+											try {
+												if (robotCible != null
+														&& !(robotChoisi instanceof Piegeur)) {
+													actions.add(new Attaque(
+															robotChoisi,
+															robotCible
+																	.getPosition()));
 													robotCible = robotsInit
 															.get(c.getPosition()
 																	.getRobot()
 																	.getId());
+
+													saisieOk = true;
+												} else {
+													if (choixCible != null) {
+														actions.add(new Attaque(
+																robotChoisi,
+																choixCible));
+														saisieOk = true;
+													}
 												}
-												saisieOk = true;
-											}
-										} catch (Erreur err) {
-											System.out.println(err.getMessage());
-										}
-									} else {
-										if (choixAction == 2) {
-											try {
-												actions.add(new Deplacement(
-														robotChoisi, c
-																.getPosition()));
-												saisieOk = true;
 											} catch (Erreur err) {
+												System.out.println(err
+														.getMessage());
+											}
+										} else {
+											if (choixAction == 2) {
+												try {
+													actions.add(new Deplacement(
+															robotChoisi,
+															c.getPosition()));
+													saisieOk = true;
+												} catch (Erreur err) {
+												}
 											}
 										}
 									}
 								}
 							}
-						}
-						if (saisieOk) {
-							saisieOk = false;
-							if (!actions.isEmpty()) {
 
-								if (actions.get(actions.size() - 1) instanceof Deplacement) {
+						}
+					} else {
+						if (nbrIA.equals("1")) {
+							Action act = IA1.Jouer();
+							actions.add(act);
+							robotChoisi = act.getRobot();
+							choixCible = act.getCible();
+							if (act instanceof Attaque
+									&& !(robotChoisi instanceof Piegeur)) {
+								robotCible = robotsInit.get(choixCible
+										.getRobot().getId());
+							}
+						}
+
+						if (nbrIA.equals("2") && joueurCourant == "J1") {
+							Action act = IA1.Jouer();
+							actions.add(act);
+							robotChoisi = act.getRobot();
+							choixCible = act.getCible();
+							if (act instanceof Attaque
+									&& !(robotChoisi instanceof Piegeur)) {
+								robotCible = robotsInit.get(choixCible
+										.getRobot().getId());
+							}
+						}
+
+						if (nbrIA.equals("2") && joueurCourant == "J2") {
+							Action act = IA2.Jouer();
+							actions.add(act);
+							robotChoisi = act.getRobot();
+							choixCible = act.getCible();
+							if (act instanceof Attaque
+									&& !(robotChoisi instanceof Piegeur)) {
+								robotCible = robotsInit.get(choixCible
+										.getRobot().getId());
+							}
+						}
+						saisieOk = true;
+					}
+					if (saisieOk) {
+
+						if (!actions.isEmpty()) {
+
+							if (actions.get(actions.size() - 1) instanceof Deplacement) {
+								historique.setText(historique.getText()
+										+ "\nLe robot " + robotChoisi.getId()
+										+ " s'est deplace en "
+										+ p.posToString(choixCible) + "\n");
+							} else {
+
+								if (robotChoisi instanceof Piegeur) {
 									historique.setText(historique.getText()
 											+ "\nLe robot "
 											+ robotChoisi.getId()
-											+ " s'est deplace en "
-											+ p.posToString(choixCible) + "\n");
-								} else {
 
-									if (robotChoisi instanceof Piegeur) {
+											+ " a pose une mine\n");
+								} else {
+									if (robotCible != null) {
 										historique.setText(historique.getText()
 												+ "\nLe robot "
 												+ robotChoisi.getId()
 
-												+ " a pose une mine");
-									} else {
-										if (robotCible != null) {
-											historique.setText(historique
-													.getText()
-													+ "\nLe robot "
-													+ robotChoisi.getId()
+												+ " a attaque le robot "
+												+ robotCible.getId() + "\n");
 
-													+ " a attaque le robot "
-													+ robotCible.getId() + "\n");
-										}
 									}
 								}
 							}
-							choixAction = 0;
-							robotChoisi = null;
-							barDeVie.setMaximum(0);
-							barDeVie.setValue(0);
-							barDeVie.setString("");
-							joueur = !joueur;
-							PlateauIHM.p.recharges();
-							PlateauIHM.sauvegarde();
-							sp.add(listeRobotDansLaBase);
-							dial.add(sp);
-							dial.setLocationRelativeTo(back);
-							dial.setUndecorated(true);
-							dial.pack();
-							repaint();
-							fin = PlateauIHM.checkFin();
-							switch (fin) {
+						}
 
-							case 1:
-								PlateauIHM.p.afficherRobotsJ2();
-								System.out.println("Joueur 2 a gagne !");
-								break;
+						saisieOk = false;
+						choixAction = 0;
+						indiceRobotBase = 0;
+						robotChoisi = null;
+						barDeVie.setMaximum(0);
+						barDeVie.setValue(0);
+						barDeVie.setString("");
+						joueur = !joueur;
+						if (joueur) {
+							affJoueurCourant.setText("Joueur courant : Bleu");
+						} else {
+							affJoueurCourant.setText("Joueur courant : Rouge");
+						}
+						PlateauIHM.p.recharges();
+						PlateauIHM.sauvegarde();
+						repaint();
+						fin = PlateauIHM.checkFin();
+						switch (fin) {
 
-							case 0:
-								PlateauIHM.p.afficherRobotsJ1();
-								System.out.println("Joueur 1 a gagne !");
-								break;
+						case 1:
+							PlateauIHM.p.afficherRobotsJ2();
+							System.out.println("Joueur 2 a gagne !");
+							break;
 
-							case -1:
-								System.out.println("Match nul !");
-								break;
-							}
+						case 0:
+							PlateauIHM.p.afficherRobotsJ1();
+							System.out.println("Joueur 1 a gagne !");
+							break;
+
+						case -1:
+							System.out.println("Match nul !");
+							break;
 						}
 					}
 				}
 			});
+		}
+
+		private void checkToolTip() {
+			if (survol != null) {
+				if (survol.getPosition().estBase()) {
+					if (((Base) survol.getPosition()).getRobotsInBase().size() > 0) {
+						this.setToolTipText(((Base) survol.getPosition())
+								.getDescriptionRobots());
+					} else {
+						this.setToolTipText("Vide");
+					}
+				} else {
+					this.setToolTipText(null);
+				}
+			} else {
+				this.setToolTipText(null);
+			}
 		}
 
 		private void setCoordCases() {
@@ -731,6 +638,10 @@ public class IHM {
 
 		public void paint(Graphics g) {
 			super.paintComponent(g);
+			int equipe = 1;
+			if (joueur) {
+				equipe = 0;
+			}
 			final Image base1 = Toolkit.getDefaultToolkit().getImage(
 					"img/base1.png");
 			final Image base2 = Toolkit.getDefaultToolkit().getImage(
@@ -762,7 +673,8 @@ public class IHM {
 						g.fillPolygon(c);
 					}
 				}
-				if (c.getPosition().estMine()) {
+				if (c.getPosition().estMine()
+						&& c.getPosition().getEquipe() == equipe) {
 					g.setColor(Color.RED);
 					g.fillPolygon(c);
 				}
@@ -1326,6 +1238,8 @@ public class IHM {
 				int nbRobotsJ2 = s.nextInt();
 
 				p = new Plateau(largeur, hauteur, obstacles);
+				vueJ1 = new Vue(p, 0);
+				vueJ2 = new Vue(p, 1);
 				nbrIA = s.next();
 
 				if (nbrIA.equals("0") || nbrIA.equals("1")) {
@@ -1477,6 +1391,7 @@ public class IHM {
 						}
 					}
 					p.recharges();
+					checkFin();
 				}
 				joueur = !(actions.get(actions.size() - 1).getRobot()
 						.getEquipe() == 0);
@@ -1580,11 +1495,14 @@ public class IHM {
 			public void run() {
 				new IHM();
 				if (joueur) {
-					affJoueurCourant.setText("Joueur courant : J1");
+					affJoueurCourant.setText("Joueur courant : Bleu");
+					joueurCourant = "J1";
 				} else {
-					affJoueurCourant.setText("Joueur courant : J2");
+					affJoueurCourant.setText("Joueur courant : Rouge");
+					joueurCourant = "J2";
 				}
 			};
 		});
 	}
+	
 }
