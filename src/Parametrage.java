@@ -26,7 +26,7 @@ public class Parametrage {
 
 	public Parametrage() {
 		JFrame f = new JFrame("VirtualWar");
-		f.setPreferredSize(new Dimension(900, 700));
+		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
 
@@ -98,7 +98,8 @@ public class Parametrage {
 		valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//new IHM();
+				new CreationEquipe();
+				f.dispose();
 			}
 		});
 		
@@ -119,13 +120,12 @@ public class Parametrage {
 
 		panelPrincipale.add(labelParametrage);
 		panelPrincipale.add(panelReglage);
-		panelPrincipale.add(valider);
+		panelPrincipale.add(valider, BorderLayout.PAGE_END);
 		f.getContentPane().add(panelPrincipale);
 		f.setVisible(true);
 		f.pack();
 	}
 
-	/*
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -133,7 +133,6 @@ public class Parametrage {
 			}
 		});
 	}
-	*/
 
 	public int getHauteur() {
 		return hauteurPlateau;
