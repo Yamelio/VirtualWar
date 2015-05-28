@@ -318,16 +318,18 @@ public class IHM {
 						}
 					}
 					if (nbrIA.equals("2")) {
-						if (survol.getPosition().estRobot()) {
-							robotChoisi = survol.getPosition().getRobot();
-							barDeVie.setMaximum(robotChoisi.getEnergieMax());
-							barDeVie.setValue(robotChoisi.getEnergie());
-							barDeVie.setString(robotChoisi.getEnergie() + "/"
-									+ robotChoisi.getEnergieMax());
-							panelRobot.setBorder(BorderFactory
-									.createTitledBorder(robotChoisi
-											.getDescription(true)));
+						if (survol != null) {
+							if (survol.getPosition().estRobot()) {
+								robotChoisi = survol.getPosition().getRobot();
+								barDeVie.setMaximum(robotChoisi.getEnergieMax());
+								barDeVie.setValue(robotChoisi.getEnergie());
+								barDeVie.setString(robotChoisi.getEnergie()
+										+ "/" + robotChoisi.getEnergieMax());
+								panelRobot.setBorder(BorderFactory
+										.createTitledBorder(robotChoisi
+												.getDescription(true)));
 
+							}
 						}
 					}
 					if (survol != null) {
@@ -367,46 +369,23 @@ public class IHM {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					boolean saisieOk = false;
-					if (joueur) {
-						joueurCourant = "J1";
-						affJoueurCourant.setText("Joueur courant : Bleu");
-					} else {
-						joueurCourant = "J2";
-						affJoueurCourant.setText("Joueur courant : Rouge");
-					}
-					if (isJoueur(joueurCourant, nbrIA)) {
-						int bouton = e.getButton();
-						for (Case c : liste) {
-							if (c.contains(e.getX(), e.getY())) {
-								if (bouton == 1) {
-									if (c.getPosition().estRobot()) {
-										robotChoisi = c.getPosition()
-												.getRobot();
-										barDeVie.setMaximum(robotChoisi
-												.getEnergieMax());
-										barDeVie.setValue(robotChoisi
-												.getEnergie());
-										barDeVie.setString(robotChoisi
-												.getEnergie()
-												+ "/"
-												+ robotChoisi.getEnergieMax());
-										panelRobot.setBorder(BorderFactory
-												.createTitledBorder(robotChoisi
-														.getDescription(true)));
-
-									} else if (c.getPosition().estBase()) {
-										List<Robot> robotsInBase = ((Base) c
-												.getPosition())
-												.getRobotsInBase();
-										if (robotsInBase.size() > 0) {
-											if (indiceRobotBase >= robotsInBase
-													.size()) {
-												indiceRobotBase = 0;
-											}
-
-											robotChoisi = robotsInBase
-													.get(indiceRobotBase);
+					if (fin == 2) {
+						boolean saisieOk = false;
+						if (joueur) {
+							joueurCourant = "J1";
+							affJoueurCourant.setText("Joueur courant : Bleu");
+						} else {
+							joueurCourant = "J2";
+							affJoueurCourant.setText("Joueur courant : Rouge");
+						}
+						if (isJoueur(joueurCourant, nbrIA)) {
+							int bouton = e.getButton();
+							for (Case c : liste) {
+								if (c.contains(e.getX(), e.getY())) {
+									if (bouton == 1) {
+										if (c.getPosition().estRobot()) {
+											robotChoisi = c.getPosition()
+													.getRobot();
 											barDeVie.setMaximum(robotChoisi
 													.getEnergieMax());
 											barDeVie.setValue(robotChoisi
@@ -419,173 +398,210 @@ public class IHM {
 											panelRobot.setBorder(BorderFactory
 													.createTitledBorder(robotChoisi
 															.getDescription(true)));
-											indiceRobotBase++;
-										}
 
-									} else {
-										choixCible = c.getPosition();
-									}
-								} else {
-									if (bouton == 3) {
-										if (choixAction == 1) {
-											if (robotChoisi instanceof Piegeur) {
-												choixCible = c.getPosition();
-											} else {
-												robotCible = c.getPosition()
-														.getRobot();
+										} else if (c.getPosition().estBase()) {
+											List<Robot> robotsInBase = ((Base) c
+													.getPosition())
+													.getRobotsInBase();
+											if (robotsInBase.size() > 0) {
+												if (indiceRobotBase >= robotsInBase
+														.size()) {
+													indiceRobotBase = 0;
+												}
+
+												robotChoisi = robotsInBase
+														.get(indiceRobotBase);
+												barDeVie.setMaximum(robotChoisi
+														.getEnergieMax());
+												barDeVie.setValue(robotChoisi
+														.getEnergie());
+												barDeVie.setString(robotChoisi
+														.getEnergie()
+														+ "/"
+														+ robotChoisi
+																.getEnergieMax());
+												panelRobot
+														.setBorder(BorderFactory
+																.createTitledBorder(robotChoisi
+																		.getDescription(true)));
+												indiceRobotBase++;
 											}
-										} else {
 
+										} else {
 											choixCible = c.getPosition();
 										}
-									}
-								}
-								if (robotChoisi != null) {
-									if ((robotChoisi.getEquipe() == 0 && joueur)
-											|| (robotChoisi.getEquipe() == 1 && !joueur)) {
-										if (choixAction == 1) {
-											try {
-												if (robotCible != null
-														&& !(robotChoisi instanceof Piegeur)) {
-													actions.add(new Attaque(
-															robotChoisi,
-															robotCible
-																	.getPosition()));
-													robotCible = robotsInit
-															.get(c.getPosition()
-																	.getRobot()
-																	.getId());
-
-													saisieOk = true;
+									} else {
+										if (bouton == 3) {
+											if (choixAction == 1) {
+												if (robotChoisi instanceof Piegeur) {
+													choixCible = c
+															.getPosition();
 												} else {
-													if (choixCible != null) {
+													robotCible = c
+															.getPosition()
+															.getRobot();
+												}
+											} else {
+
+												choixCible = c.getPosition();
+											}
+										}
+									}
+									if (robotChoisi != null) {
+										if ((robotChoisi.getEquipe() == 0 && joueur)
+												|| (robotChoisi.getEquipe() == 1 && !joueur)) {
+											if (choixAction == 1) {
+												try {
+													if (robotCible != null
+															&& !(robotChoisi instanceof Piegeur)) {
 														actions.add(new Attaque(
 																robotChoisi,
-																choixCible));
+																robotCible
+																		.getPosition()));
+														robotCible = robotsInit
+																.get(c.getPosition()
+																		.getRobot()
+																		.getId());
+
 														saisieOk = true;
+													} else {
+														if (choixCible != null) {
+															actions.add(new Attaque(
+																	robotChoisi,
+																	choixCible));
+															saisieOk = true;
+														}
 													}
-												}
-											} catch (Erreur err) {
-												System.out.println(err
-														.getMessage());
-											}
-										} else {
-											if (choixAction == 2) {
-												try {
-													actions.add(new Deplacement(
-															robotChoisi,
-															c.getPosition()));
-													saisieOk = true;
 												} catch (Erreur err) {
+													System.out.println(err
+															.getMessage());
+												}
+											} else {
+												if (choixAction == 2) {
+													try {
+														actions.add(new Deplacement(
+																robotChoisi,
+																c.getPosition()));
+														saisieOk = true;
+													} catch (Erreur err) {
+													}
 												}
 											}
 										}
 									}
 								}
+
+							}
+						} else {
+							if (nbrIA.equals("1")) {
+								Action act = IA1.Jouer();
+								actions.add(act);
+								robotChoisi = act.getRobot();
+								choixCible = act.getCible();
+								if (act instanceof Attaque
+										&& !(robotChoisi instanceof Piegeur)) {
+									robotCible = robotsInit.get(choixCible
+											.getRobot().getId());
+								}
 							}
 
-						}
-					} else {
-						if (nbrIA.equals("1")) {
-							Action act = IA1.Jouer();
-							actions.add(act);
-							robotChoisi = act.getRobot();
-							choixCible = act.getCible();
-							if (act instanceof Attaque
-									&& !(robotChoisi instanceof Piegeur)) {
-								robotCible = robotsInit.get(choixCible
-										.getRobot().getId());
+							if (nbrIA.equals("2") && joueurCourant == "J1") {
+								Action act = IA1.Jouer();
+								actions.add(act);
+								robotChoisi = act.getRobot();
+								choixCible = act.getCible();
+								if (act instanceof Attaque
+										&& !(robotChoisi instanceof Piegeur)) {
+									robotCible = robotsInit.get(choixCible
+											.getRobot().getId());
+								}
 							}
-						}
 
-						if (nbrIA.equals("2") && joueurCourant == "J1") {
-							Action act = IA1.Jouer();
-							actions.add(act);
-							robotChoisi = act.getRobot();
-							choixCible = act.getCible();
-							if (act instanceof Attaque
-									&& !(robotChoisi instanceof Piegeur)) {
-								robotCible = robotsInit.get(choixCible
-										.getRobot().getId());
+							if (nbrIA.equals("2") && joueurCourant == "J2") {
+								Action act = IA2.Jouer();
+								actions.add(act);
+								robotChoisi = act.getRobot();
+								choixCible = act.getCible();
+								if (act instanceof Attaque
+										&& !(robotChoisi instanceof Piegeur)) {
+									robotCible = robotsInit.get(choixCible
+											.getRobot().getId());
+								}
 							}
+							saisieOk = true;
 						}
+						if (saisieOk) {
 
-						if (nbrIA.equals("2") && joueurCourant == "J2") {
-							Action act = IA2.Jouer();
-							actions.add(act);
-							robotChoisi = act.getRobot();
-							choixCible = act.getCible();
-							if (act instanceof Attaque
-									&& !(robotChoisi instanceof Piegeur)) {
-								robotCible = robotsInit.get(choixCible
-										.getRobot().getId());
-							}
-						}
-						saisieOk = true;
-					}
-					if (saisieOk) {
+							if (!actions.isEmpty()) {
 
-						if (!actions.isEmpty()) {
-
-							if (actions.get(actions.size() - 1) instanceof Deplacement) {
-								historique.setText(historique.getText()
-										+ "\nLe robot " + robotChoisi.getId()
-										+ " s'est deplace en "
-										+ p.posToString(choixCible) + "\n");
-							} else {
-
-								if (robotChoisi instanceof Piegeur) {
+								if (actions.get(actions.size() - 1) instanceof Deplacement) {
 									historique.setText(historique.getText()
 											+ "\nLe robot "
 											+ robotChoisi.getId()
-
-											+ " a pose une mine\n");
+											+ " s'est deplace en "
+											+ p.posToString(choixCible) + "\n");
 								} else {
-									if (robotCible != null) {
+
+									if (robotChoisi instanceof Piegeur) {
 										historique.setText(historique.getText()
 												+ "\nLe robot "
 												+ robotChoisi.getId()
 
-												+ " a attaque le robot "
-												+ robotCible.getId() + "\n");
+												+ " a pose une mine\n");
+									} else {
+										if (robotCible != null) {
+											historique.setText(historique
+													.getText()
+													+ "\nLe robot "
+													+ robotChoisi.getId()
 
+													+ " a attaque le robot "
+													+ robotCible.getId() + "\n");
+
+										}
 									}
 								}
 							}
-						}
 
-						saisieOk = false;
-						choixAction = 0;
-						indiceRobotBase = 0;
-						robotChoisi = null;
-						barDeVie.setMaximum(0);
-						barDeVie.setValue(0);
-						barDeVie.setString("");
-						joueur = !joueur;
-						if (joueur) {
-							affJoueurCourant.setText("Joueur courant : Bleu");
-						} else {
-							affJoueurCourant.setText("Joueur courant : Rouge");
-						}
-						PlateauIHM.p.recharges();
-						PlateauIHM.sauvegarde(savePath);
-						repaint();
-						fin = PlateauIHM.checkFin();
-						switch (fin) {
+							saisieOk = false;
+							choixAction = 0;
+							indiceRobotBase = 0;
+							robotChoisi = null;
+							barDeVie.setMaximum(0);
+							barDeVie.setValue(0);
+							barDeVie.setString("");
+							joueur = !joueur;
+							if (joueur) {
+								affJoueurCourant
+										.setText("Joueur courant : Bleu");
+							} else {
+								affJoueurCourant
+										.setText("Joueur courant : Rouge");
+							}
+							PlateauIHM.p.recharges();
+							PlateauIHM.sauvegarde(savePath);
+							repaint();
+							fin = PlateauIHM.checkFin();
+							switch (fin) {
 
-						case 1:
-							PlateauIHM.p.afficherRobotsJ2();
-							System.out.println("Joueur 2 a gagne !");
-							break;
+							case 1:
+								JOptionPane.showMessageDialog(null,
+										"Joueur 2 a gagne !");
 
-						case 0:
-							PlateauIHM.p.afficherRobotsJ1();
-							System.out.println("Joueur 1 a gagne !");
-							break;
+								break;
 
-						case -1:
-							System.out.println("Match nul !");
-							break;
+							case 0:
+								JOptionPane.showMessageDialog(null,
+										"Joueur 1 a gagne !");
+
+								break;
+
+							case -1:
+								JOptionPane.showMessageDialog(null,
+										"Match Nul !");
+
+								break;
+							}
 						}
 					}
 				}
@@ -865,72 +881,7 @@ public class IHM {
 
 		// Cette procedure remplace le main initial
 		public static PlateauIHM start() {
-			/*
-			 * Scanner s = new Scanner(System.in);
-			 * 
-			 * System.out.println("Voulez vous charger une partie ? (o/n)");
-			 * String rep; do { rep = s.next(); } while (!(rep.equals("o") ||
-			 * rep.equals("n")));
-			 * 
-			 * if (rep.equals("o")) { chargement(savePath);
-			 * 
-			 * robotChoisi = actions.get(actions.size() - 1).getRobot();
-			 * choixCible = actions.get(actions.size() - 1).getCible();
-			 * 
-			 * } else {
-			 * 
-			 * do { System.out
-			 * .println("Combien de joueur virtuels voulez vous ?(0 à 2)");
-			 * nbrIA = s.next(); } while (!(nbrIA.equals("0") ||
-			 * nbrIA.equals("1") || nbrIA .equals("2")));
-			 * 
-			 * int nbTireurJ1; int nbPiegeurJ1; int nbCharJ1; if
-			 * (nbrIA.equals("0") || nbrIA.equals("1")) {
-			 * 
-			 * nbTireurJ1 = 10; nbPiegeurJ1 = 10; nbCharJ1 = 10; try { do {
-			 * System.out
-			 * .println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : "
-			 * ); nbTireurJ1 = s.nextInt(); System.out.println("\n\tChar : ");
-			 * nbCharJ1 = s.nextInt(); System.out.println("\n\tPiegeur : ");
-			 * nbPiegeurJ1 = s.nextInt();
-			 * 
-			 * } while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5 || nbTireurJ1 +
-			 * nbCharJ1 + nbPiegeurJ1 <= 0);
-			 * 
-			 * } catch (Exception e) { System.out.println("Erreur de saisie");
-			 * s.next(); }
-			 * 
-			 * } else { nbTireurJ1 = 0; nbPiegeurJ1 = 0; nbCharJ1 = 0; }
-			 * 
-			 * int nbTireurJ2; int nbCharJ2; int nbPiegeurJ2; if
-			 * (nbrIA.equals("0")) {
-			 * 
-			 * nbTireurJ2 = 10; nbCharJ2 = 10; nbPiegeurJ2 = 10;
-			 * 
-			 * try { do { System.out .println(
-			 * "\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-			 * nbTireurJ2 = s.nextInt(); System.out.println("\n\tChar : ");
-			 * nbCharJ2 = s.nextInt(); System.out.println("\n\tPiegeur : ");
-			 * nbPiegeurJ2 = s.nextInt();
-			 * 
-			 * } while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5 || nbTireurJ2 +
-			 * nbCharJ2 + nbPiegeurJ2 <= 0); } catch (Exception e) {
-			 * System.out.println("Erreur de saisie"); s.next(); } } else {
-			 * nbTireurJ2 = 0; nbCharJ2 = 0; nbPiegeurJ2 = 0; }
-			 * 
-			 * int largeur = 0; int hauteur = 0;
-			 * 
-			 * do { try { System.out .println(
-			 * " Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26"
-			 * ); largeur = s.nextInt(); hauteur = s.nextInt(); } catch
-			 * (Exception e) { System.out.println("Erreur de saisie"); s.next();
-			 * } } while (largeur < 5 || largeur > 26 || hauteur < 5 || hauteur
-			 * > 26); int obstacles = -1; do { try { System.out .println(
-			 * "\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)"
-			 * ); obstacles = s.nextInt(); } catch (Exception e) {
-			 * System.out.println("Erreur de saisie"); s.next(); } } while
-			 * (!(obstacles > -1 && obstacles < 51));
-			 */
+
 			p = new Plateau(largeur, hauteur, obstacles);
 			p.initObstacles();
 

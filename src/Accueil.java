@@ -17,13 +17,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
-public class Accueil extends JFrame{
-	public Accueil(){
+public class Accueil extends JFrame {
+	public Accueil() {
 		JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		GridLayout g = new GridLayout(7, 1);
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 		JPanel p = new JPanel();
@@ -32,12 +31,12 @@ public class Accueil extends JFrame{
 		JPanel empty3 = new JPanel();
 		JPanel empty4 = new JPanel();
 		JPanel empty5 = new JPanel();
-		
+
 		p.setLayout(g);
-		
+
 		JLabel vw = new JLabel("VirtualWar");
 		vw.setFont(titre);
-		
+
 		JButton jouer = new JButton("Jouer");
 		jouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -45,14 +44,13 @@ public class Accueil extends JFrame{
 				f.dispose();
 			}
 		});
-		
-		JButton charger = new JButton("Charger");
-		charger.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new Main().chargement();
-			}
-		});
-		
+
+		/*
+		 * JButton charger = new JButton("Charger");
+		 * charger.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { new IHM();
+		 * IHM.PlateauIHM.chargement("save/sauvegarde.txt"); f.dispose(); } });
+		 */
 		JButton credit = new JButton("Credit");
 		credit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -65,15 +63,16 @@ public class Accueil extends JFrame{
 					e1.printStackTrace();
 				} catch (URISyntaxException ex) {
 					Logger.getLogger(Menu.class.getName()).log(Level.SEVERE,
-							null, ex);	
-			}}
+							null, ex);
+				}
+			}
 		});
-		
+
 		p.add(vw);
 		p.add(empty1);
 		p.add(jouer);
 		p.add(empty2);
-		p.add(charger);
+		// p.add(charger);
 		p.add(empty3);
 		p.add(credit);
 		f.add(empty4, BorderLayout.EAST);
@@ -81,9 +80,9 @@ public class Accueil extends JFrame{
 		f.getContentPane().add(p);
 		f.setVisible(true);
 		f.pack();
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -91,5 +90,5 @@ public class Accueil extends JFrame{
 			}
 		});
 	}
-	
+
 }

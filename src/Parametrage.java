@@ -20,9 +20,9 @@ public class Parametrage {
 	private JPanel panelReglage = new JPanel();
 	private JPanel panelPrincipale = new JPanel();
 	private GridBagConstraints gridConstraint = new GridBagConstraints();
-	private int largeurPlateau = 10;
-	private int hauteurPlateau = 10;
-	private int nbObstacle = 0;
+	private int largeurPlateau = 7;
+	private int hauteurPlateau = 7;
+	private int nbObstacle = 25;
 	public Menu menu = new Menu();
 
 	public Parametrage() {
