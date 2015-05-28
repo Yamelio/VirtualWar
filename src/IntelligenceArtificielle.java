@@ -54,9 +54,7 @@ public class IntelligenceArtificielle {
 	public Action Jouer(){
 		checkMorts();
 		Robot r = choixRobotJoue();
-		System.out.println(r);
 		String action = choixAction(r);
-		System.out.println(action);
 		if(action == "Deplacement"){
 			try {
 				return new Deplacement(r, choixCibleDeplacement(r));
