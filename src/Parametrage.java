@@ -34,7 +34,7 @@ public class Parametrage {
 		panelPrincipale.setLayout(new GridLayout(3, 1));
 		panelReglage.setLayout(new GridLayout(3, 3));
 
-		JLabel labelParametrage = new JLabel("Paramï¿½trage");
+		JLabel labelParametrage = new JLabel("Paramétrage");
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 		labelParametrage.setFont(titre);
 
@@ -76,8 +76,7 @@ public class Parametrage {
 		JLabel labelObstacle = new JLabel("Nombre d'obstacle:");
 		gridConstraint.gridx = 0;
 		gridConstraint.gridy = 3;
-		final JLabel labelValueO = new JLabel(""
-				+ (nbObstacle / (largeurPlateau * hauteurPlateau) * 100) + "%");
+		final JLabel labelValueO = new JLabel();
 		gridConstraint.gridx = 2;
 		gridConstraint.gridy = 3;
 		final JSlider sliderObstacle = new JSlider(
@@ -94,6 +93,8 @@ public class Parametrage {
 								/ sliderObstacle.getMaximum() * 100) / 2 + "%");
 			}
 		});
+		nbObstacle = sliderObstacle.getValue();
+		labelValueO.setText(" "+ (int) ((double) nbObstacle / sliderObstacle.getMaximum() * 100) / 2 + "%");
 		gridConstraint.gridx = 1;
 		gridConstraint.gridy = 3;
 
