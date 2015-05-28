@@ -87,14 +87,16 @@ public class Parametrage {
 			public void stateChanged(ChangeEvent e) {
 				sliderObstacle.setMaximum((int) hauteurPlateau * largeurPlateau
 						/ 2);
-				nbObstacle = sliderObstacle.getValue();
-				labelValueO.setText(" "
-						+ (int) ((double) nbObstacle
-								/ sliderObstacle.getMaximum() * 100) / 2 + "%");
+				nbObstacle = (int) ((double) sliderObstacle.getValue()
+						/ sliderObstacle.getMaximum() * 100) / 2;
+				labelValueO.setText(" " + nbObstacle + "%");
 			}
 		});
 		nbObstacle = sliderObstacle.getValue();
-		labelValueO.setText(" "+ (int) ((double) nbObstacle / sliderObstacle.getMaximum() * 100) / 2 + "%");
+		labelValueO
+				.setText(" "
+						+ (int) ((double) nbObstacle
+								/ sliderObstacle.getMaximum() * 100) / 2 + "%");
 		gridConstraint.gridx = 1;
 		gridConstraint.gridy = 3;
 
