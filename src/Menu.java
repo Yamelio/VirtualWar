@@ -55,7 +55,7 @@ public class Menu {
 		});
 
 		// Build the item "Ouvrir" in "menu"
-		JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
+		final JMenuItem menuOuvrir = new JMenuItem("Ouvrir");
 		menuOuvrir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
 				InputEvent.CTRL_DOWN_MASK));
 		menuOuvrir.getAccessibleContext().setAccessibleDescription(
@@ -96,7 +96,7 @@ public class Menu {
 		});
 
 		// Build the item "SaveAs" in "menu"
-		JMenuItem menuSaveAs = new JMenuItem("Sauvegarder sous");
+		final JMenuItem menuSaveAs = new JMenuItem("Sauvegarder sous");
 		menuSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				InputEvent.CTRL_DOWN_MASK));
 		menuSave.getAccessibleContext().setAccessibleDescription(
@@ -137,7 +137,7 @@ public class Menu {
 		JMenuItem menuPleinEcran = new JMenuItem("Mode plein ecran");
 		menuPleinEcran.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				InputEvent.CTRL_DOWN_MASK));
-		GraphicsDevice device = GraphicsEnvironment
+		final GraphicsDevice device = GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		menuPleinEcran.getAccessibleContext().setAccessibleDescription(
 				"Ce bouton met je jeu en plein ecran");

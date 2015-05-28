@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 public class Accueil extends JFrame {
 	public Accueil() {
-		JFrame f = new JFrame("VirtualWar");
+		final JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

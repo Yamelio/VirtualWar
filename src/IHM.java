@@ -178,7 +178,7 @@ public class IHM {
 				choixAction = 2;
 			}
 		});
-		JToggleButton boutonTactique = new JToggleButton("Mode tactique");
+		final JToggleButton boutonTactique = new JToggleButton("Mode tactique");
 		boutonTactique.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -378,7 +378,7 @@ public class IHM {
 							joueurCourant = "J2";
 							affJoueurCourant.setText("Joueur courant : Rouge");
 						}
-						if (isJoueur(joueurCourant, nbrIA)) {
+						if (isJoueur(joueurCourant)) {
 							int bouton = e.getButton();
 							for (Case c : liste) {
 								if (c.contains(e.getX(), e.getY())) {
@@ -938,17 +938,36 @@ public class IHM {
 			}
 
 			if (aliveJ1 == 0 && aliveJ2 == 0) {
+				if(!isJoueur("J1")){
+					IA1.sauvegarderResultat(false);
+				}
+				if(!isJoueur("J2")){
+					IA2.sauvegarderResultat(false);
+				}
 				return -1;
 			}
 
 			if (aliveJ1 == 0) {
+				if(!isJoueur("J1")){
+					IA1.sauvegarderResultat(false);
+				}
+				if(!isJoueur("J2")){
+					IA2.sauvegarderResultat(true);
+				}
 				return 1;
 			}
 			if (aliveJ2 == 0) {
+				if(!isJoueur("J1")){
+					IA1.sauvegarderResultat(true);
+				}
+				if(!isJoueur("J2")){
+					IA2.sauvegarderResultat(false);
+				}
 				return 0;
 			}
 			return 2;
 		}
+
 
 		/**
 		 * Verifie que le robot en parametre peut faire quelque chose
@@ -1500,7 +1519,7 @@ public class IHM {
 		 * 
 		 * @return boolean true si le joueur est humain
 		 */
-		public static boolean isJoueur(String joueur, String nbrIA) {
+		public static boolean isJoueur(String joueur) {
 			if (joueur == "J1" && (nbrIA.equals("1") || nbrIA.equals("0"))) {
 				return true;
 			}

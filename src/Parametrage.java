@@ -26,7 +26,7 @@ public class Parametrage {
 	public Menu menu = new Menu();
 
 	public Parametrage() {
-		JFrame f = new JFrame("VirtualWar");
+		final JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
@@ -34,7 +34,7 @@ public class Parametrage {
 		panelPrincipale.setLayout(new GridLayout(3, 1));
 		panelReglage.setLayout(new GridLayout(3, 3));
 
-		JLabel labelParametrage = new JLabel("Paramétrage");
+		JLabel labelParametrage = new JLabel("Paramï¿½trage");
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 		labelParametrage.setFont(titre);
 
@@ -42,10 +42,10 @@ public class Parametrage {
 		gridConstraint.gridx = 0;
 		gridConstraint.gridy = 1;
 
-		JLabel labelValueH = new JLabel(" " + hauteurPlateau + " cases");
+		final JLabel labelValueH = new JLabel(" " + hauteurPlateau + " cases");
 		gridConstraint.gridx = 2;
 		gridConstraint.gridy = 1;
-		JSlider sliderHauteur = new JSlider(5, 25, 10);
+		final JSlider sliderHauteur = new JSlider(5, 25, 10);
 		sliderHauteur.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -59,10 +59,10 @@ public class Parametrage {
 		JLabel labelLargeur = new JLabel("Largeur du plateau:");
 		gridConstraint.gridx = 0;
 		gridConstraint.gridy = 2;
-		JLabel labelValueL = new JLabel(" " + largeurPlateau + " cases");
+		final JLabel labelValueL = new JLabel(" " + largeurPlateau + " cases");
 		gridConstraint.gridx = 2;
 		gridConstraint.gridy = 2;
-		JSlider sliderLargeur = new JSlider(5, 25, 10);
+		final JSlider sliderLargeur = new JSlider(5, 25, 10);
 		sliderLargeur.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -76,11 +76,11 @@ public class Parametrage {
 		JLabel labelObstacle = new JLabel("Nombre d'obstacle:");
 		gridConstraint.gridx = 0;
 		gridConstraint.gridy = 3;
-		JLabel labelValueO = new JLabel(""
+		final JLabel labelValueO = new JLabel(""
 				+ (nbObstacle / (largeurPlateau * hauteurPlateau) * 100) + "%");
 		gridConstraint.gridx = 2;
 		gridConstraint.gridy = 3;
-		JSlider sliderObstacle = new JSlider(
+		final JSlider sliderObstacle = new JSlider(
 				0,
 				((int) sliderLargeur.getMaximum() * sliderHauteur.getMaximum()) / 2);
 		sliderObstacle.addChangeListener(new ChangeListener() {
@@ -98,7 +98,7 @@ public class Parametrage {
 		gridConstraint.gridy = 3;
 
 		String[] modeDeJeu = { "Joueur VS Joueur", "Joueur VS IA", "IA vs IA" };
-		JComboBox<String> combo = new JComboBox<>(modeDeJeu);
+		final JComboBox<String> combo = new JComboBox<>(modeDeJeu);
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {

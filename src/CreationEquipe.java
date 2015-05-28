@@ -23,7 +23,7 @@ public class CreationEquipe {
 	public Menu menu = new Menu();
 
 	public CreationEquipe() {
-		JFrame f = new JFrame("VirtualWar");
+		final JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
@@ -52,13 +52,13 @@ public class CreationEquipe {
 		panelEquipe1.setLayout(g2);
 		panelEquipe2.setLayout(g2);
 
-		JLabel piegeurs1 = new JLabel("Piégeur(s): ");
+		JLabel piegeurs1 = new JLabel("Piï¿½geur(s): ");
 		JLabel tireurs1 = new JLabel("Tireur(s): ");
 		JLabel chars1 = new JLabel("Char(s): ");
 
-		JTextField piegeurE1 = new JTextField("1");
-		JTextField tireurE1 = new JTextField("1");
-		JTextField charE1 = new JTextField("1");
+		final JTextField piegeurE1 = new JTextField("1");
+		final JTextField tireurE1 = new JTextField("1");
+		final JTextField charE1 = new JTextField("1");
 		panelEquipe1.add(piegeurs1);
 		panelEquipe1.add(piegeurE1);
 		panelEquipe1.add(tireurs1);
@@ -66,12 +66,12 @@ public class CreationEquipe {
 		panelEquipe1.add(chars1);
 		panelEquipe1.add(charE1);
 
-		JTextField piegeurE2 = new JTextField("1");
-		JTextField tireurE2 = new JTextField("1");
-		JTextField charE2 = new JTextField("1");
+		final JTextField piegeurE2 = new JTextField("1");
+		final JTextField tireurE2 = new JTextField("1");
+		final JTextField charE2 = new JTextField("1");
 
 		if (!IHM.PlateauIHM.nbrIA.equals("1")) {
-			JLabel piegeurs2 = new JLabel("Piégeur(s): ");
+			JLabel piegeurs2 = new JLabel("Piï¿½geur(s): ");
 			JLabel tireurs2 = new JLabel("Tireur(s): ");
 			JLabel chars2 = new JLabel("Char(s): ");
 
@@ -88,7 +88,7 @@ public class CreationEquipe {
 		panelParametrage.setLayout(g1);
 		panelParametrage.add(panelEquipe1);
 
-		JLabel labelCreationEquipe = new JLabel("Création de l'équipe");
+		JLabel labelCreationEquipe = new JLabel("Crï¿½ation de l'ï¿½quipe");
 
 		labelCreationEquipe.setFont(titre);
 
