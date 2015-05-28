@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ public class Parametrage {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
 
-		panelPrincipale.setLayout(new GridLayout(3, 1));
+		panelPrincipale.setLayout(new GridLayout(4, 1));
 		panelReglage.setLayout(new GridLayout(3, 3));
 
 		JLabel labelParametrage = new JLabel("Paramétrage");
@@ -93,11 +94,22 @@ public class Parametrage {
 		});
 		gridConstraint.gridx = 1;
 		gridConstraint.gridy = 3;
+		
+		
+		String[] modeDeJeu = { "Joueur VS Joueur", "Joueur VS IA", "IA vs IA"};
+		JComboBox combo = new JComboBox(modeDeJeu);
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(combo.getSelectedIndex() == 1){
+					//on lance en JvJ
+				}else if(combo.getSelectedIndex() == 2){
+					//on lance en Jvia
+				}else{
+					//on lance en IAvsIa
+				}
 				new CreationEquipe();
 				f.dispose();
 			}
@@ -119,6 +131,7 @@ public class Parametrage {
 		
 
 		panelPrincipale.add(labelParametrage);
+		panelPrincipale.add(combo);
 		panelPrincipale.add(panelReglage);
 		panelPrincipale.add(valider, BorderLayout.PAGE_END);
 		f.getContentPane().add(panelPrincipale);
