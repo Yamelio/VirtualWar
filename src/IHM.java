@@ -48,7 +48,6 @@ public class IHM {
 
 	protected int hauteurFenetre = 700;
 	protected int largeurFenetre = 900;
-	static int debugCpt = 0;
 	public File currentFile = null;
 	public static JTextArea historique = new JTextArea(" ");
 	public JFrame f;
@@ -66,6 +65,7 @@ public class IHM {
 	static int hauteurDispo = 0;
 	static Vue vueJ1;
 	static Vue vueJ2;
+	static String savePath = "save/sauvegarde.txt";
 	public Menu menu = new Menu();
 
 	public IHM() {
@@ -242,10 +242,8 @@ public class IHM {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		f.pack();
-		
-	}
 
-	
+	}
 
 	@SuppressWarnings("serial")
 	public static class PlateauIHM extends JPanel {
@@ -275,17 +273,27 @@ public class IHM {
 		private static Robot robotChoisi = null;
 		private static Robot robotCible = null;
 		private static List<Robot> robotsInit;
-		private static String nbrIA = "0";
+		static String nbrIA;
 		private static IntelligenceArtificielle IA1 = null;
 		private static IntelligenceArtificielle IA2 = null;
 		private static int indiceRobotBase = 0;
+		private List<Position> deplacementsPossibles = null;
+		static int largeur;
+		static int hauteur;
+		static int obstacles;
+		static int nbTireurJ1;
+		static int nbCharJ1;
+		static int nbPiegeurJ1;
+		static int nbTireurJ2;
+		static int nbCharJ2;
+		static int nbPiegeurJ2;
 
 		public PlateauIHM() {
 			super();
 
 			setCoordCases();
 			JFrame back = new JFrame("");
-			//back.setJMenuBar(menu.getMenu());
+			// back.setJMenuBar(menu.getMenu());
 			back.getContentPane().add(this);
 			back.setLocation(0, 0);
 			back.setSize(2000, 2000);
@@ -300,6 +308,7 @@ public class IHM {
 
 				public void mouseMoved(MouseEvent e) {
 					survol = null;
+					deplacementsPossibles = new ArrayList<Position>();
 					setCoordCases();
 
 					for (Case c : liste) {
@@ -319,6 +328,12 @@ public class IHM {
 									.createTitledBorder(robotChoisi
 											.getDescription(true)));
 
+						}
+					}
+					if (survol != null) {
+						if (survol.getPosition().estRobot()) {
+							deplacementsPossibles = casesPossibles(survol
+									.getPosition().getRobot());
 						}
 					}
 					checkToolTip();
@@ -412,11 +427,16 @@ public class IHM {
 									}
 								} else {
 									if (bouton == 3) {
-										if (robotChoisi instanceof Piegeur) {
-											choixCible = c.getPosition();
+										if (choixAction == 1) {
+											if (robotChoisi instanceof Piegeur) {
+												choixCible = c.getPosition();
+											} else {
+												robotCible = c.getPosition()
+														.getRobot();
+											}
 										} else {
-											robotCible = c.getPosition()
-													.getRobot();
+
+											choixCible = c.getPosition();
 										}
 									}
 								}
@@ -548,7 +568,7 @@ public class IHM {
 							affJoueurCourant.setText("Joueur courant : Rouge");
 						}
 						PlateauIHM.p.recharges();
-						PlateauIHM.sauvegarde();
+						PlateauIHM.sauvegarde(savePath);
 						repaint();
 						fin = PlateauIHM.checkFin();
 						switch (fin) {
@@ -570,6 +590,103 @@ public class IHM {
 					}
 				}
 			});
+		}
+
+		private static List<Position> casesPossibles(Robot r) {
+			Position tmp = r.getPosition();
+			List<Position> res = new ArrayList<Position>();
+
+			if (r instanceof Piegeur || r instanceof Tireur) {
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						tmp = p.getCarte()
+								.get(p.posToString(new Position(r.getPosition()
+										.getX() + i, r.getPosition().getY() + j)));
+						if (tmp != null) {
+							if ((tmp.estBase()
+									&& tmp.getEquipe() == r.getEquipe() && checkTotalRobots(r))
+									|| !(tmp.estObstacle() || tmp.estRobot() || tmp
+											.estBase())) {
+								res.add(tmp);
+							}
+						}
+					}
+				}
+			} else {
+				tmp = p.getCarte().get(
+						p.posToString(new Position(r.getPosition().getX() + 1,
+								r.getPosition().getY())));
+				if (tmp != null) {
+					if (!(tmp.estObstacle() || tmp.estRobot())) {
+						tmp = p.getCarte().get(
+								p.posToString(new Position(r.getPosition()
+										.getX() + 2, r.getPosition().getY())));
+						if (tmp != null) {
+							if ((!tmp.estBase())
+									|| (tmp.estBase()
+											&& tmp.getEquipe() == r.getEquipe() && checkTotalRobots(r))) {
+								res.add(tmp);
+							}
+
+						}
+					}
+				}
+				tmp = p.getCarte().get(
+						p.posToString(new Position(r.getPosition().getX() - 1,
+								r.getPosition().getY())));
+				if (tmp != null) {
+					if (!(tmp.estObstacle() || tmp.estRobot())) {
+						tmp = p.getCarte().get(
+								p.posToString(new Position(r.getPosition()
+										.getX() - 2, r.getPosition().getY())));
+						if (tmp != null) {
+							if ((!tmp.estBase())
+									|| (tmp.estBase()
+											&& tmp.getEquipe() == r.getEquipe() && checkTotalRobots(r))) {
+								res.add(tmp);
+							}
+
+						}
+					}
+				}
+				tmp = p.getCarte().get(
+						p.posToString(new Position(r.getPosition().getX(), r
+								.getPosition().getY() + 1)));
+				if (tmp != null) {
+					if (!(tmp.estObstacle() || tmp.estRobot())) {
+						tmp = p.getCarte().get(
+								p.posToString(new Position(r.getPosition()
+										.getX(), r.getPosition().getY() + 2)));
+						if (tmp != null) {
+							if ((!tmp.estBase())
+									|| (tmp.estBase()
+											&& tmp.getEquipe() == r.getEquipe() && checkTotalRobots(r))) {
+								res.add(tmp);
+							}
+
+						}
+					}
+				}
+				tmp = p.getCarte().get(
+						p.posToString(new Position(r.getPosition().getX(), r
+								.getPosition().getY() - 1)));
+				if (tmp != null) {
+					if (!(tmp.estObstacle() || tmp.estRobot())) {
+						tmp = p.getCarte().get(
+								p.posToString(new Position(r.getPosition()
+										.getX(), r.getPosition().getY() - 2)));
+						if (tmp != null) {
+							if ((!tmp.estBase())
+									|| (tmp.estBase()
+											&& tmp.getEquipe() == r.getEquipe() && checkTotalRobots(r))) {
+								res.add(tmp);
+							}
+
+						}
+					}
+				}
+			}
+			return res;
 		}
 
 		private void checkToolTip() {
@@ -666,6 +783,12 @@ public class IHM {
 					this);
 			g.setColor(Color.BLACK);
 			for (Case c : liste) {
+				if (deplacementsPossibles != null) {
+					if (deplacementsPossibles.contains(c.getPosition())) {
+						g.setColor(Color.LIGHT_GRAY);
+						g.fillPolygon(c);
+					}
+				}
 				if (survol != null) {
 					if (c.xpoints.equals(survol.xpoints)
 							&& c.ypoints.equals(survol.ypoints)) {
@@ -742,144 +865,96 @@ public class IHM {
 
 		// Cette procedure remplace le main initial
 		public static PlateauIHM start() {
-			Scanner s = new Scanner(System.in);
+			/*
+			 * Scanner s = new Scanner(System.in);
+			 * 
+			 * System.out.println("Voulez vous charger une partie ? (o/n)");
+			 * String rep; do { rep = s.next(); } while (!(rep.equals("o") ||
+			 * rep.equals("n")));
+			 * 
+			 * if (rep.equals("o")) { chargement(savePath);
+			 * 
+			 * robotChoisi = actions.get(actions.size() - 1).getRobot();
+			 * choixCible = actions.get(actions.size() - 1).getCible();
+			 * 
+			 * } else {
+			 * 
+			 * do { System.out
+			 * .println("Combien de joueur virtuels voulez vous ?(0 à 2)");
+			 * nbrIA = s.next(); } while (!(nbrIA.equals("0") ||
+			 * nbrIA.equals("1") || nbrIA .equals("2")));
+			 * 
+			 * int nbTireurJ1; int nbPiegeurJ1; int nbCharJ1; if
+			 * (nbrIA.equals("0") || nbrIA.equals("1")) {
+			 * 
+			 * nbTireurJ1 = 10; nbPiegeurJ1 = 10; nbCharJ1 = 10; try { do {
+			 * System.out
+			 * .println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : "
+			 * ); nbTireurJ1 = s.nextInt(); System.out.println("\n\tChar : ");
+			 * nbCharJ1 = s.nextInt(); System.out.println("\n\tPiegeur : ");
+			 * nbPiegeurJ1 = s.nextInt();
+			 * 
+			 * } while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5 || nbTireurJ1 +
+			 * nbCharJ1 + nbPiegeurJ1 <= 0);
+			 * 
+			 * } catch (Exception e) { System.out.println("Erreur de saisie");
+			 * s.next(); }
+			 * 
+			 * } else { nbTireurJ1 = 0; nbPiegeurJ1 = 0; nbCharJ1 = 0; }
+			 * 
+			 * int nbTireurJ2; int nbCharJ2; int nbPiegeurJ2; if
+			 * (nbrIA.equals("0")) {
+			 * 
+			 * nbTireurJ2 = 10; nbCharJ2 = 10; nbPiegeurJ2 = 10;
+			 * 
+			 * try { do { System.out .println(
+			 * "\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
+			 * nbTireurJ2 = s.nextInt(); System.out.println("\n\tChar : ");
+			 * nbCharJ2 = s.nextInt(); System.out.println("\n\tPiegeur : ");
+			 * nbPiegeurJ2 = s.nextInt();
+			 * 
+			 * } while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5 || nbTireurJ2 +
+			 * nbCharJ2 + nbPiegeurJ2 <= 0); } catch (Exception e) {
+			 * System.out.println("Erreur de saisie"); s.next(); } } else {
+			 * nbTireurJ2 = 0; nbCharJ2 = 0; nbPiegeurJ2 = 0; }
+			 * 
+			 * int largeur = 0; int hauteur = 0;
+			 * 
+			 * do { try { System.out .println(
+			 * " Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26"
+			 * ); largeur = s.nextInt(); hauteur = s.nextInt(); } catch
+			 * (Exception e) { System.out.println("Erreur de saisie"); s.next();
+			 * } } while (largeur < 5 || largeur > 26 || hauteur < 5 || hauteur
+			 * > 26); int obstacles = -1; do { try { System.out .println(
+			 * "\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)"
+			 * ); obstacles = s.nextInt(); } catch (Exception e) {
+			 * System.out.println("Erreur de saisie"); s.next(); } } while
+			 * (!(obstacles > -1 && obstacles < 51));
+			 */
+			p = new Plateau(largeur, hauteur, obstacles);
+			p.initObstacles();
 
-			System.out.println("Voulez vous charger une partie ? (o/n)");
-			String rep;
-			do {
-				rep = s.next();
-			} while (!(rep.equals("o") || rep.equals("n")));
-
-			if (rep.equals("o")) {
-				chargement();
-
-				robotChoisi = actions.get(actions.size() - 1).getRobot();
-				choixCible = actions.get(actions.size() - 1).getCible();
-
-			} else {
-
-				do {
-					System.out
-							.println("Combien de joueur virtuels voulez vous ?(0 à 2)");
-					nbrIA = s.next();
-				} while (!(nbrIA.equals("0") || nbrIA.equals("1") || nbrIA
-						.equals("2")));
-
-				int nbTireurJ1;
-				int nbPiegeurJ1;
-				int nbCharJ1;
-				if (nbrIA.equals("0") || nbrIA.equals("1")) {
-
-					nbTireurJ1 = 10;
-					nbPiegeurJ1 = 10;
-					nbCharJ1 = 10;
-					try {
-						do {
-							System.out
-									.println("Joueur 1, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-							nbTireurJ1 = s.nextInt();
-							System.out.println("\n\tChar : ");
-							nbCharJ1 = s.nextInt();
-							System.out.println("\n\tPiegeur : ");
-							nbPiegeurJ1 = s.nextInt();
-
-						} while (nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 > 5
-								|| nbTireurJ1 + nbCharJ1 + nbPiegeurJ1 <= 0);
-
-					} catch (Exception e) {
-						System.out.println("Erreur de saisie");
-						s.next();
-					}
-
-				} else {
-					nbTireurJ1 = 0;
-					nbPiegeurJ1 = 0;
-					nbCharJ1 = 0;
-				}
-
-				int nbTireurJ2;
-				int nbCharJ2;
-				int nbPiegeurJ2;
-				if (nbrIA.equals("0")) {
-
-					nbTireurJ2 = 10;
-					nbCharJ2 = 10;
-					nbPiegeurJ2 = 10;
-
-					try {
-						do {
-							System.out
-									.println("\n\nJoueur 2, choisissez vos robots(Maximum 5) :\n\tTireur : ");
-							nbTireurJ2 = s.nextInt();
-							System.out.println("\n\tChar : ");
-							nbCharJ2 = s.nextInt();
-							System.out.println("\n\tPiegeur : ");
-							nbPiegeurJ2 = s.nextInt();
-
-						} while (nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 > 5
-								|| nbTireurJ2 + nbCharJ2 + nbPiegeurJ2 <= 0);
-					} catch (Exception e) {
-						System.out.println("Erreur de saisie");
-						s.next();
-					}
-				} else {
-					nbTireurJ2 = 0;
-					nbCharJ2 = 0;
-					nbPiegeurJ2 = 0;
-				}
-
-				int largeur = 0;
-				int hauteur = 0;
-
-				do {
-					try {
-						System.out
-								.println(" Entrez la taille de la map (largeur, puis hauteur) entre 5 et 26");
-						largeur = s.nextInt();
-						hauteur = s.nextInt();
-					} catch (Exception e) {
-						System.out.println("Erreur de saisie");
-						s.next();
-					}
-				} while (largeur < 5 || largeur > 26 || hauteur < 5
-						|| hauteur > 26);
-				int obstacles = -1;
-				do {
-					try {
-						System.out
-								.println("\n\nChoisissez un pourcentage d'obstacles (entier entre 0 et 50)");
-						obstacles = s.nextInt();
-					} catch (Exception e) {
-						System.out.println("Erreur de saisie");
-						s.next();
-					}
-				} while (!(obstacles > -1 && obstacles < 51));
-
-				p = new Plateau(largeur, hauteur, obstacles);
-				p.initObstacles();
-
-				for (int i = 0; i < nbTireurJ1; i++) {
-					p.ajouterListeRobot(new Tireur(0));
-				}
-				for (int i = 0; i < nbCharJ1; i++) {
-					p.ajouterListeRobot(new Char(0));
-				}
-				for (int i = 0; i < nbPiegeurJ1; i++) {
-					p.ajouterListeRobot(new Piegeur(0));
-				}
-				for (int i = 0; i < nbTireurJ2; i++) {
-					p.ajouterListeRobot(new Tireur(1));
-				}
-				for (int i = 0; i < nbCharJ2; i++) {
-					p.ajouterListeRobot(new Char(1));
-				}
-				for (int i = 0; i < nbPiegeurJ2; i++) {
-					p.ajouterListeRobot(new Piegeur(1));
-				}
-
-				initIA(nbrIA);
-
+			for (int i = 0; i < nbTireurJ1; i++) {
+				p.ajouterListeRobot(new Tireur(0));
 			}
+			for (int i = 0; i < nbCharJ1; i++) {
+				p.ajouterListeRobot(new Char(0));
+			}
+			for (int i = 0; i < nbPiegeurJ1; i++) {
+				p.ajouterListeRobot(new Piegeur(0));
+			}
+			for (int i = 0; i < nbTireurJ2; i++) {
+				p.ajouterListeRobot(new Tireur(1));
+			}
+			for (int i = 0; i < nbCharJ2; i++) {
+				p.ajouterListeRobot(new Char(1));
+			}
+			for (int i = 0; i < nbPiegeurJ2; i++) {
+				p.ajouterListeRobot(new Piegeur(1));
+			}
+
+			initIA(nbrIA);
+
 			robotsInit = new ArrayList<Robot>(p.getListeRobot());
 			return new PlateauIHM();
 		}
@@ -1164,9 +1239,9 @@ public class IHM {
 		/**
 		 * Sauvegarde la partie dans le fichier save/sauvegarte.txt
 		 */
-		public static void sauvegarde() {
+		public static void sauvegarde(String file) {
 			try {
-				File save = new File("save/sauvegarde.txt");
+				File save = new File(file);
 				save.createNewFile();
 				FileWriter s = new FileWriter(save);
 				s.write(p.getLargeur() + " " + p.getHauteur() + " "
@@ -1225,10 +1300,9 @@ public class IHM {
 		/**
 		 * Charge la partie a partir du fichier save/sauvegarde.txt
 		 */
-		public static void chargement() {
+		public static void chargement(String file) {
 			try {
-
-				File save = new File("save/sauvegarde.txt");
+				File save = new File(file);
 				save.createNewFile();
 				Scanner s = new Scanner(save);
 				int largeur = s.nextInt();
@@ -1238,10 +1312,11 @@ public class IHM {
 				int nbRobotsJ2 = s.nextInt();
 
 				p = new Plateau(largeur, hauteur, obstacles);
+				Position.setPlateau(p);
 				vueJ1 = new Vue(p, 0);
 				vueJ2 = new Vue(p, 1);
 				nbrIA = s.next();
-
+				Robot.cpt = 0;
 				if (nbrIA.equals("0") || nbrIA.equals("1")) {
 					for (int i = 0; i < nbRobotsJ1; i++) {
 						char tmp = s.next().charAt(0);
@@ -1289,7 +1364,7 @@ public class IHM {
 						break;
 					}
 				}
-
+				robotsInit = new ArrayList<Robot>(p.getListeRobot());
 				int equipe = Integer.parseInt(tmp);
 				int robot = s.nextInt();
 				int action = s.nextInt();
@@ -1345,7 +1420,6 @@ public class IHM {
 					robot = s.nextInt();
 					action = s.nextInt();
 					cible = s.next();
-
 					if (action == 0) {
 						actions.add(new Deplacement(p.getRobot(robot), p
 								.stringToPos(cible)));
@@ -1397,7 +1471,7 @@ public class IHM {
 						.getEquipe() == 0);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 				System.out
 						.println("Sauvegarde corrompue, veuillez redemarrer le jeu");
 				System.exit(0);
@@ -1504,5 +1578,5 @@ public class IHM {
 			};
 		});
 	}
-	
+
 }

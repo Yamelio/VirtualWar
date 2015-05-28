@@ -50,8 +50,10 @@ public class Deplacement extends Action {
 		}
 
 	}
+
 	/**
 	 * Retourne la cible du deplacement
+	 * 
 	 * @return la cible du deplacement
 	 */
 	public Position getCible() {
@@ -79,6 +81,7 @@ public class Deplacement extends Action {
 
 	/**
 	 * Fonction qui verifie si un robot est au moins en dehors de sa base
+	 * 
 	 * @return vrai si oui, faux si non
 	 */
 	private boolean checkTotalRobots() {
@@ -157,6 +160,7 @@ public class Deplacement extends Action {
 
 	/**
 	 * Fonction qui verifie si la cible est un occupee
+	 * 
 	 * @return vrai si non, faux si oui
 	 */
 	public boolean checkObstacle() {
@@ -191,6 +195,7 @@ public class Deplacement extends Action {
 
 	/**
 	 * Fonction qui verifie si un char n'as pas d'obstacle le long du trajet
+	 * 
 	 * @return vrai si oui, faux si non
 	 */
 	public boolean charPeutDeplacer() {

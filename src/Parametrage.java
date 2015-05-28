@@ -31,7 +31,7 @@ public class Parametrage {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
 
-		panelPrincipale.setLayout(new GridLayout(4, 1));
+		panelPrincipale.setLayout(new GridLayout(3, 1));
 		panelReglage.setLayout(new GridLayout(3, 3));
 
 		JLabel labelParametrage = new JLabel("Paramétrage");
@@ -80,8 +80,9 @@ public class Parametrage {
 				+ (nbObstacle / (largeurPlateau * hauteurPlateau) * 100) + "%");
 		gridConstraint.gridx = 2;
 		gridConstraint.gridy = 3;
-		JSlider sliderObstacle = new JSlider(0,
-				((int)sliderLargeur.getMaximum() * sliderHauteur.getMaximum()) / 2);
+		JSlider sliderObstacle = new JSlider(
+				0,
+				((int) sliderLargeur.getMaximum() * sliderHauteur.getMaximum()) / 2);
 		sliderObstacle.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -89,32 +90,40 @@ public class Parametrage {
 						/ 2);
 				nbObstacle = sliderObstacle.getValue();
 				labelValueO.setText(" "
-						+ (int)((double) nbObstacle / sliderObstacle.getMaximum() * 100) / 2 + "%");
+						+ (int) ((double) nbObstacle
+								/ sliderObstacle.getMaximum() * 100) / 2 + "%");
 			}
 		});
 		gridConstraint.gridx = 1;
 		gridConstraint.gridy = 3;
-		
-		
-		String[] modeDeJeu = { "Joueur VS Joueur", "Joueur VS IA", "IA vs IA"};
-		JComboBox combo = new JComboBox(modeDeJeu);
+
+		String[] modeDeJeu = { "Joueur VS Joueur", "Joueur VS IA", "IA vs IA" };
+		JComboBox<String> combo = new JComboBox<>(modeDeJeu);
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(combo.getSelectedIndex() == 1){
-					//on lance en JvJ
-				}else if(combo.getSelectedIndex() == 2){
-					//on lance en Jvia
-				}else{
-					//on lance en IAvsIa
+				IHM.PlateauIHM.hauteur = hauteurPlateau;
+				IHM.PlateauIHM.largeur = largeurPlateau;
+				IHM.PlateauIHM.obstacles = nbObstacle;
+
+				if (combo.getSelectedIndex() == 0) {
+					IHM.PlateauIHM.nbrIA = "0";
+					new CreationEquipe();
+					f.dispose();
+				} else if (combo.getSelectedIndex() == 1) {
+					IHM.PlateauIHM.nbrIA = "1";
+					new CreationEquipe();
+					f.dispose();
+				} else {
+					IHM.PlateauIHM.nbrIA = "2";
+					new IHM();
+					f.dispose();
 				}
-				new CreationEquipe();
-				f.dispose();
 			}
 		});
-		
+
 		gridConstraint = new GridBagConstraints();
 		gridConstraint.anchor = GridBagConstraints.LINE_END;
 		gridConstraint.ipadx = 50;
@@ -128,7 +137,6 @@ public class Parametrage {
 		panelReglage.add(labelObstacle, gridConstraint);
 		panelReglage.add(sliderObstacle, gridConstraint);
 		panelReglage.add(labelValueO, gridConstraint);
-		
 
 		panelPrincipale.add(labelParametrage);
 		panelPrincipale.add(combo);

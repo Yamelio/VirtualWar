@@ -5,9 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,10 +16,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
 	public JMenuBar menuBar;
-	File currentFile = null;
 	JTextArea historique = null;
-	
-	
+
 	public Menu() {
 		// Build the menu bar
 		menuBar = new JMenuBar();
@@ -70,7 +65,6 @@ public class Menu {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser();
-				File file = fc.getSelectedFile();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
 						"Fichier de sauvegarde VirtualWar (.txt)", "txt",
 						"text");
@@ -80,10 +74,10 @@ public class Menu {
 				fc.setCurrentDirectory(workingDirectory);
 				int returnVal = fc.showOpenDialog(menuOuvrir);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					System.out.println("You chose to open this file: "
-							+ fc.getSelectedFile().getName());
+					IHM.savePath = fc.getSelectedFile().getPath();
+					IHM.PlateauIHM.chargement(IHM.savePath);
 				}
-				//currentFile = file;
+
 			}
 		});
 
@@ -97,49 +91,7 @@ public class Menu {
 		menuSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (currentFile == null) {
-					JFileChooser fc = new JFileChooser();
-					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-					File workingDirectory = new File(System
-							.getProperty("user.dir") + "/save");
-					fc.setCurrentDirectory(workingDirectory);
-					int returnVal = fc.showSaveDialog(menuSave);
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						// on ecrit dans le fichier comme pour un save as
-						FileWriter writer = null;
-						try {
-							writer = new FileWriter(fc.getSelectedFile());
-							writer.write(historique.getText());
-						} catch (Exception e3) {
-							JOptionPane.showMessageDialog(null,
-									"Imbossible de sauvegarder le fichier",
-									"Erreur", JOptionPane.ERROR_MESSAGE);
-						} finally {
-							try {
-								writer.close();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
-					}
-				} else {
-					// ecriture dans le fichier
-					FileWriter writer = null;
-					try {
-						writer = new FileWriter(currentFile);
-						writer.write(historique.getText());
-					} catch (Exception e3) {
-						JOptionPane.showMessageDialog(null,
-								"Imbossible de sauvegarder le fichier",
-								"Erreur", JOptionPane.ERROR_MESSAGE);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
+				IHM.PlateauIHM.sauvegarde(IHM.savePath);
 			}
 		});
 
@@ -160,21 +112,21 @@ public class Menu {
 				fc.setCurrentDirectory(workingDirectory);
 				int returnVal = fc.showSaveDialog(menuSaveAs);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					FileWriter writer = null;
 					try {
-						writer = new FileWriter(fc.getSelectedFile());
-						writer.write(historique.getText());
+						IHM.savePath = fc.getSelectedFile().getPath();
+						if (IHM.savePath.length() > 4) {
+							if (!IHM.savePath.substring(
+									IHM.savePath.length() - 4,
+									IHM.savePath.length()).equals(".txt")) {
+								IHM.savePath = IHM.savePath + ".txt";
+							}
+						}
+						IHM.PlateauIHM.sauvegarde(IHM.savePath);
 					} catch (Exception e3) {
+						e3.printStackTrace();
 						JOptionPane.showMessageDialog(null,
 								"Imbossible de sauvegarder le fichier",
 								"Erreur", JOptionPane.ERROR_MESSAGE);
-					} finally {
-						try {
-							writer.close();
-						} catch (IOException e1) {
-
-							e1.printStackTrace();
-						}
 					}
 				}
 			}
