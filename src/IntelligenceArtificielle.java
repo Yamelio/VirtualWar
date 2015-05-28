@@ -54,7 +54,9 @@ public class IntelligenceArtificielle {
 	public Action Jouer(){
 		checkMorts();
 		Robot r = choixRobotJoue();
+		System.out.println(r);
 		String action = choixAction(r);
+		System.out.println(action);
 		if(action == "Deplacement"){
 			try {
 				return new Deplacement(r, choixCibleDeplacement(r));
@@ -121,6 +123,10 @@ public class IntelligenceArtificielle {
 		
 		if(r instanceof Piegeur){
 			points -= 20;
+		}
+		
+		if(r instanceof Piegeur && r.getNbMines() <= 0){
+			points = 0;
 		}
 		
 		if(r instanceof Piegeur && choixCibleMine(r) == null && choixCibleDeplacement(r) == null){
@@ -739,12 +745,9 @@ public class IntelligenceArtificielle {
 				int nbrVictoire = sEntree.nextInt();
 				int nbrPartie = sEntree.nextInt();
 				wSortie.write(formation + " ");
-				System.out.println(formation + "/" + this.formation);
 				if(formation.equals(this.formation)){
-					System.out.println("formation trouvé");
 					if(victoire){
 						wSortie.write((nbrVictoire+1) + " ");
-						System.out.println("victoire");
 					}
 					else{
 						wSortie.write(nbrVictoire + " ");
@@ -765,17 +768,7 @@ public class IntelligenceArtificielle {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
 	
