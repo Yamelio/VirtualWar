@@ -651,7 +651,7 @@ public class IntelligenceArtificielle {
 		Map<String,Double> listeFormation = new HashMap<String,Double>();
 		List<String> formationsNul = new ArrayList<String>();
 		String[] meilleursFormation = new String[3];
-		File formations = new File("save/formationIA.txt");
+		File formations = new File("saveIA/formationIA.txt");
 		Scanner s;
 		Random r = new Random();
 		try{
@@ -706,7 +706,7 @@ public class IntelligenceArtificielle {
 	 */
 	public void initFormation(){
 		try {
-			File formations = new File("save/.formationIA.txt");
+			File formations = new File("saveIA/formationIA.txt");
 			formations.createNewFile();
 			FileWriter f = new FileWriter(formations);
 			
@@ -728,7 +728,7 @@ public class IntelligenceArtificielle {
 	
 	public void sauvegarderResultat(boolean victoire){
 		try{
-			File entree = new File("save/.formationIA.txt");
+			File entree = new File("saveIA/formationIA.txt");
 			File sortie = new File("save/temp.txt");
 			sortie.createNewFile();
 			FileWriter wSortie = new FileWriter(sortie);
@@ -760,7 +760,7 @@ public class IntelligenceArtificielle {
 			sEntree.close();
 			wSortie.close();
 			entree.delete();
-			sortie.renameTo(new File("save/.formationIA.txt"));
+			sortie.renameTo(new File("saveIA/formationIA.txt"));
 			
 		}catch(Exception e){
 			e.printStackTrace();
