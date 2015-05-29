@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.HashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import sun.print.resources.serviceui;
 
@@ -652,9 +652,8 @@ public class IntelligenceArtificielle {
 	 * @return Un String contenant le nombre de chaques types de robots avec leurs types de formations
 	 */
 	public String choixFormation(){
-		Map<String,Double> listeFormation = new HashMap<String,Double>();
 		List<String> formationsNul = new ArrayList<String>();
-		String[] meilleursFormation = new String[3];
+		TreeMap<Double,String> meilleursFormation = new TreeMap<Double, String>();
 		File formations = new File("saveIA/formationIA.txt");
 		Scanner s;
 		Random r = new Random();
@@ -673,26 +672,30 @@ public class IntelligenceArtificielle {
 				String formation = s.next();
 				int nbrVictoire = s.nextInt();
 				int nbrPartie = s.nextInt();
-				if(nbrVictoire != 0){
-					listeFormation.put(formation, ((double)nbrPartie/nbrVictoire));
-				}
-				else{
-					listeFormation.put(formation, 0.0);
-				}
 				if(nbrPartie < 5){
 					formationsNul.add(formation);
 				}
+				else if(nbrVictoire > 0){
+					meilleursFormation.put(((double)nbrPartie/nbrVictoire), formation);
+				}
 				else{
-					if(meilleursFormation[3] == null){
-						meilleursFormation[3] = formation;
-					}
-					else if(listeFormation.get(meilleursFormation[3]) < listeFormation.get(formation)){
-						meilleursFormation[3] = formation;
-					}
+					meilleursFormation.put(0.0, formation);
 				}
 			}
 			if(formationsNul.size() == 0){
-				return meilleursFormation[r.nextInt(meilleursFormation.length)];
+				int max;
+				if(meilleursFormation.size() >= 3){
+					max = 3;
+				}
+				else{
+					max = meilleursFormation.size();
+				}
+				max = r.nextInt(max);
+				System.out.println(max);
+				for(int i =0; i <max; i++){
+					meilleursFormation.remove(meilleursFormation.firstKey());
+				}
+				return meilleursFormation.get(meilleursFormation.firstKey());
 			}
 			else{
 				return formationsNul.get(r.nextInt(formationsNul.size()));
@@ -703,7 +706,7 @@ public class IntelligenceArtificielle {
 		}
 	}
 		
-
+	
 	
 	/**
 	 * Initialise le fichier de sauvegarde des statistiques de l'IA
