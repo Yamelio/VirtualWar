@@ -881,29 +881,31 @@ public class IHM {
 
 		// Cette procedure remplace le main initial
 		public static PlateauIHM start() {
-
+			System.out.println(obstacles);
 			p = new Plateau(largeur, hauteur, obstacles);
 			p.initObstacles();
-
-			for (int i = 0; i < nbTireurJ1; i++) {
-				p.ajouterListeRobot(new Tireur(0));
+			if (!(nbrIA.equals("2"))) {
+				for (int i = 0; i < nbTireurJ1; i++) {
+					p.ajouterListeRobot(new Tireur(0));
+				}
+				for (int i = 0; i < nbCharJ1; i++) {
+					p.ajouterListeRobot(new Char(0));
+				}
+				for (int i = 0; i < nbPiegeurJ1; i++) {
+					p.ajouterListeRobot(new Piegeur(0));
+				}
+				if (nbrIA.equals("0")) {
+					for (int i = 0; i < nbTireurJ2; i++) {
+						p.ajouterListeRobot(new Tireur(1));
+					}
+					for (int i = 0; i < nbCharJ2; i++) {
+						p.ajouterListeRobot(new Char(1));
+					}
+					for (int i = 0; i < nbPiegeurJ2; i++) {
+						p.ajouterListeRobot(new Piegeur(1));
+					}
+				}
 			}
-			for (int i = 0; i < nbCharJ1; i++) {
-				p.ajouterListeRobot(new Char(0));
-			}
-			for (int i = 0; i < nbPiegeurJ1; i++) {
-				p.ajouterListeRobot(new Piegeur(0));
-			}
-			for (int i = 0; i < nbTireurJ2; i++) {
-				p.ajouterListeRobot(new Tireur(1));
-			}
-			for (int i = 0; i < nbCharJ2; i++) {
-				p.ajouterListeRobot(new Char(1));
-			}
-			for (int i = 0; i < nbPiegeurJ2; i++) {
-				p.ajouterListeRobot(new Piegeur(1));
-			}
-
 			initIA(nbrIA);
 
 			robotsInit = new ArrayList<Robot>(p.getListeRobot());
@@ -938,36 +940,35 @@ public class IHM {
 			}
 
 			if (aliveJ1 == 0 && aliveJ2 == 0) {
-				if(!isJoueur("J1")){
+				if (!isJoueur("J1")) {
 					IA1.sauvegarderResultat(false);
 				}
-				if(!isJoueur("J2")){
+				if (!isJoueur("J2")) {
 					IA2.sauvegarderResultat(false);
 				}
 				return -1;
 			}
 
 			if (aliveJ1 == 0) {
-				if(!isJoueur("J1")){
+				if (!isJoueur("J1")) {
 					IA1.sauvegarderResultat(false);
 				}
-				if(!isJoueur("J2")){
+				if (!isJoueur("J2")) {
 					IA2.sauvegarderResultat(true);
 				}
 				return 1;
 			}
 			if (aliveJ2 == 0) {
-				if(!isJoueur("J1")){
+				if (!isJoueur("J1")) {
 					IA1.sauvegarderResultat(true);
 				}
-				if(!isJoueur("J2")){
+				if (!isJoueur("J2")) {
 					IA2.sauvegarderResultat(false);
 				}
 				return 0;
 			}
 			return 2;
 		}
-
 
 		/**
 		 * Verifie que le robot en parametre peut faire quelque chose

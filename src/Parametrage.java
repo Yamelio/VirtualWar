@@ -92,11 +92,8 @@ public class Parametrage {
 				labelValueO.setText(" " + nbObstacle + "%");
 			}
 		});
-		nbObstacle = sliderObstacle.getValue();
-		labelValueO
-				.setText(" "
-						+ (int) ((double) nbObstacle
-								/ sliderObstacle.getMaximum() * 100) / 2 + "%");
+		nbObstacle = 25;
+		labelValueO.setText(25 + "%");
 		gridConstraint.gridx = 1;
 		gridConstraint.gridy = 3;
 
