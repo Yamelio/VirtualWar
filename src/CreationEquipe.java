@@ -52,7 +52,7 @@ public class CreationEquipe {
 		panelEquipe1.setLayout(g2);
 		panelEquipe2.setLayout(g2);
 
-		JLabel piegeurs1 = new JLabel("Piï¿½geur(s): ");
+		JLabel piegeurs1 = new JLabel("Piegeur(s): ");
 		JLabel tireurs1 = new JLabel("Tireur(s): ");
 		JLabel chars1 = new JLabel("Char(s): ");
 
@@ -71,7 +71,7 @@ public class CreationEquipe {
 		final JTextField charE2 = new JTextField("1");
 
 		if (!IHM.PlateauIHM.nbrIA.equals("1")) {
-			JLabel piegeurs2 = new JLabel("Piï¿½geur(s): ");
+			JLabel piegeurs2 = new JLabel("Piegeur(s): ");
 			JLabel tireurs2 = new JLabel("Tireur(s): ");
 			JLabel chars2 = new JLabel("Char(s): ");
 
@@ -88,7 +88,7 @@ public class CreationEquipe {
 		panelParametrage.setLayout(g1);
 		panelParametrage.add(panelEquipe1);
 
-		JLabel labelCreationEquipe = new JLabel("Crï¿½ation de l'ï¿½quipe");
+		JLabel labelCreationEquipe = new JLabel("Création de l'équipe");
 
 		labelCreationEquipe.setFont(titre);
 
