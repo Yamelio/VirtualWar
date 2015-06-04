@@ -34,7 +34,7 @@ public class Parametrage {
 		panelPrincipale.setLayout(new GridLayout(3, 1));
 		panelReglage.setLayout(new GridLayout(3, 3));
 
-		JLabel labelParametrage = new JLabel("Paramétrage");
+		JLabel labelParametrage = new JLabel("ParamÃ©trage");
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 		labelParametrage.setFont(titre);
 

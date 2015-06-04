@@ -88,24 +88,55 @@ public class CreationEquipe {
 		panelParametrage.setLayout(g1);
 		panelParametrage.add(panelEquipe1);
 
-		JLabel labelCreationEquipe = new JLabel("CrÈation de l'Èquipe");
+		JLabel labelCreationEquipe = new JLabel("Cr√©ation de l'√©quipe");
 
 		labelCreationEquipe.setFont(titre);
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				IHM.PlateauIHM.nbCharJ1 = Integer.parseInt(charE1.getText());
-				IHM.PlateauIHM.nbTireurJ1 = Integer.parseInt(tireurE1.getText());
-				IHM.PlateauIHM.nbPiegeurJ1 = Integer.parseInt(piegeurE1
-						.getText());
-
+			public void actionPerformed(ActionEvent e){
+				try{
+					IHM.PlateauIHM.nbCharJ1 = Integer.parseInt(charE2.getText()) ;
+					IHM.PlateauIHM.nbTireurJ1 = Integer.parseInt(tireurE1.getText());
+					IHM.PlateauIHM.nbPiegeurJ1 = Integer.parseInt(piegeurE1
+							.getText());
+					controleSaisie(IHM.PlateauIHM.nbCharJ1);
+					controleSaisie(IHM.PlateauIHM.nbTireurJ1);
+					controleSaisie(IHM.PlateauIHM.nbPiegeurJ1);
+				}catch(NumberFormatException e1){
+					(new Erreur()).getT01(f);
+					IHM.PlateauIHM.nbCharJ1 = 1;
+					IHM.PlateauIHM.nbTireurJ1 = 1;
+					IHM.PlateauIHM.nbPiegeurJ1 = 1;
+				}catch (Erreur e2) {
+					(new Erreur()).getT02(f);
+					IHM.PlateauIHM.nbCharJ2 = 1;
+					IHM.PlateauIHM.nbTireurJ2 = 1;
+					IHM.PlateauIHM.nbPiegeurJ2 = 1;
+				}
+					
 				if (!IHM.PlateauIHM.nbrIA.equals("1")) {
-					IHM.PlateauIHM.nbCharJ2 = Integer.parseInt(charE2.getText());
-					IHM.PlateauIHM.nbTireurJ2 = Integer.parseInt(tireurE2
-							.getText());
-					IHM.PlateauIHM.nbPiegeurJ2 = Integer.parseInt(piegeurE2
-							.getText());
+					try{
+						IHM.PlateauIHM.nbCharJ2 = Integer.parseInt(charE2.getText());
+						IHM.PlateauIHM.nbTireurJ2 = Integer.parseInt(tireurE2
+								.getText());
+						IHM.PlateauIHM.nbPiegeurJ2 = Integer.parseInt(piegeurE2
+								.getText());
+						controleSaisie(IHM.PlateauIHM.nbCharJ2);
+						controleSaisie(IHM.PlateauIHM.nbTireurJ2);
+						controleSaisie(IHM.PlateauIHM.nbPiegeurJ2);
+					}catch(NumberFormatException e3){
+						(new Erreur()).getT01(f);
+						IHM.PlateauIHM.nbCharJ2 = 1;
+						IHM.PlateauIHM.nbTireurJ2 = 1;
+						IHM.PlateauIHM.nbPiegeurJ2 = 1;
+					}catch (Erreur e4) {
+						(new Erreur()).getT02(f);
+						IHM.PlateauIHM.nbCharJ2 = 1;
+						IHM.PlateauIHM.nbTireurJ2 = 1;
+						IHM.PlateauIHM.nbPiegeurJ2 = 1;
+					}
+					
 				}
 				new IHM();
 				f.dispose();
@@ -119,5 +150,11 @@ public class CreationEquipe {
 		f.setVisible(true);
 		f.pack();
 
+	}
+	
+	public static void controleSaisie(int i) throws Erreur{
+		if(i < 0 ||  i > 3){
+			throw new Erreur("La valeur rentr√©e n'est pas comprise entre 1 et 3");
+		}
 	}
 }
