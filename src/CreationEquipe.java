@@ -46,11 +46,11 @@ public class CreationEquipe {
 		AfficheImage aF = new AfficheImage("img/fond1.jpg");
 		aF.setLayout(g);
 		
-		gc.fill = GridBagConstraints.CENTER;
+		gc.fill = GridBagConstraints.HORIZONTAL;
 
 		JLabel labelCreationEquipe = new JLabel("Création de l'équipe");
 		labelCreationEquipe.setFont(titre);
-		gc.gridx = 1;
+		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
 		gc.weighty = 30;
@@ -60,76 +60,89 @@ public class CreationEquipe {
 		JLabel equipe1 = new JLabel("Equipe Bleue: ");
 		gc.gridx = 0;
 		gc.gridy = 1;
-		gc.gridwidth = 2;
+		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.WEST;
 		aF.add(equipe1, gc);
 		JLabel equipe2 = new JLabel("Equipe Rouge: ");
-		gc.gridx = 3;
+		gc.gridx = 2;
 		gc.gridy = 1;
-		gc.gridwidth = 2;
+		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.EAST;
 		aF.add(equipe2, gc);
 
 		JLabel piegeurs1 = new JLabel("Piegeur(s): ");
 		gc.gridx = 0;
 		gc.gridy = 2;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.WEST;
 		aF.add(piegeurs1, gc);
 		JLabel tireurs1 = new JLabel("Tireur(s): ");
 		gc.gridx = 0;
 		gc.gridy = 3;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.WEST;
 		aF.add(tireurs1, gc);
 		JLabel chars1 = new JLabel("Char(s): ");
 		gc.gridx = 0;
 		gc.gridy = 4;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.WEST;
 		aF.add(chars1, gc);
 		JLabel piegeurs2 = new JLabel("Piegeur(s): ");
-		gc.gridx = 3;
+		gc.gridx = 2;
 		gc.gridy = 2;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.EAST;
 		aF.add(piegeurs2, gc);
 		JLabel tireurs2 = new JLabel("Tireur(s): ");
-		gc.gridx = 3;
+		gc.gridx = 2;
 		gc.gridy = 3;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.EAST;
 		aF.add(tireurs2, gc);
 		JLabel chars2 = new JLabel("Char(s): ");
-		gc.gridx = 3;
+		gc.gridx = 2;
 		gc.gridy = 4;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.EAST;
 		aF.add(chars2, gc);
 
 		JTextField piegeurE1 = new JTextField("1");
 		gc.gridx = 1;
 		gc.gridy = 2;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.WEST;
 		aF.add(piegeurE1, gc);
 		JTextField tireurE1 = new JTextField("1");
 		gc.gridx = 1;
 		gc.gridy = 3;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.WEST;
 		aF.add(tireurE1, gc);
 		JTextField charE1 = new JTextField("1");
 		gc.gridx = 1;
 		gc.gridy = 4;
+		gc.fill = GridBagConstraints.WEST;
 		gc.gridwidth = 1;
 		aF.add(charE1, gc);
 		JTextField piegeurE2 = new JTextField("1");
-		gc.gridx = 4;
+		gc.gridx = 3;
 		gc.gridy = 2;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.EAST;
 		aF.add(piegeurE2, gc);
 		JTextField tireurE2 = new JTextField("1");
-		gc.gridx = 4;
+		gc.gridx = 3;
 		gc.gridy = 3;
 		gc.gridwidth = 1;
+		gc.fill = GridBagConstraints.EAST;
 		aF.add(tireurE2, gc);
 		JTextField charE2 = new JTextField("1");
-		gc.gridx = 4;
+		gc.gridx = 3;
 		gc.gridy = 4;
 		gc.gridwidth = 1;
-		aF.add(charE2, gc);
-			
+		gc.fill = GridBagConstraints.EAST;
+		aF.add(charE2, gc);		
 		
 		if (!IHM.PlateauIHM.nbrIA.equals("1")) {
 			piegeurs2.setVisible(false);
@@ -138,6 +151,7 @@ public class CreationEquipe {
 			tireurE2.setVisible(false);
 			chars2.setVisible(false);
 			charE2.setVisible(false);
+			equipe2.setVisible(false);
 		}
 
 		JButton valider = new JButton("Valider");

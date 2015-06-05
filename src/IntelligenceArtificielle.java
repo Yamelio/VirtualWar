@@ -13,8 +13,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import sun.print.resources.serviceui;
+//import sun.print.resources.serviceui;
 
+@SuppressWarnings("unused")
 public class IntelligenceArtificielle {
 
 	private String formation;
