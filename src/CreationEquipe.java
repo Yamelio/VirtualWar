@@ -23,7 +23,6 @@ import javax.swing.border.Border;
 
 public class CreationEquipe {
 
-	public Menu menu = new Menu();
 	private GridBagLayout g;
 	private GridBagConstraints gc;
 
