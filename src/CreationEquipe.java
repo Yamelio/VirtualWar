@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,7 +26,13 @@ public class CreationEquipe {
 	public CreationEquipe() {
 		final JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(500, 300));
+		final Toolkit toolkit = Toolkit.getDefaultToolkit();
+		final Dimension screenSize = toolkit.getScreenSize();
+		final int x = (screenSize.width - f.getWidth()) / 3;
+		final int y = (int) ((screenSize.height - f.getHeight()) / 4);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setLocationRelativeTo(f);
+		f.setLocation(x, y);
 		f.setJMenuBar(menu.menuBar);
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 

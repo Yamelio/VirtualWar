@@ -13,12 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -38,10 +40,10 @@ public class Menu {
 		menuBar.add(menu);
 
 		// Build new tab "Help"
-		JMenu Help = new JMenu("Aide");
-		menu.getAccessibleContext().setAccessibleDescription(
+		JMenu help = new JMenu("Aide");
+		help.getAccessibleContext().setAccessibleDescription(
 				"The help menu in this program");
-		menu.addMenuListener(new MenuListener() {
+		help.addMenuListener(new MenuListener() {
 			public void menuSelected(MenuEvent e) {
 				try {
 					Desktop desktop = Desktop.getDesktop();
@@ -63,7 +65,7 @@ public class Menu {
 
 			}
 		});
-		menuBar.add(Help);
+		menuBar.add(help);
 
 		// Build new tab "About us"
 		JMenu aboutUs = new JMenu("A propos de nous");
@@ -204,6 +206,9 @@ public class Menu {
 		menuPleinEcran.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(menuBar);
+					topFrame.setDefaultLookAndFeelDecorated(true);
+					topFrame.setExtendedState(topFrame.MAXIMIZED_BOTH);
 					device.setFullScreenWindow(device.getFullScreenWindow());
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null,

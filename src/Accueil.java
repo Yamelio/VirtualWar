@@ -1,46 +1,44 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-public class Accueil<JXImagePanel> extends JFrame {
-	private JPanel p;
+
+@SuppressWarnings("serial")
+public class Accueil extends JFrame {
+
 	private GridBagLayout g;
 	private GridBagConstraints gc;
 
 	public Accueil() {
 		final JFrame f = new JFrame("VirtualWar");
+		final Toolkit toolkit = Toolkit.getDefaultToolkit();
+		final Dimension screenSize = toolkit.getScreenSize();
+		final int x = (screenSize.width - f.getWidth()) / 3;
+		final int y = (int) ((screenSize.height - f.getHeight()) / 4);
 		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		p = new JPanel();
+		f.setLocationRelativeTo(f);
+		f.setLocation(x, y);
+		
 		g = new GridBagLayout();
 		gc = new GridBagConstraints();
-		p.setLayout(g);
-
+		AfficheImage aF = new AfficheImage("img/fond1.jpg");
+		aF.setLayout(g);
+		
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 
 		JLabel vw = new JLabel("VirtualWar");
@@ -48,7 +46,7 @@ public class Accueil<JXImagePanel> extends JFrame {
 		gc.weighty = 1;
 		gc.fill = GridBagConstraints.BOTH;
 		vw.setFont(titre);
-		p.add(vw, gc);
+		aF.add(vw, gc);
 
 		JButton jouer = new JButton("Jouer");
 		gc.gridy = 2;
@@ -61,7 +59,7 @@ public class Accueil<JXImagePanel> extends JFrame {
 				f.dispose();
 			}
 		});
-		p.add(jouer, gc);
+		aF.add(jouer, gc);
 
 		/*
 		 * JButton charger = new JButton("Charger");
@@ -89,36 +87,12 @@ public class Accueil<JXImagePanel> extends JFrame {
 				}
 			}
 		});
-
-		Image image;
-		JLabel viewer = null;
-		try {
-			image = ImageIO.read(new File("img/fond1.jpg"));
-			viewer = new JLabel(new ImageIcon(image));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		p.add(credit, gc);
-
-		f.setContentPane(new AfficheImage("img/fond1.jpg"));
-		f.add(p);
+		aF.add(credit, gc);
+		
+		f.getContentPane().add(aF);
 		f.setVisible(true);
 		f.pack();
 
-	}
-
-	class AfficheImage extends JPanel {
-		Image fond;
-
-		AfficheImage(String s) {
-			fond = getToolkit().getImage(s);
-		}
-
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(fond, 0, 0, getWidth(), getHeight(), this);
-		}
 	}
 
 	public static void main(String[] args) {

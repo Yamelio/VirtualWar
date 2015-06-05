@@ -2,6 +2,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,14 +11,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Parametrage {
 
-	private JPanel p = new JPanel();
 	private GridBagLayout g;
 	private GridBagConstraints gc;
 	private int largeurPlateau = 7;
@@ -27,41 +27,53 @@ public class Parametrage {
 	public Parametrage() {
 		final JFrame f = new JFrame("VirtualWar");
 		f.setPreferredSize(new Dimension(500, 300));
+		final Toolkit toolkit = Toolkit.getDefaultToolkit();
+		final Dimension screenSize = toolkit.getScreenSize();
+		final int x = (screenSize.width - f.getWidth()) / 3;
+		final int y = (int) ((screenSize.height - f.getHeight()) / 4);
+		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setLocationRelativeTo(f);
+		f.setLocation(x, y);
 		f.setJMenuBar(menu.menuBar);
 		
-		p = new JPanel();
 		g = new GridBagLayout();
 		gc = new GridBagConstraints();
-		p.setLayout(g);
+		AfficheImage aF = new AfficheImage("img/fond1.jpg");
+		aF.setLayout(g);
 		
-		//gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.anchor = GridBagConstraints.CENTER;
+		gc.insets = new Insets(0, 0, 0, 0);
 
 		JLabel labelParametrage = new JLabel("Paramétrage");
 		gc.gridx = 0;
 		gc.gridy = 0;
-		gc.weightx = 4;
-		
+		gc.gridwidth = 3;
+		gc.weighty = 40;
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady= 10;
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 		labelParametrage.setFont(titre);
-		p.add(labelParametrage, gc);
+		aF.add(labelParametrage, gc);
 		
-		JLabel labelHauteur = new JLabel("Hauteur du plateau:");
+		JLabel labelHauteur = new JLabel("Hauteur du plateau:  ");
 		gc.gridx = 0;
 		gc.gridy = 1;
-		gc.weightx = 1;		
-		p.add(labelHauteur, gc);
+		gc.gridwidth = 1;
+		gc.weighty = 0;
+		aF.add(labelHauteur, gc);
 
 		final JLabel labelValueH = new JLabel(" " + hauteurPlateau + " cases");
 		gc.gridx = 3;
 		gc.gridy = 1;
-		gc.weightx = 1;
-		p.add(labelHauteur, gc);
+		gc.gridwidth = 1;
+		aF.add(labelValueH, gc);
 		
 		final JSlider sliderHauteur = new JSlider(5, 25, 10);
 		gc.gridx = 1;
 		gc.gridy = 1;
-		gc.weightx = 2;
+		gc.gridwidth = 2;
 		sliderHauteur.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				hauteurPlateau = sliderHauteur.getValue();
@@ -69,19 +81,19 @@ public class Parametrage {
 
 			}
 		});
-		p.add(sliderHauteur, gc);
+		aF.add(sliderHauteur, gc);
 		
-		JLabel labelLargeur = new JLabel("Largeur du plateau:");
+		JLabel labelLargeur = new JLabel("Largeur du plateau:  ");
 		gc.gridx = 0;
 		gc.gridy = 2;
-		gc.weightx = 1;
-		p.add(labelLargeur, gc);
+		gc.gridwidth = 1;
+		aF.add(labelLargeur, gc);
 		
 		final JLabel labelValueL = new JLabel(" " + largeurPlateau + " cases");
 		gc.gridx = 3;
 		gc.gridy = 2;
-		gc.weightx = 1;
-		p.add(labelValueL, gc);
+		gc.gridwidth = 1;
+		aF.add(labelValueL, gc);
 		
 		final JSlider sliderLargeur = new JSlider(5, 25, 10);
 		sliderLargeur.addChangeListener(new ChangeListener() {
@@ -94,20 +106,20 @@ public class Parametrage {
 		});
 		gc.gridx = 1;
 		gc.gridy = 2;
-		gc.weightx = 2;
-		p.add(sliderLargeur, gc);
+		gc.gridwidth = 2;
+		aF.add(sliderLargeur, gc);
 		
-		JLabel labelObstacle = new JLabel("Nombre d'obstacle:");
+		JLabel labelObstacle = new JLabel("Nombre d'obstacle: ");
 		gc.gridx = 0;
 		gc.gridy = 3;
-		gc.weightx = 1;
-		p.add(labelObstacle, gc);
+		gc.gridwidth = 1;
+		aF.add(labelObstacle, gc);
 		
 		JLabel labelValueO = new JLabel("");
 		gc.gridx = 3;
 		gc.gridy = 3;
-		gc.weightx = 1;
-		p.add(labelValueO);		
+		gc.gridwidth = 1;
+		aF.add(labelValueO, gc);		
 		
 		final JSlider sliderObstacle = new JSlider(
 				0,
@@ -124,17 +136,18 @@ public class Parametrage {
 		});
 		gc.gridx = 1;
 		gc.gridy = 3;
-		gc.weightx = 2;
+		gc.gridwidth = 2;
 		nbObstacle = 25;
 		labelValueO.setText(25 + "%");	
-		p.add(sliderObstacle, gc);
+		aF.add(sliderObstacle, gc);
 
 		String[] modeDeJeu = { "Joueur VS Joueur", "Joueur VS IA", "IA vs IA" };
 		final JComboBox<String> combo = new JComboBox<>(modeDeJeu);
 		gc.gridx = 0;
 		gc.gridy = 4;
-		gc.weightx = 4;
-		p.add(combo, gc);
+		gc.gridwidth = 3;
+		gc.weighty = 40;
+		aF.add(combo, gc);
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
@@ -161,10 +174,11 @@ public class Parametrage {
 		});
 		gc.gridx = 0;
 		gc.gridy = 5;
-		gc.weightx = 4;
-		p.add(valider, gc);
+		gc.gridwidth = 3;
+		gc.weighty = 40;
+		aF.add(valider, gc);
 
-		f.getContentPane().add(p);
+		f.getContentPane().add(aF);
 		f.setVisible(true);
 		f.pack();
 	}
