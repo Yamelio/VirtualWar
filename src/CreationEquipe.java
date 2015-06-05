@@ -3,6 +3,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -22,6 +24,8 @@ import javax.swing.border.Border;
 public class CreationEquipe {
 
 	public Menu menu = new Menu();
+	private GridBagLayout g;
+	private GridBagConstraints gc;
 
 	public CreationEquipe() {
 		final JFrame f = new JFrame("VirtualWar");
@@ -35,69 +39,105 @@ public class CreationEquipe {
 		f.setLocation(x, y);
 		f.setJMenuBar(menu.menuBar);
 		Font titre = new Font("Arial", Font.PLAIN, 42);
-
-		JPanel panelPrincipal = new JPanel();
-		JPanel panelParametrage = new JPanel();
-		JPanel panelEquipe1 = new JPanel();
-		panelEquipe1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 80));
-		JPanel panelEquipe2 = new JPanel();
-		panelEquipe2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 80));
-
-		GridLayout g1 = new GridLayout(1, 2);
-		GridLayout g2 = new GridLayout(4, 3);
-
-		JPanel vide = new JPanel();
-		JPanel vide2 = new JPanel();
-		JLabel equipe1 = new JLabel("Equipe Bleue: ");
-		panelEquipe1.add(equipe1);
-		panelEquipe1.add(vide);
-
-		JLabel equipe2 = new JLabel("Equipe Rouge: ");
-		panelEquipe2.add(equipe2);
-		panelEquipe2.add(vide2);
-
-		panelEquipe1.setLayout(g2);
-		panelEquipe2.setLayout(g2);
-
-		JLabel piegeurs1 = new JLabel("Piegeur(s): ");
-		JLabel tireurs1 = new JLabel("Tireur(s): ");
-		JLabel chars1 = new JLabel("Char(s): ");
-
-		final JTextField piegeurE1 = new JTextField("1");
-		final JTextField tireurE1 = new JTextField("1");
-		final JTextField charE1 = new JTextField("1");
-		panelEquipe1.add(piegeurs1);
-		panelEquipe1.add(piegeurE1);
-		panelEquipe1.add(tireurs1);
-		panelEquipe1.add(tireurE1);
-		panelEquipe1.add(chars1);
-		panelEquipe1.add(charE1);
-
-		final JTextField piegeurE2 = new JTextField("1");
-		final JTextField tireurE2 = new JTextField("1");
-		final JTextField charE2 = new JTextField("1");
-
-		if (!IHM.PlateauIHM.nbrIA.equals("1")) {
-			JLabel piegeurs2 = new JLabel("Piegeur(s): ");
-			JLabel tireurs2 = new JLabel("Tireur(s): ");
-			JLabel chars2 = new JLabel("Char(s): ");
-
-			panelEquipe2.add(piegeurs2);
-			panelEquipe2.add(piegeurE2);
-			panelEquipe2.add(tireurs2);
-			panelEquipe2.add(tireurE2);
-			panelEquipe2.add(chars2);
-			panelEquipe2.add(charE2);
-			panelParametrage.add(panelEquipe2);
-
-		}
-
-		panelParametrage.setLayout(g1);
-		panelParametrage.add(panelEquipe1);
+			
+		g = new GridBagLayout();
+		gc = new GridBagConstraints();
+		AfficheImage aF = new AfficheImage("img/fond1.jpg");
+		aF.setLayout(g);
+		
+		gc.fill = GridBagConstraints.CENTER;
 
 		JLabel labelCreationEquipe = new JLabel("Création de l'équipe");
-
 		labelCreationEquipe.setFont(titre);
+		gc.gridx = 1;
+		gc.gridy = 0;
+		gc.gridwidth = 3;
+		gc.weighty = 30;
+		aF.add(labelCreationEquipe, gc);
+		
+		gc.weighty = 5;
+		JLabel equipe1 = new JLabel("Equipe Bleue: ");
+		gc.gridx = 0;
+		gc.gridy = 1;
+		gc.gridwidth = 2;
+		aF.add(equipe1, gc);
+		JLabel equipe2 = new JLabel("Equipe Rouge: ");
+		gc.gridx = 3;
+		gc.gridy = 1;
+		gc.gridwidth = 2;
+		aF.add(equipe2, gc);
+
+		JLabel piegeurs1 = new JLabel("Piegeur(s): ");
+		gc.gridx = 0;
+		gc.gridy = 2;
+		gc.gridwidth = 1;
+		aF.add(piegeurs1, gc);
+		JLabel tireurs1 = new JLabel("Tireur(s): ");
+		gc.gridx = 0;
+		gc.gridy = 3;
+		gc.gridwidth = 1;
+		aF.add(tireurs1, gc);
+		JLabel chars1 = new JLabel("Char(s): ");
+		gc.gridx = 0;
+		gc.gridy = 4;
+		gc.gridwidth = 1;
+		aF.add(chars1, gc);
+		JLabel piegeurs2 = new JLabel("Piegeur(s): ");
+		gc.gridx = 3;
+		gc.gridy = 2;
+		gc.gridwidth = 1;
+		aF.add(piegeurs2, gc);
+		JLabel tireurs2 = new JLabel("Tireur(s): ");
+		gc.gridx = 3;
+		gc.gridy = 3;
+		gc.gridwidth = 1;
+		aF.add(tireurs2, gc);
+		JLabel chars2 = new JLabel("Char(s): ");
+		gc.gridx = 3;
+		gc.gridy = 4;
+		gc.gridwidth = 1;
+		aF.add(chars2, gc);
+
+		JTextField piegeurE1 = new JTextField("1");
+		gc.gridx = 1;
+		gc.gridy = 2;
+		gc.gridwidth = 1;
+		aF.add(piegeurE1, gc);
+		JTextField tireurE1 = new JTextField("1");
+		gc.gridx = 1;
+		gc.gridy = 3;
+		gc.gridwidth = 1;
+		aF.add(tireurE1, gc);
+		JTextField charE1 = new JTextField("1");
+		gc.gridx = 1;
+		gc.gridy = 4;
+		gc.gridwidth = 1;
+		aF.add(charE1, gc);
+		JTextField piegeurE2 = new JTextField("1");
+		gc.gridx = 4;
+		gc.gridy = 2;
+		gc.gridwidth = 1;
+		aF.add(piegeurE2, gc);
+		JTextField tireurE2 = new JTextField("1");
+		gc.gridx = 4;
+		gc.gridy = 3;
+		gc.gridwidth = 1;
+		aF.add(tireurE2, gc);
+		JTextField charE2 = new JTextField("1");
+		gc.gridx = 4;
+		gc.gridy = 4;
+		gc.gridwidth = 1;
+		aF.add(charE2, gc);
+			
+		
+		if (!IHM.PlateauIHM.nbrIA.equals("1")) {
+			piegeurs2.setVisible(false);
+			piegeurE2.setVisible(false);
+			tireurs2.setVisible(false);
+			tireurE2.setVisible(false);
+			chars2.setVisible(false);
+			charE2.setVisible(false);
+		}
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
@@ -149,11 +189,13 @@ public class CreationEquipe {
 				f.dispose();
 			}
 		});
+		gc.gridx = 2;
+		gc.gridy = 5;
+		gc.weighty = 30;
+		gc.gridwidth = 1;
+		aF.add(valider, gc);
 
-		panelPrincipal.add(labelCreationEquipe, BorderLayout.PAGE_START);
-		panelPrincipal.add(panelParametrage, BorderLayout.CENTER);
-		panelPrincipal.add(valider, BorderLayout.SOUTH);
-		f.getContentPane().add(panelPrincipal);
+		f.getContentPane().add(aF);
 		f.setVisible(true);
 		f.pack();
 
