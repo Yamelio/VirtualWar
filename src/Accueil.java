@@ -22,8 +22,6 @@ public class Accueil extends JFrame {
 
 	private GridBagLayout g;
 	private GridBagConstraints gc;
-	public static Son musique = new Son("son/test.wav");
-
 
 	public Accueil() {
 		final JFrame f = new JFrame("VirtualWar");
@@ -100,7 +98,6 @@ public class Accueil extends JFrame {
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				//Accueil.musique.start();
 				new Accueil();
 			}
 		});

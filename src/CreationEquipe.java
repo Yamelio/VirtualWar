@@ -21,11 +21,10 @@ import javax.swing.border.Border;
 
 public class CreationEquipe {
 
-	public Menu menu;
+	public Menu menu = new Menu();
 
 	public CreationEquipe() {
 		final JFrame f = new JFrame("VirtualWar");
-		menu = new Menu(f);
 		f.setPreferredSize(new Dimension(500, 300));
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
 		final Dimension screenSize = toolkit.getScreenSize();

@@ -66,15 +66,10 @@ public class IHM {
 	static Vue vueJ1;
 	static Vue vueJ2;
 	static String savePath = "save/sauvegarde.txt";
-	public Menu menu;
+	public Menu menu = new Menu();
 
 	public IHM() {
 		f = new JFrame("VirtualWar");
-		panelPlateau.removeAll();
-		panelRobot.removeAll();
-		historique.removeAll();
-
-		menu = new Menu(f);
 		f.setPreferredSize(new Dimension(largeurFenetre, hauteurFenetre));
 		f.setMinimumSize(new Dimension(500, 400));
 		f.setJMenuBar(menu.menuBar);
@@ -886,6 +881,7 @@ public class IHM {
 
 		// Cette procedure remplace le main initial
 		public static PlateauIHM start() {
+			System.out.println(obstacles);
 			p = new Plateau(largeur, hauteur, obstacles);
 			p.initObstacles();
 			if (!(nbrIA.equals("2"))) {

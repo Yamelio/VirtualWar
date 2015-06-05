@@ -29,7 +29,7 @@ public class Menu {
 	public JMenuBar menuBar;
 	JTextArea historique = null;
 
-	public Menu(JFrame frame) {
+	public Menu() {
 		// Build the menu bar
 		menuBar = new JMenuBar();
 
@@ -47,7 +47,7 @@ public class Menu {
 			public void menuSelected(MenuEvent e) {
 				try {
 					Desktop desktop = Desktop.getDesktop();
-					desktop.open(new File("README.txt"));
+					desktop.open(new File("README.md"));
 				} catch (Exception e2) {
 					// Problème lors du lancement du programme
 					e2.printStackTrace();
@@ -111,8 +111,7 @@ public class Menu {
 		menuNouveau.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Parametrage();
-				frame.dispose();
+				new IHM();
 			}
 		});
 
