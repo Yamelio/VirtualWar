@@ -22,7 +22,7 @@ public class Accueil extends JFrame {
 
 	private GridBagLayout g;
 	private GridBagConstraints gc;
-	public static Son musique = new Son("son/test.wav");
+	public static Son musique = new Son("son/musique.wav");
 
 
 	public Accueil() {
@@ -100,10 +100,16 @@ public class Accueil extends JFrame {
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				//Accueil.musique.start();
+				Accueil.musique.start();
+			}
+		});
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
 				new Accueil();
 			}
 		});
+		
+
 	}
 
 }

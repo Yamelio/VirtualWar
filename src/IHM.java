@@ -292,6 +292,8 @@ public class IHM {
 		static int nbTireurJ2;
 		static int nbCharJ2;
 		static int nbPiegeurJ2;
+		static Son attaque = new Son("son/attaque.wav");
+		static Son deplacement = new Son("son/deplacement.wav");
 
 		public PlateauIHM() {
 			super();
@@ -459,22 +461,27 @@ public class IHM {
 												try {
 													if (robotCible != null
 															&& !(robotChoisi instanceof Piegeur)) {
-														actions.add(new Attaque(
-																robotChoisi,
-																robotCible
-																		.getPosition()));
-														robotCible = robotsInit
-																.get(c.getPosition()
-																		.getRobot()
-																		.getId());
+														if (!robotChoisi
+																.equals(robotCible)) {
+															actions.add(new Attaque(
+																	robotChoisi,
+																	robotCible
+																			.getPosition()));
+															robotCible = robotsInit
+																	.get(c.getPosition()
+																			.getRobot()
+																			.getId());
 
-														saisieOk = true;
+															saisieOk = true;
+															attaque.run();
+														}
 													} else {
 														if (choixCible != null) {
 															actions.add(new Attaque(
 																	robotChoisi,
 																	choixCible));
 															saisieOk = true;
+															attaque.run();
 														}
 													}
 												} catch (Erreur err) {
@@ -488,6 +495,7 @@ public class IHM {
 																robotChoisi,
 																c.getPosition()));
 														saisieOk = true;
+														deplacement.run();
 													} catch (Erreur err) {
 													}
 												}

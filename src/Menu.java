@@ -196,25 +196,24 @@ public class Menu {
 
 		// Build the item "plein ecran" in menu
 		menu.addSeparator();
-		JMenuItem menuPleinEcran = new JMenuItem("Mode plein ecran");
+		JMenuItem menuPleinEcran = new JMenuItem("Toogle Musique");
 		menuPleinEcran.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				InputEvent.CTRL_DOWN_MASK));
 		final GraphicsDevice device = GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		menuPleinEcran.getAccessibleContext().setAccessibleDescription(
-				"Ce bouton met je jeu en plein ecran");
+				"Ce bouton switch la musique");
 		menu.add(menuPleinEcran);
 		menuPleinEcran.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(menuBar);
-					topFrame.setDefaultLookAndFeelDecorated(true);
-					topFrame.setExtendedState(topFrame.MAXIMIZED_BOTH);
-					device.setFullScreenWindow(device.getFullScreenWindow());
+					if (Accueil.musique.isAlive()) {
+						Accueil.musique.stop();
+					}
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null,
-							"Impossible de mettre le jeu en plein ecran",
-							"Erreur", JOptionPane.ERROR_MESSAGE);
+							"Erreur avec la musique", "Erreur",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
