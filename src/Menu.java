@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -43,8 +45,34 @@ public class Menu {
 		JMenu help = new JMenu("Aide");
 		help.getAccessibleContext().setAccessibleDescription(
 				"The help menu in this program");
-		help.addMenuListener(new MenuListener() {
-			public void menuSelected(MenuEvent e) {
+		help.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				try {
 					Desktop desktop = Desktop.getDesktop();
 					desktop.open(new File("README.txt"));
@@ -52,19 +80,10 @@ public class Menu {
 					// Problème lors du lancement du programme
 					e2.printStackTrace();
 				}
-			}
-
-			public void menuDeselected(MenuEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {
-				// TODO Auto-generated method stub
-
+				
 			}
 		});
+			
 		menuBar.add(help);
 
 		// Build new tab "About us"
