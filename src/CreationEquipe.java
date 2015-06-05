@@ -144,16 +144,6 @@ public class CreationEquipe {
 		gc.fill = GridBagConstraints.EAST;
 		aF.add(charE2, gc);		
 		
-		if (!IHM.PlateauIHM.nbrIA.equals("1")) {
-			piegeurs2.setVisible(false);
-			piegeurE2.setVisible(false);
-			tireurs2.setVisible(false);
-			tireurE2.setVisible(false);
-			chars2.setVisible(false);
-			charE2.setVisible(false);
-			equipe2.setVisible(false);
-		}
-
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
