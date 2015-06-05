@@ -1,8 +1,7 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,9 +16,9 @@ import javax.swing.event.ChangeListener;
 
 public class Parametrage {
 
-	private JPanel panelReglage = new JPanel();
-	private JPanel panelPrincipale = new JPanel();
-	private GridBagConstraints gridConstraint = new GridBagConstraints();
+	private JPanel p = new JPanel();
+	private GridBagLayout g;
+	private GridBagConstraints gc;
 	private int largeurPlateau = 7;
 	private int hauteurPlateau = 7;
 	private int nbObstacle = 25;
@@ -30,38 +29,60 @@ public class Parametrage {
 		f.setPreferredSize(new Dimension(500, 300));
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setJMenuBar(menu.menuBar);
-
-		panelPrincipale.setLayout(new GridLayout(3, 1));
-		panelReglage.setLayout(new GridLayout(3, 3));
+		
+		p = new JPanel();
+		g = new GridBagLayout();
+		gc = new GridBagConstraints();
+		p.setLayout(g);
+		
+		//gc.fill = GridBagConstraints.HORIZONTAL;
 
 		JLabel labelParametrage = new JLabel("Paramétrage");
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.weightx = 4;
+		
 		Font titre = new Font("Arial", Font.PLAIN, 42);
 		labelParametrage.setFont(titre);
-
+		p.add(labelParametrage, gc);
+		
 		JLabel labelHauteur = new JLabel("Hauteur du plateau:");
-		gridConstraint.gridx = 0;
-		gridConstraint.gridy = 1;
+		gc.gridx = 0;
+		gc.gridy = 1;
+		gc.weightx = 1;		
+		p.add(labelHauteur, gc);
 
 		final JLabel labelValueH = new JLabel(" " + hauteurPlateau + " cases");
-		gridConstraint.gridx = 2;
-		gridConstraint.gridy = 1;
+		gc.gridx = 3;
+		gc.gridy = 1;
+		gc.weightx = 1;
+		p.add(labelHauteur, gc);
+		
 		final JSlider sliderHauteur = new JSlider(5, 25, 10);
+		gc.gridx = 1;
+		gc.gridy = 1;
+		gc.weightx = 2;
 		sliderHauteur.addChangeListener(new ChangeListener() {
-			@Override
 			public void stateChanged(ChangeEvent e) {
 				hauteurPlateau = sliderHauteur.getValue();
 				labelValueH.setText(" " + hauteurPlateau + " cases");
 
 			}
 		});
-		gridConstraint.gridx = 1;
-		gridConstraint.gridy = 1;
+		p.add(sliderHauteur, gc);
+		
 		JLabel labelLargeur = new JLabel("Largeur du plateau:");
-		gridConstraint.gridx = 0;
-		gridConstraint.gridy = 2;
+		gc.gridx = 0;
+		gc.gridy = 2;
+		gc.weightx = 1;
+		p.add(labelLargeur, gc);
+		
 		final JLabel labelValueL = new JLabel(" " + largeurPlateau + " cases");
-		gridConstraint.gridx = 2;
-		gridConstraint.gridy = 2;
+		gc.gridx = 3;
+		gc.gridy = 2;
+		gc.weightx = 1;
+		p.add(labelValueL, gc);
+		
 		final JSlider sliderLargeur = new JSlider(5, 25, 10);
 		sliderLargeur.addChangeListener(new ChangeListener() {
 			@Override
@@ -71,14 +92,23 @@ public class Parametrage {
 
 			}
 		});
-		gridConstraint.gridx = 1;
-		gridConstraint.gridy = 2;
+		gc.gridx = 1;
+		gc.gridy = 2;
+		gc.weightx = 2;
+		p.add(sliderLargeur, gc);
+		
 		JLabel labelObstacle = new JLabel("Nombre d'obstacle:");
-		gridConstraint.gridx = 0;
-		gridConstraint.gridy = 3;
-		final JLabel labelValueO = new JLabel();
-		gridConstraint.gridx = 2;
-		gridConstraint.gridy = 3;
+		gc.gridx = 0;
+		gc.gridy = 3;
+		gc.weightx = 1;
+		p.add(labelObstacle, gc);
+		
+		JLabel labelValueO = new JLabel("");
+		gc.gridx = 3;
+		gc.gridy = 3;
+		gc.weightx = 1;
+		p.add(labelValueO);		
+		
 		final JSlider sliderObstacle = new JSlider(
 				0,
 				((int) sliderLargeur.getMaximum() * sliderHauteur.getMaximum()) / 2);
@@ -92,13 +122,19 @@ public class Parametrage {
 				labelValueO.setText(" " + nbObstacle + "%");
 			}
 		});
+		gc.gridx = 1;
+		gc.gridy = 3;
+		gc.weightx = 2;
 		nbObstacle = 25;
-		labelValueO.setText(25 + "%");
-		gridConstraint.gridx = 1;
-		gridConstraint.gridy = 3;
+		labelValueO.setText(25 + "%");	
+		p.add(sliderObstacle, gc);
 
 		String[] modeDeJeu = { "Joueur VS Joueur", "Joueur VS IA", "IA vs IA" };
 		final JComboBox<String> combo = new JComboBox<>(modeDeJeu);
+		gc.gridx = 0;
+		gc.gridy = 4;
+		gc.weightx = 4;
+		p.add(combo, gc);
 
 		JButton valider = new JButton("Valider");
 		valider.addActionListener(new ActionListener() {
@@ -123,26 +159,12 @@ public class Parametrage {
 				}
 			}
 		});
+		gc.gridx = 0;
+		gc.gridy = 5;
+		gc.weightx = 4;
+		p.add(valider, gc);
 
-		gridConstraint = new GridBagConstraints();
-		gridConstraint.anchor = GridBagConstraints.LINE_END;
-		gridConstraint.ipadx = 50;
-		gridConstraint.ipady = 50;
-		panelReglage.add(labelHauteur, gridConstraint);
-		panelReglage.add(sliderHauteur, gridConstraint);
-		panelReglage.add(labelValueH, gridConstraint);
-		panelReglage.add(labelLargeur, gridConstraint);
-		panelReglage.add(sliderLargeur, gridConstraint);
-		panelReglage.add(labelValueL, gridConstraint);
-		panelReglage.add(labelObstacle, gridConstraint);
-		panelReglage.add(sliderObstacle, gridConstraint);
-		panelReglage.add(labelValueO, gridConstraint);
-
-		panelPrincipale.add(labelParametrage);
-		panelPrincipale.add(combo);
-		panelPrincipale.add(panelReglage);
-		panelPrincipale.add(valider, BorderLayout.PAGE_END);
-		f.getContentPane().add(panelPrincipale);
+		f.getContentPane().add(p);
 		f.setVisible(true);
 		f.pack();
 	}

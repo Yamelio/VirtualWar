@@ -1,3 +1,4 @@
+import java.awt.Desktop;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -5,6 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,6 +19,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
@@ -32,13 +41,63 @@ public class Menu {
 		JMenu Help = new JMenu("Aide");
 		menu.getAccessibleContext().setAccessibleDescription(
 				"The help menu in this program");
+		menu.addMenuListener(new MenuListener() {
+			public void menuSelected(MenuEvent e) {
+				try {
+					Desktop desktop = Desktop.getDesktop();
+					desktop.open(new File("README.md"));
+				} catch (Exception e2) {
+					// Problème lors du lancement du programme
+					e2.printStackTrace();
+				}
+			}
+
+			public void menuDeselected(MenuEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		menuBar.add(Help);
 
 		// Build new tab "About us"
-		JMenu AboutUs = new JMenu("A propos de nous");
-		menu.getAccessibleContext().setAccessibleDescription(
+		JMenu aboutUs = new JMenu("A propos de nous");
+		aboutUs.getAccessibleContext().setAccessibleDescription(
 				"The link to developper page");
-		menuBar.add(AboutUs);
+		aboutUs.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				try {
+					URI uriLien = new URI(
+							"https://github.com/Yamelio/VirtualWar");
+					Desktop.getDesktop().browse(uriLien);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException ex) {
+					Logger.getLogger(Menu.class.getName()).log(Level.SEVERE,
+							null, ex);
+				}
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		menuBar.add(aboutUs);
 
 		// Build the item "Nouveau" in "menu"
 		JMenuItem menuNouveau = new JMenuItem("Nouveau");
